@@ -55,6 +55,9 @@ module RideShare
     #   END
     # end
     def duration
+      if end_time.nil? || start_time.nil?
+        raise ArgumentError.new("Time (start or end) cannot be nil")
+      end
       difference = end_time - start_time
       if difference <= 0
         raise ArgumentError.new("Duration cannot be zero")
