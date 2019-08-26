@@ -79,6 +79,32 @@ describe "Passenger class" do
     it "Is correctly caclulating the total expenditure" do
       expect(@passenger.net_expenditures).must_equal 73.00
     end 
+    
+    it "Returns zero for no trips taken." do
+      # Arrange
+      gerald = RideShare::Passenger.new(id: 1, name: "Gerald", phone_number: "353-533-7678")
+      expect(gerald.net_expenditures).must_equal 0
+    end
+    
+    it "Returns negative value in the off-chance that total expenditure is in fact a negative number (you somehow earn money on the total trips)" do
+      # arrange 
+      georgie = RideShare::Passenger.new(id: 1, name: "Georgie", phone_number: "353-533-7678")
+      
+      start_time = Time.parse('2015-05-20T12:14:00+00:00')
+      end_time = start_time + 25 * 60 # 25 minutes
+      trip_1_data = {
+        id: 8,
+        passenger: @passenger,
+        start_time: start_time,
+        end_time: end_time,
+        cost: -3.00,
+        rating: 3
+      }
+      trip_1 = RideShare::Trip.new(trip_1_data)
+      georgie.add_trip(trip_1)
+      
+      expect(georgie.net_expenditures).must_equal -3.00
+    end
   end
   
   describe "trips property" do
