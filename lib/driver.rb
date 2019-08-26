@@ -15,6 +15,9 @@ module RideShare
       @trips = trips || []
     end
     
+    def add_trip(trip)
+      @trips << trip
+    end
     
     private
     
