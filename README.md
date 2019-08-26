@@ -29,7 +29,7 @@ We will **not** write an interactive command-line program.
 
 ## Getting Started
 
-We will use the same project structure we used for the previous project. Classes should be in files in the `lib` folder, and tests should be in files in the `specs` folder. You will run tests by executing the `rake` command, as configured in a Rakefile.
+We will use the same project structure we used for the previous project. Classes should be in files in the `lib` folder, and tests should be in files in the `tests` folder. You will run tests by executing the `rake` command, as configured in a Rakefile.
 
 The `support` folder contains CSV files which will drive your system design. Each CSV corresponds to a different type of object _as well as_ creating a relationship between different objects.
 

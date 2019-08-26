@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-ruby '2.5.5'
+ruby '2.5.5p157'
 
 gem 'rake'
 
