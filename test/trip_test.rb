@@ -99,7 +99,7 @@ describe "Trip class" do
       end.must_raise ArgumentError
     end
     
-    it "must raise error if nil" do
+    it "must raise error if start/end time is nil" do
       # Arrange
       start_time = nil
       end_time = nil
@@ -118,6 +118,22 @@ describe "Trip class" do
       end.must_raise ArgumentError
     end
     
+    it "must calculate seconds" do
+      # Arrange
+      start_time = Time.parse('2015-05-20T12:14:00+00:00')
+      end_time = start_time + 25 * 60 # 25 minutes
+      @new_trip_data = {
+        id: 8,
+        passenger: RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640"),
+        start_time: start_time,
+        end_time: end_time,
+        cost: 23.45,
+        rating: 3
+      }
+      @new_trip = RideShare::Trip.new(@new_trip_data)
+      # Act & Assert
+      expect(@new_trip.duration).must_equal 1500
+    end
   end
   
 end

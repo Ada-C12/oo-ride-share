@@ -58,12 +58,14 @@ module RideShare
       if end_time.nil? || start_time.nil?
         raise ArgumentError.new("Time (start or end) cannot be nil")
       end
-      difference = end_time - start_time
+      difference = end_time.tv_sec - start_time.tv_sec
       if difference <= 0
         raise ArgumentError.new("Duration cannot be zero")
       end
       return difference
     end
+    
+    
     
     private
     
@@ -78,8 +80,8 @@ module RideShare
       return self.new(
         id: record[:id],
         passenger_id: record[:passenger_id],
-        start_time: record[:start_time],
-        end_time: record[:end_time],
+        start_time: start_time,
+        end_time: end_time,
         cost: record[:cost],
         rating: record[:rating]
       )
