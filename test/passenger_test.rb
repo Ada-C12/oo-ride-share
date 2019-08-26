@@ -69,6 +69,14 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    it "returns total amount customer has spent on trips" do
+      #grab first two trips from trips.csv
+      trip1, trip2 = RideShare::Trip.load_all(directory: './support')
+
+      passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "8765309", trips: [trip1, trip2])
+      
+      #load those trips into passenger for testing. id's may be incorrect
+      expect(passenger.net_expenditures).must_equal 28
+    end
   end
 end
