@@ -68,7 +68,18 @@ describe "Passenger class" do
     end
   end
   
+  # psudeo code
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    # acces Trip class to call .cost 
+    # += each trip to get the total cost
   end
+  
+  #psuedo code
+  describe "total_time_spend" do 
+    # call duration_calculation on each trip
+    # convert to minutes
+    # += to get the total time
+  end
+  
+  
 end
