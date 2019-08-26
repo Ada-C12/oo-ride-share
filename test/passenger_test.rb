@@ -76,6 +76,9 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
       )
+      
+      expect (@passenger.net_expenditures).must_equal 0
+      
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
@@ -97,6 +100,42 @@ describe "Passenger class" do
       @passenger.add_trip(trip)
       
       expect(@passenger.net_expenditures).must_equal 15
+    end
+  end
+  
+  describe "total_time_spent" do
+    it "calculates total trip time for a given passenger" do
+      
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+      )
+      
+      expect (@passenger.total_time_spent).must_equal 0
+      
+      trip = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.parse('2015-05-20T12:14:00+00:00'),
+        end_time: Time.parse('2015-05-20T12:44:00+00:00'),
+        cost: 11,
+        rating: 5
+      )
+      @passenger.add_trip(trip)
+      
+      trip = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.parse('2015-05-20T11:34:00+00:00'),
+        end_time: Time.parse('2015-05-20T11:54:00+00:00'),
+        cost: 4,
+        rating: 5
+      )
+      @passenger.add_trip(trip)
+      
+      expect (@passenger.total_time_spent).must_equal 3000
     end
   end
 end
