@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -59,7 +59,7 @@ xdescribe "Driver class" do
       )
       @trip = RideShare::Trip.new(
         id: 8,
-        driver: @driver,
+        # driver: @driver,
         passenger: pass,
         start_time: "2016-08-08",
         end_time: "2018-08-09",
@@ -68,6 +68,7 @@ xdescribe "Driver class" do
     end
 
     it "adds the trip" do
+
       expect(@driver.trips).wont_include @trip
       previous = @driver.trips.length
 
