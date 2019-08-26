@@ -71,24 +71,24 @@ end
 
 
 
-require_relative "passenger"
-start_time = Time.parse('2015-05-20T12:15:00+00:00')
-end_time = Time.parse('2015-05-20T12:30:00+00:00')
-@trip_data = {
-id: 8,
-passenger: RideShare::Passenger.new(id: 1,
-name: "Ada",
-phone_number: "412-432-7640"),
-start_time: start_time,
-end_time: end_time,
-cost: 23.45,
-rating: 3
-}
-@trip = RideShare::Trip.new(@trip_data)
+# require_relative "passenger"
+# start_time = Time.parse('2015-05-20T12:15:00+00:00')
+# end_time = Time.parse('2015-05-20T12:30:00+00:00')
+# @trip_data = {
+# id: 8,
+# passenger: RideShare::Passenger.new(id: 1,
+# name: "Ada",
+# phone_number: "412-432-7640"),
+# start_time: start_time,
+# end_time: end_time,
+# cost: 23.45,
+# rating: 3
+# }
+# @trip = RideShare::Trip.new(@trip_data)
 
 
 
-p @trip.duration
+# p @trip.duration
 
 
 # @trip.duration).must_equal 900
