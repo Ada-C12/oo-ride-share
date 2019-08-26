@@ -19,8 +19,6 @@ describe "Trip class" do
     end
 
     it "raises ArgumentError if end_time is before start_time" do
-      #raise ArgumentError if end_time < start_time
-      
       start_time = Time.parse('2015-05-20T12:14:00+00:00')
       end_time = start_time + 25 * 60 # 25 minutes
       

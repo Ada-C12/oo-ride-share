@@ -9,6 +9,8 @@ module RideShare
       passenger: nil, passenger_id: nil,
       start_time:, end_time:, cost: nil, rating:)
       super(id)
+
+      raise ArgumentError if end_time < start_time
       
       if passenger
         @passenger = passenger
