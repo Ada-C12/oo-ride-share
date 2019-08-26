@@ -69,6 +69,68 @@ describe "Passenger class" do
   end
   
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    it "returns the correct net expenditure" do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+      )
+      trip_1 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        cost: 5.50,
+        rating: 5
+      )
+      
+      trip_2 = RideShare::Trip.new(
+        id: 9,
+        passenger: @passenger,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        cost: 2.25,
+        rating: 5
+      )
+      
+      @passenger.add_trip(trip_1)
+      @passenger.add_trip(trip_2)
+      
+      expect(@passenger.net_expenditures).must_equal 7.75
+    end 
+  end
+  
+  describe "total_time_spent" do
+    it "returns the correct total time spent" do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+      )
+      trip_1 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.parse("2016-08-08 00:00:00"),
+        end_time: Time.parse("2016-08-08 00:01:26"),
+        cost: 5.50,
+        rating: 5
+      )
+      
+      trip_2 = RideShare::Trip.new(
+        id: 9,
+        passenger: @passenger,
+        start_time: Time.parse("2016-08-09 00:00:00"),
+        end_time: Time.parse("2016-08-09 00:00:34"),
+        cost: 2.25,
+        rating: 5
+      )
+      
+      @passenger.add_trip(trip_1)
+      @passenger.add_trip(trip_2)
+      
+      expect(@passenger.total_time_spent).must_equal 120
+    end
   end
 end
