@@ -45,6 +45,11 @@ module RideShare
       @passenger = passenger
       passenger.add_trip(self)
     end
+
+    # duration method
+    def duration
+      @end_time - @start_time
+    end
     
     private
     
