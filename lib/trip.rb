@@ -22,8 +22,16 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
       
-      @start_time = start_time
-      @end_time = end_time
+      ###JULIA### WHOLE BLOCK CHANGED, Wave 1.1.3
+      # Evaluate Time obj args from .from_csv     
+      if end_time > start_time
+        @start_time = start_time
+        @end_time = end_time
+      else
+        raise ArgumentError, "Start_time has to be before end-time"
+      end
+      
+      
       @cost = cost
       @rating = rating
       
@@ -51,11 +59,17 @@ module RideShare
     def self.from_csv(record)
       # looks at the arg hash record = {id:xxx, passenger:xxx, passenger_id:xxx, start_time:xxx, end_time:xxx, cost:xxx, rating:xxx}
       # returns Trip.new() object with args above
+      
+      ###JULIA### ADDED BLOCK for Wave 1.1.2
+      # change the time Strings into Time objects             
+      start_time_parsed = Time::parse(record[:start_time])    
+      end_time_parsed = Time::parse(record[:end_time])        
+      
       return self.new(
       id: record[:id],
       passenger_id: record[:passenger_id],
-      start_time: record[:start_time],
-      end_time: record[:end_time],
+      start_time: start_time_parsed,      ###JULIA### CHANGED HERE, Wave 1.1.2
+      end_time: end_time_parsed,          ###JULIA### CHANGED HERE, Wave 1.1.2
       cost: record[:cost],
       rating: record[:rating]
       )
