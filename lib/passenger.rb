@@ -21,7 +21,7 @@ module RideShare
     
     def self.from_csv(record)
       # looks at the arg hash record = {id:xxx, name:xxx, phone_num:xxx}
-      # returns new Passenger object with args above and default nil on trips
+      # returns Passenger.new() object with args above and default nil on trips
       return new(
       id: record[:id],
       name: record[:name],
