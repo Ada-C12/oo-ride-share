@@ -13,7 +13,8 @@ describe "Trip class" do
           start_time: start_time,
           end_time: end_time,
           cost: 23.45,
-          rating: 3
+          rating: 3,
+          driver_id: 123
         }
         @trip = RideShare::Trip.new(@trip_data)
       end
@@ -52,7 +53,8 @@ describe "Trip class" do
             start_time: Time.parse('2015-05-20T12:14:01+00:00'), 
             end_time: Time.parse('2015-05-20T12:14:00+00:00'), 
             cost: 3.00, 
-            rating: 3)
+            rating: 3,
+            driver_id: 123)
           }.must_raise ArgumentError
         end
         
@@ -66,7 +68,8 @@ describe "Trip class" do
             start_time: Time.parse('2015-05-20T12:14:00+00:00'), 
             end_time: Time.parse('2015-05-20T12:14:01+00:00'), 
             cost: 3.00, 
-            rating: 3)
+            rating: 3,
+            driver_id: 123)
             
             expect(dur_test.duration).must_equal 1
             
@@ -76,7 +79,8 @@ describe "Trip class" do
               start_time: Time.parse('2015-05-20T12:14:00+00:00'), 
               end_time: Time.parse('2015-05-20T12:15:01+00:00'), 
               cost: 3.00, 
-              rating: 3)
+              rating: 3,
+              driver_id: 123)
               
               expect(dur_test.duration).must_equal 61
             end
