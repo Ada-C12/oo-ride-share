@@ -107,6 +107,62 @@ describe "Passenger class" do
     end
   end
   
+  
+  describe "Total Time Spent (getting driven around)" do
+    before do
+      @passenger = RideShare::Passenger.new(id: 1, name: "Lionel", phone_number: "353-533-7678")
+      
+      # trip 1
+      start_time = Time.parse('2015-05-20T12:14:00+00:00')
+      end_time = start_time + 25 * 60 # 25 minutes
+      @trip_1_data = {
+        id: 8,
+        passenger: @passenger,
+        start_time: start_time,
+        end_time: end_time,
+        cost: 23.00,
+        rating: 3
+      }
+      @trip_1 = RideShare::Trip.new(@trip_1_data)
+      @passenger.add_trip(@trip_1)
+      
+      # trip 2
+      start_time_2 = Time.parse('2015-05-20T12:14:00+00:00')
+      end_time_2 = start_time_2 + 30 * 60 #* 30 minutes
+      @trip_2_data = {
+        id: 8,
+        passenger: @passenger,
+        start_time: start_time_2,
+        end_time: end_time_2,
+        cost: 50.00,
+        rating: 3
+      }
+      @trip_2 = RideShare::Trip.new(@trip_2_data)
+      @passenger.add_trip(@trip_2)
+    end
+    
+    
+    it "Total Time Spent is a Integer" do
+      expect(@passenger.total_time_spent).must_be_instance_of Integer 
+    end
+    
+    it "Is greater than 0" do
+      expect(@passenger.total_time_spent).must_be :>=, 0
+    end
+    
+    it "Is correctly caclulating the total time spent" do
+      expect(@passenger.total_time_spent).must_equal 3_300
+    end 
+    
+    it "Returns zero for no trips taken." do
+      #  Arrange
+      gerald = RideShare::Passenger.new(id: 1, name: "Gerald", phone_number: "353-533-7678")
+      expect(gerald.total_time_spent).must_equal 0
+    end
+    
+    
+  end
+  
   describe "trips property" do
     before do
       # TODO: you'll need to add a driver at some point here.
