@@ -22,9 +22,9 @@ describe "Trip class" do
     
     
     # add value for end_time <= start_time and raise error 
-    it "raises and error for end_time being the same as start_time" do 
+    it "raises and error for end_time being earlier than start_time" do 
       start_time = Time.parse('2015-05-20T12:14:00+00:00')
-      end_time = Time.parse('2015-05-20T12:14:00+00:00')
+      end_time = Time.parse('2015-05-20T11:14:00+00:00')
       @time_checking_trip_data = {
       id: 8,
       passenger: RideShare::Passenger.new(id: 1,

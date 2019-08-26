@@ -24,7 +24,7 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
       
-      if end_time <= start_time 
+      if end_time < start_time 
         raise ArgumentError.new("#{end_time} is the same time as #{start_time}")
       end
       @start_time = start_time
