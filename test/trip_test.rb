@@ -1,5 +1,9 @@
 require_relative 'test_helper'
 
+
+
+###################
+
 describe "Trip class" do
   describe "initialize" do
     before do
@@ -42,7 +46,16 @@ describe "Trip class" do
     ###JULIA### ADDED BLOCK for Wave 1.1.3
     it "checks if start_time is before end_time" do   
       assert(@trip_data[:end_time] > @trip_data[:start_time])
+    end
+    
+    ###JULIA### ADDED BLOCK for Wave 1.1.4
+    it "checks if Trip.duration works" do
+      # given example data is 25 minutes in duration
+      assert(@trip.duration==25*60)
     end 
   end
 end
+
+
+
 

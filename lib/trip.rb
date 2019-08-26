@@ -31,7 +31,6 @@ module RideShare
         raise ArgumentError, "Start_time has to be before end-time"
       end
       
-      
       @cost = cost
       @rating = rating
       
@@ -54,6 +53,12 @@ module RideShare
       passenger.add_trip(self)
     end
     
+    ###JULIA### ADDED BLOCK for Wave 1.1.4
+    def duration
+      duration_secs = end_time - start_time
+      return duration_secs
+    end
+    
     private
     
     def self.from_csv(record)
@@ -66,12 +71,12 @@ module RideShare
       end_time_parsed = Time::parse(record[:end_time])        
       
       return self.new(
-      id: record[:id],
-      passenger_id: record[:passenger_id],
-      start_time: start_time_parsed,      ###JULIA### CHANGED HERE, Wave 1.1.2
-      end_time: end_time_parsed,          ###JULIA### CHANGED HERE, Wave 1.1.2
-      cost: record[:cost],
-      rating: record[:rating]
+        id: record[:id],
+        passenger_id: record[:passenger_id],
+        start_time: start_time_parsed,      ###JULIA### CHANGED HERE, Wave 1.1.2
+        end_time: end_time_parsed,          ###JULIA### CHANGED HERE, Wave 1.1.2
+        cost: record[:cost],
+        rating: record[:rating]
       )
     end
   end
