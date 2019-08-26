@@ -56,7 +56,7 @@ module RideShare
     # end
     def duration
       difference = end_time - start_time
-      if difference == 0
+      if difference <= 0
         raise ArgumentError.new("Duration cannot be zero")
       end
       return difference
