@@ -49,7 +49,8 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: "2016-08-08",
         end_time: "2016-08-09",
-        rating: 5
+        rating: 5,
+        driver_id: 3
         )
 
       @passenger.add_trip(trip)
