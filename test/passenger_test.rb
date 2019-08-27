@@ -105,7 +105,39 @@ describe "Passenger class" do
     end
   end
   
-  
-  
-  
+  describe "Total time spent" do
+    it "returns the total amount of time passenger spent on trips" do
+      test_passenger = RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640")
+      trip_one = {
+        id: 8,
+        passenger: RideShare::Passenger.new(id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: Time.parse("2018-12-17 02:39:05 -0800"),
+        end_time: Time.parse("2018-12-17 5:09:21 -0800"),
+        cost: 20,
+        rating: 3
+      }
+      trip_two = {
+        id: 8,
+        passenger: RideShare::Passenger.new(id: 1,
+          name: "Ada",
+          phone_number: "412-432-7640"
+        ),
+        start_time: Time.parse("2018-12-17 02:39:05 -0800"),
+        end_time: Time.parse("2018-12-17 5:09:21 -0800"),
+        cost: 20,
+        rating: 3
+      }
+      trip1 = RideShare::Trip.new(trip_one)
+      trip2 = RideShare::Trip.new(trip_two)
+      
+      test_passenger.add_trip(trip1)
+      test_passenger.add_trip(trip2)
+      time_spent = test_passenger.total_time_spent
+      
+      expect(time_spent).must_equal 18032.0
+    end
+  end
 end
