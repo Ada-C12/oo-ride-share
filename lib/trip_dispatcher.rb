@@ -12,6 +12,7 @@ module RideShare
     def initialize(directory: './support')
       @passengers = Passenger.load_all(directory: directory)
       @trips = Trip.load_all(directory: directory)
+      # @driver = Driver.load_all(directory: directory)
       connect_trips
     end
     

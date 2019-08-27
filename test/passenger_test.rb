@@ -47,8 +47,8 @@ describe "Passenger class" do
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
-        start_time: "2016-08-08",
-        end_time: "2016-08-09",
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
         rating: 5
       )
       
@@ -70,7 +70,7 @@ describe "Passenger class" do
   
   describe "net_expenditures/total_time_spent" do
     before do
-      start_time = Time.parse('2015-05-20T12:14:00+00:00')
+      start_time = Time.parse("2015-05-20T12:14:00+00:00")
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",

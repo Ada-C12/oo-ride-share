@@ -1,5 +1,4 @@
 require 'csv'
-
 require_relative 'csv_record'
 
 module RideShare
