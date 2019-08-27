@@ -90,7 +90,7 @@ describe "Passenger class" do
     end
     
     it "Returns negative value in the off-chance that total expenditure is in fact a negative number (you somehow earn money on the total trips)" do
-      # arrange 
+      
       georgie = RideShare::Passenger.new(id: 1, name: "Georgie", phone_number: "353-533-7678")
       georgies_driver = RideShare::Driver.new(id: 1, name: "Georgie", vin: "12345678901234567", status: :AVAILABLE, trips: nil)
       
@@ -109,6 +109,40 @@ describe "Passenger class" do
       georgie.add_trip(trip_1)
       
       expect(georgie.net_expenditures).must_equal (-3.00)
+    end
+    
+    it "Ignores in-progress trips." do
+      passenger = RideShare::Passenger.new(id: 1, name: "Lionel", phone_number: "353-533-7678")
+      driver = RideShare::Driver.new(id: 1, name: "Georgie", vin: "12345678901234567", status: :AVAILABLE, trips: nil)
+      
+      # trip 1
+      start_time = Time.parse('2015-05-20T12:14:00+00:00')
+      end_time = start_time + 25 * 60 # 25 minutes
+      trip_1_data = {
+        id: 8,
+        passenger: passenger,
+        driver: driver,
+        start_time: start_time,
+        end_time: end_time,
+        cost: 23.00,
+        rating: 3
+      }
+      trip_1 = RideShare::Trip.new(trip_1_data)
+      passenger.add_trip(trip_1)
+      
+      # trip 2
+      start_time_2 = Time.parse('2015-05-20T12:14:00+00:00')
+      end_time_2 = start_time_2 + 30 * 60 # 25 minutes
+      trip_2_data = {
+        id: 8,
+        passenger: passenger,
+        driver: driver,
+        start_time: start_time_2
+      }
+      trip_2 = RideShare::Trip.new(trip_2_data)
+      passenger.add_trip(trip_2)
+      
+      expect(passenger.net_expenditures).must_equal 23.00
     end
   end
   
