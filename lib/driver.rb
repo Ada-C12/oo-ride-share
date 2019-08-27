@@ -43,14 +43,19 @@ module RideShare
     
     def total_revenue
       revenue = 0.0
+      
       trips.each do |one_trip|
-        cost_minus_fee = one_trip.cost - 1.65
-        if cost_minus_fee <= 0
-          revenue += cost_minus_fee
+        if one_trip.cost.nil?
+          revenue += 0
         else
-          trip_revenue = cost_minus_fee * 0.8
-          revenue += trip_revenue
-        end  
+          cost_minus_fee = one_trip.cost - 1.65
+          if cost_minus_fee <= 0
+            revenue += cost_minus_fee
+          else
+            trip_revenue = cost_minus_fee * 0.8
+            revenue += trip_revenue
+          end  
+        end
       end
       return revenue.floor(2)
     end

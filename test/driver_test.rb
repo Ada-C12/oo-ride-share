@@ -231,5 +231,31 @@ describe "Driver class" do
       expect(driver.total_revenue).must_equal 1.23
     end 
     
+    it "ignores in-progress trips." do
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: driver,
+        passenger_id: 3,
+        cost: 4.00,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-08"),
+        rating: 5
+      )
+      driver.add_trip(trip)
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: driver,
+        passenger_id: 4,
+        start_time: Time.parse("2016-08-08")
+      )
+      driver.add_trip(trip2)
+      
+      expect(driver.total_revenue).must_equal 1.88
+    end 
   end
 end
