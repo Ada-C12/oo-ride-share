@@ -47,8 +47,8 @@ describe "Passenger class" do
       trip = RideShare::Trip.new(
       id: 8,
       passenger: @passenger,
-      start_time: "2016-08-08",
-      end_time: "2016-08-09",
+      start_time: Time.parse("2016-08-08"),
+      end_time: Time.parse("2016-08-09"),
       rating: 5
       )
       
@@ -77,5 +77,32 @@ describe "Passenger class" do
       expect(passenger.net_expenditures).must_equal 15
       
     end
+    it "raises ArgumentError if passenger hasn't spent any money" do
+      
+      td = RideShare::TripDispatcher.new
+      passenger = td.passengers[1]
+      
+      expect {passenger.net_expenditures}.must_raise ArgumentError
+    end
+  
   end
+  
+  describe "total_time_spent method " do
+    it "calculates the total amount of time spent on trips " do 
+      td = RideShare::TripDispatcher.new      
+      passenger = td.passengers[0]
+      
+      expect(passenger.total_time_spent).must_equal 5410
+    end 
+    
+    it "raises ArgumentError if passenger has not been on any trips" do
+      
+      td = RideShare::TripDispatcher.new
+      passenger = td.passengers[1]
+      
+      expect {passenger.total_time_spent}.must_raise ArgumentError
+    end
+    
+  end 
+  
 end

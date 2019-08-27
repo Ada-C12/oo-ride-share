@@ -18,11 +18,38 @@ module RideShare
     end
     
     def net_expenditures
-      total_trips = @trips.map do |trip|
-        trip.cost
-      end
-      total_trips.sum
+      if @trips.length > 0 
+        total_trips = @trips.map do |trip|
+          trip.cost
+        end
+        total_trips.sum
+      else 
+        raise ArgumentError 
+      end 
     end
+    
+    def total_time_spent 
+      if @trips.length > 0
+        total_time = @trips.map do |trip|
+          trip.calculate_duration
+        end 
+        total_time.sum 
+      else
+        raise ArgumentError
+      end
+    end 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     private
     
