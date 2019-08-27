@@ -81,8 +81,8 @@ describe "Passenger class" do
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
-        start_time: "2016-08-08",
-        end_time: "2016-08-09",
+        start_time: Time.parse('2015-05-20T6:45:00+00:00'),
+        end_time: Time.parse('2015-05-20T7:03:00+00:00'),
         cost: 9,
         rating: 5
         )
@@ -91,8 +91,8 @@ describe "Passenger class" do
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
-        start_time: "2016-08-08",
-        end_time: "2016-08-09",
+        start_time: Time.parse('2015-05-20T11:14:00+00:00'),
+        end_time: Time.parse('2015-05-20T11:20:00+00:00'),
         cost: 6,
         rating: 5
         )
@@ -101,6 +101,10 @@ describe "Passenger class" do
 
     it "returns net expenditures for all trips that passsenger takes" do
       expect(@passenger.net_expenditures).must_equal 15
+    end 
+
+    it "returns the total amount of time for all the trips that passenger takes" do
+      expect(@passenger.total_time_spent).must_equal 1440
     end 
   end
 end
