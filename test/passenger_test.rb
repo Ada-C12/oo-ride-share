@@ -37,6 +37,7 @@ describe "Passenger class" do
   describe "Net Expenditure" do
     before do
       @passenger = RideShare::Passenger.new(id: 1, name: "Lionel", phone_number: "353-533-7678")
+      @driver = RideShare::Driver.new(id: 1, name: "Georgie", vin: "12345678901234567", status: :AVAILABLE, trips: nil)
       
       # trip 1
       start_time = Time.parse('2015-05-20T12:14:00+00:00')
@@ -44,6 +45,7 @@ describe "Passenger class" do
       @trip_1_data = {
         id: 8,
         passenger: @passenger,
+        driver: @driver,
         start_time: start_time,
         end_time: end_time,
         cost: 23.00,
@@ -58,6 +60,7 @@ describe "Passenger class" do
       @trip_2_data = {
         id: 8,
         passenger: @passenger,
+        driver: @driver,
         start_time: start_time_2,
         end_time: end_time_2,
         cost: 50.00,
@@ -89,12 +92,14 @@ describe "Passenger class" do
     it "Returns negative value in the off-chance that total expenditure is in fact a negative number (you somehow earn money on the total trips)" do
       # arrange 
       georgie = RideShare::Passenger.new(id: 1, name: "Georgie", phone_number: "353-533-7678")
+      georgies_driver = RideShare::Driver.new(id: 1, name: "Georgie", vin: "12345678901234567", status: :AVAILABLE, trips: nil)
       
       start_time = Time.parse('2015-05-20T12:14:00+00:00')
       end_time = start_time + 25 * 60 # 25 minutes
       trip_1_data = {
         id: 8,
-        passenger: @passenger,
+        passenger: georgie,
+        driver: georgies_driver,
         start_time: start_time,
         end_time: end_time,
         cost: -3.00,
@@ -103,7 +108,7 @@ describe "Passenger class" do
       trip_1 = RideShare::Trip.new(trip_1_data)
       georgie.add_trip(trip_1)
       
-      expect(georgie.net_expenditures).must_equal -3.00
+      expect(georgie.net_expenditures).must_equal (-3.00)
     end
   end
   
@@ -111,6 +116,7 @@ describe "Passenger class" do
   describe "Total Time Spent (getting driven around)" do
     before do
       @passenger = RideShare::Passenger.new(id: 1, name: "Lionel", phone_number: "353-533-7678")
+      @driver = RideShare::Driver.new(id: 1, name: "Georgie", vin: "12345678901234567", status: :AVAILABLE, trips: nil)
       
       # trip 1
       start_time = Time.parse('2015-05-20T12:14:00+00:00')
@@ -118,6 +124,7 @@ describe "Passenger class" do
       @trip_1_data = {
         id: 8,
         passenger: @passenger,
+        driver: @driver,
         start_time: start_time,
         end_time: end_time,
         cost: 23.00,
@@ -132,6 +139,7 @@ describe "Passenger class" do
       @trip_2_data = {
         id: 8,
         passenger: @passenger,
+        driver: @driver,
         start_time: start_time_2,
         end_time: end_time_2,
         cost: 50.00,
@@ -172,9 +180,11 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
       )
+      @driver = RideShare::Driver.new(id: 1, name: "Georgie", vin: "12345678901234567", status: :AVAILABLE, trips: nil)
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
+        driver: @driver,
         start_time: Time.parse("2016-08-08"),
         end_time: Time.parse("2016-08-09"),
         rating: 5
@@ -193,11 +203,6 @@ describe "Passenger class" do
       @passenger.trips.each do |trip|
         expect(trip.passenger.id).must_equal 9
       end
-    end
-    
-    
-    describe "net_expenditures" do
-      # You add tests for the net_expenditures method
     end
     
   end

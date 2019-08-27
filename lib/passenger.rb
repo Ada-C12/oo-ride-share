@@ -22,9 +22,6 @@ module RideShare
         total_expenditure += trip.cost
       end
       return total_expenditure
-      # loop through all the individual trips a given passenger has taken
-      # increment or add all costs to a local variable called total_expenditure 
-      # return total_expenditure 
     end 
     
     def total_time_spent 
