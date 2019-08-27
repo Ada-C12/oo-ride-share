@@ -7,7 +7,8 @@ require_relative 'csv_record'
 module RideShare
   class Trip < CsvRecord
     attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
-    
+    # use to check the workflow of how CSVrecord interacts with a child-class
+    # binding.pry 
     def initialize(id:,
       passenger: nil, passenger_id: nil,
       start_time:, end_time:, cost: nil, rating:)
@@ -39,6 +40,11 @@ module RideShare
       end
     end
     
+    def calculate_duration
+      duration = (@end_time - @start_time)
+      return duration
+    end
+    
     def inspect
       # Prevent infinite loop when puts-ing a Trip
       # trip contains a passenger contains a trip contains a passenger...
@@ -64,5 +70,6 @@ module RideShare
       rating: record[:rating]
       )
     end
+    
   end
 end

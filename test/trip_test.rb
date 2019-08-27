@@ -65,17 +65,16 @@ describe "The trip duration can be calculated" do
     @trip_data = {
     id: 8, 
     passenger: RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640"), 
-    start_time: start_time, 
-    end_time: end_time, 
+    start_time: Time.parse("2015-05-20T12:14:00+00:00"), 
+    end_time: Time.parse("2015-05-20T12:44:00+00:00"), 
     cost: 23.45, 
     rating: 3
   }
   trip = RideShare::Trip.new(@trip_data)
-  # are you able to set these new values without attr_writer for start_time, end_time?
-  trip.start_time = Time.parse('2015-05-20T12:14:00+00:00')
-  trip.end_time = Time.parse('2015-05-20T12:44:00+00:00')
+  duration = (trip.end_time - trip.start_time)
+  p duration
   
-  expect(trip.calculate_duration).must_equal 1800
+  expect(trip.calculate_duration).must_equal 1800.0
   
 end 
 end 
