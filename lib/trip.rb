@@ -1,5 +1,5 @@
 require 'csv'
-
+require 'time'
 require_relative 'csv_record'
 
 module RideShare
@@ -21,6 +21,9 @@ module RideShare
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
+
+      #we want to make sure that start time is BEFORE end time
+      if 
 
       @start_time = start_time
       @end_time = end_time
@@ -48,14 +51,21 @@ module RideShare
     private
     
     def self.from_csv(record)
+      #Turn start_time & end_time into time instances
+      #Time is a string we need to turn into an object
+
+      start_time = Time.parse(record[:start_time])
+      end_time = Time.parse(record[:end_time])
+      
       return self.new(
         id: record[:id],
         passenger_id: record[:passenger_id],
-        start_time: record[:start_time],
-        end_time: record[:end_time],
+        start_time: start_time,
+        end_time: end_time,
         cost: record[:cost],
         rating: record[:rating]
-        )
+        )       
+
     end
   end
 end
