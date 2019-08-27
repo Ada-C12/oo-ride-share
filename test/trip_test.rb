@@ -8,12 +8,14 @@ describe "Trip class" do
       @trip_data = {
         id: 8,
         passenger: RideShare::Passenger.new(id: 1,
+          # driver_id: 1,
           name: "Ada",
           phone_number: "412-432-7640"),
           start_time: start_time,
           end_time: end_time,
           cost: 23.45,
-          rating: 3
+          rating: 3,
+          # driver: Driver.new(nil, nil, 00000000000000000, :UNAVAILABLE)
         }
         @trip = RideShare::Trip.new(@trip_data)
       end
