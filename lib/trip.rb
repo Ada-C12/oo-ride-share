@@ -65,21 +65,16 @@ module RideShare
     
     
     ###JULIA### Changed this whole block for Wave 2: Loading Drivers
-    def connect(passenger_or_driver)
-      # given known Passenger or Driver instance, add this Trip instance to that person's @trips array
-      if passenger_or_driver.class == RideShare::Passenger
-        # update @passenger if necessary
-        @passenger = passenger
-        # update passenger instance's @trips
-        passenger_or_driver.add_trip(self)
-      elsif passenger_or_driver.class == RideShare::Driver
-        # update @driver if necessary
-        @driver = driver
-        # update driver instance's @trips
-        passenger_or_driver.add_trip(self)
-      else
-        raise ArgumentError, "Only Passenger or Driver instances can use this method!"
-      end
+    def connect(driver, passenger)
+      # given known Passenger and Driver instances, add this Trip instance to each person's @trips array
+      
+      # update this Trip instance's @driver & @passenger
+      @driver = driver
+      @passenger = passenger
+      
+      # update each person instance's @trips
+      passenger.add_trip(self)
+      driver.add_trip(self)
     end
     
     ###JULIA### ADDED BLOCK for Wave 1.1.4
