@@ -156,7 +156,8 @@ describe "Driver class" do
     end
 
     it "accurately calculates total_revenue" do
-      trips = RideShare::Trip.load_all('./test/test_data/trips.csv')
+      trips = RideShare::Trip.load_all(directory: './test/test_data')
+      
       driver2 = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
