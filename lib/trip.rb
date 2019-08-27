@@ -9,7 +9,7 @@ module RideShare
     
     def initialize(id:,
       passenger: nil, passenger_id: nil, driver: nil, driver_id: nil,
-      start_time:, end_time:, cost: nil, rating:)
+      start_time: nil, end_time: nil, cost: nil, rating: nil)
       super(id)
       
       if passenger
@@ -39,10 +39,13 @@ module RideShare
       @cost = cost
       @rating = rating
       
-      if @rating > 5 || @rating < 1
+      if @rating.nil?
+        @rating = rating 
+      elsif  @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
     end
+    
     
     def inspect
       # Prevent infinite loop when puts-ing a Trip
