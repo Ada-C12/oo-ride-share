@@ -46,38 +46,39 @@ module RideShare
             trip.end_time
           end
         end
+        ende
+        
+        # requested_driver = @drivers.find {|driver| driver.status == :AVAILABLE}
+        
+        raise ArgumentError, "No drivers currently available" if requested_driver == nil
+        
+        start_time = Time::now
+        # NOTE: We assume new trip ID is next consecutive trip ID
+        id = @trips.length + 1
+        
+        current_trip = Trip.new(id: id, passenger: find_passenger(passenger_id), passenger_id: passenger_id, start_time: start_time, end_time: nil, rating: nil, driver: requested_driver)
+        
+        requested_driver.add_trip(current_trip)
+        requested_driver.change_status_to_unavailable
+        
+        current_trip.passenger.add_trip(current_trip)
+        
+        @trips << current_trip
+        
+        return current_trip
       end
       
-      # requested_driver = @drivers.find {|driver| driver.status == :AVAILABLE}
+      private
       
-      raise ArgumentError, "No drivers currently available" if requested_driver == nil
-      
-      start_time = Time::now
-      # NOTE: We assume new trip ID is next consecutive trip ID
-      id = @trips.length + 1
-      
-      current_trip = Trip.new(id: id, passenger: find_passenger(passenger_id), passenger_id: passenger_id, start_time: start_time, end_time: nil, rating: nil, driver: requested_driver)
-      
-      requested_driver.add_trip(current_trip)
-      requested_driver.change_status_to_unavailable
-      
-      current_trip.passenger.add_trip(current_trip)
-      
-      @trips << current_trip
-      
-      return current_trip
-    end
-    
-    private
-    
-    def connect_trips
-      @trips.each do |trip|
-        passenger = find_passenger(trip.passenger_id)
-        driver = find_driver(trip.driver_id)
-        trip.connect(passenger, driver)
+      def connect_trips
+        @trips.each do |trip|
+          passenger = find_passenger(trip.passenger_id)
+          driver = find_driver(trip.driver_id)
+          trip.connect(passenger, driver)
+        end
+        
+        return trips
       end
-      
-      return trips
     end
   end
-end
+  
