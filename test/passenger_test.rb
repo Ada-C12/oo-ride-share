@@ -57,21 +57,41 @@ describe "Passenger class" do
     # end
   end
   
-  describe "net_expenditures" do
-    it "Will return total amount a passenger spent on their trips taken" do
+  # describe "net_expenditures" do
+  #   it "Will return total amount a passenger spent on their trips taken" do
+  #     # Arrange
+  #     @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
+  #     trip1 = RideShare::Trip.new(id: 8, passenger: @passenger, start_time: Time.parse("2016-08-08"), end_time: Time.parse("2016-08-09"), cost: 2, rating: 5)
+  #     trip2 = RideShare::Trip.new(id: 9, passenger: @passenger, start_time: Time.parse("2016-08-10"), end_time: Time.parse("2016-08-11"), cost: 10, rating: 4)
+  
+  #     # Act
+  #     total_cost = @passenger.net_expenditures
+  
+  #     # Assert
+  #     expect(total_cost).must_equal 12
+  #   end 
+  # end
+  
+  describe "total_time_spent" do
+    it "will return total amount of time a passenger spent on their trips taken" do
       # Arrange
       @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
-      trip1 = RideShare::Trip.new(id: 8, passenger: @passenger, start_time: Time.parse("2016-08-08"), end_time: Time.parse("2016-08-09"), cost: 2, rating: 5)
-      trip2 = RideShare::Trip.new(id: 9, passenger: @passenger, start_time: Time.parse("2016-08-10"), end_time: Time.parse("2016-08-11"), cost: 10, rating: 4)
+      trip1 = RideShare::Trip.new(id: 8, passenger: @passenger, start_time: Time.parse("2015-05-20T12:14:00+00:00"), end_time: Time.parse("2015-05-20T12:44:00+00:00"), cost: 2, rating: 5)
+      trip2 = RideShare::Trip.new(id: 9, passenger: @passenger, start_time: Time.parse("2015-05-21T12:14:00+00:00"), end_time: Time.parse("2015-05-21T12:44:00+00:00"), cost: 10, rating: 4)
       @passenger.add_trip(trip1)
       @passenger.add_trip(trip2)
       
-      # Act
-      total_cost = @passenger.net_expenditures
+      time1 = @passenger.trips[0].calculate_duration
+      time2 = @passenger.trips[1].calculate_duration
       
+      # Act
+      total_time = (time1 + time2) / 60
       # Assert
-      expect(total_cost).must_equal 12
-    end
-    
+      p total_time
+      # expect total to be 60.0 min
+    end 
   end
+  
+  
+  
 end
