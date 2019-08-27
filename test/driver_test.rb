@@ -130,7 +130,42 @@ describe "Driver class" do
     end
   end
 
-  xdescribe "total_revenue" do
-    # You add tests for the total_revenue method
+  describe "total_revenue" do
+    it "raises an ArgumentError if revenue for a trip is less than 0" do
+      trip_data = {
+        id: 8,
+        passenger: RideShare::Passenger.new(id: 1,
+                                            name: "Ada",
+                                            phone_number: "412-432-7640"),
+        end_time: "2016-08-08",
+        start_time: "2016-08-08",
+        cost: 23.45,
+        rating: 3,
+        driver_id: 6,
+        cost: 1.64
+      }
+
+      driver2 = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        trips: [RideShare::Trip.new(trip_data)]
+      )
+
+      expect{driver2.total_revenue}.must_raise ArgumentError
+    end
+
+    it "accurately calculates total_revenue" do
+      trips = RideShare::Trip.load_all('./test/test_data/trips.csv')
+      driver2 = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        trips: trips
+      )
+
+      expect(driver2.total_revenue).must_be_close_to 51.00, 0.01
+    end
+
   end
 end
