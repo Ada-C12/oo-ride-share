@@ -107,8 +107,6 @@ describe "Passenger class" do
     it "returns the correct amount" do
       expect(@passenger.net_expenditures).must_equal 11.00
     end
-    # acces Trip class to call .cost 
-    # += each trip to get the total cost
   end
   
   #psuedo code
@@ -116,6 +114,38 @@ describe "Passenger class" do
     # call duration_calculation on each trip
     # convert to minutes
     # += to get the total time
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+      )
+      trip = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.new(2016, 8, 8, 14, 30, 0),
+        end_time: Time.new(2016, 8, 8, 14, 45, 0),
+        rating: 5,
+        cost: 6
+      )
+      trip2 = RideShare::Trip.new(
+        id: 10,
+        passenger: @passenger,
+        start_time: Time.new(2016, 10, 10, 14, 30, 0),
+        end_time: Time.new(2016, 10, 10, 14, 45, 0),
+        rating: 4,
+        cost: 5
+        
+      )
+      @passenger.add_trip(trip)
+      @passenger.add_trip(trip2) 
+    end
+    
+    it "returns the correct amount" do
+      expect(@passenger.total_time_spent).must_equal 1800
+    end
   end
   
   
