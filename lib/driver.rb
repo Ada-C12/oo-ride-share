@@ -21,7 +21,15 @@ module RideShare
       if !STATUSES.include? @status
         raise ArgumentError.new("Invalid status")
       end
-      
     end  
+    
+    def self.from_csv(record)
+      return new(
+      id: record[:id],
+      name: record[:name],
+      vin: record[:vin],
+      status: record[:status].to_sym
+      )
+    end    
   end
 end
