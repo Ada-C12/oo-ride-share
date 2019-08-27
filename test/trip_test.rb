@@ -43,6 +43,16 @@ describe "Trip class" do
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
 
+    it "calculates the duration of trip in seconds" do
+      start_time = Time.parse('2015-05-20T12:14:00+00:00')
+      end_time = Time.parse('2015-05-20T13:14:00+00:00')
+
+      duration = end_time - start_time
+
+      expect(duration).must_equal 3600
+
+    end
+
     it "raises an error for an invalid rating" do
       [-3, 0, 6].each do |rating|
         @trip_data[:rating] = rating
