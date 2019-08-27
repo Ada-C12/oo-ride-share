@@ -49,10 +49,17 @@ describe "Trip class" do
       timeend = Time.parse("2018-12-17 16:09:21 -0800")
       passenger = RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640")
       
-      test_trip = RideShare::Trip.new(id: 8,
-        passenger: passenger,start_time:timestart, end_time:timeend, cost: 23 , rating: 3
-      )
-      expect{test_trip}.must_raise ArgumentError
+      
+      expect do 
+        RideShare::Trip.new(
+          id: 8,
+          passenger: passenger,
+          start_time:timestart, 
+          end_time:timeend, 
+          cost: 23 , 
+          rating: 3
+        )
+      end.must_raise ArgumentError
     end
   end
 end 

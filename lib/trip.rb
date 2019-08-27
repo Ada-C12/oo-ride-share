@@ -18,13 +18,14 @@ module RideShare
       elsif passenger_id
         @passenger_id = passenger_id
         
-      elsif :end_time < :start_time
-        raise ArgumentError, 'End time is before the start time'
-        
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
-      
+  
+      if end_time < start_time
+        raise ArgumentError, "End time #{end_time}  is before the start time #{start_time}"
+      end 
+
       @start_time = start_time
       @end_time = end_time
       @cost = cost
