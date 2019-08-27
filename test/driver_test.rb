@@ -78,7 +78,7 @@ describe "Driver class" do
     end
   end
   
-  xdescribe "average_rating method" do
+  describe "average_rating method" do
     before do
       @driver = RideShare::Driver.new(
         id: 54,
@@ -131,6 +131,82 @@ describe "Driver class" do
   end
   
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-08"),
+        rating: 5,
+        cost: 10
+      )
+      @driver.add_trip(trip)
+    end
+    
+    it "returns a float" do
+      expect(@driver.total_revenue).must_be_kind_of Float
+    end
+    
+    it "returns zero if no driven trips" do
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      expect(driver.total_revenue).must_equal 0
+    end
+    
+    it "correctly calculates the total revenue" do
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        rating: 1, 
+        cost: 3
+      )
+      @driver.add_trip(trip2)
+      
+      expect(@driver.total_revenue).must_be_close_to ((10.0 + 3.0) - (1.65 * 2)) * 0.80
+    end
+    
+    it "correctly calculates the total revenue if trip cost is less than 1.65" do
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        rating: 1, 
+        cost: 1
+      )
+      @driver.add_trip(trip2)
+      
+      expect(@driver.total_revenue).must_be_close_to ((10.0 + 1) - (1.65)) * 0.80
+    end
+    
+    it "correctly calculates the total revenue if trip cost is equal to 1.65" do
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        rating: 1, 
+        cost: 1.65
+      )
+      @driver.add_trip(trip2)
+      
+      expect(@driver.total_revenue).must_be_close_to ((10.0 + 1.65) - (1.65 * 2)) * 0.80
+    end
+    
+    
   end
 end

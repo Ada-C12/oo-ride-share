@@ -19,6 +19,42 @@ module RideShare
       @trips << trip
     end
     
+    def change_status_to_unavailable
+      @status = :UNAVAILABLE
+    end
+    
+    def average_rating
+      return 0 if @trips == []
+      
+      total_rating = 0.0
+      
+      completed_trips = @trips.select {|trip| trip.end_time != nil}
+      
+      completed_trips.each do |trip|
+        total_rating += trip.rating 
+      end
+      
+      return (total_rating/completed_trips.length)
+    end
+    
+    def total_revenue
+      return 0 if @trips == []
+      
+      total_revenue = 0.0
+      
+      completed_trips = @trips.select {|trip| trip.end_time != nil}
+      
+      # NOTE: If trips are less than $1.65, no fee is applied for trip.
+      completed_trips.each do |trip|
+        total_revenue += trip.cost
+        total_revenue -= 1.65 if trip.cost >= 1.65
+      end
+      
+      total_revenue *= 0.80
+      
+      return total_revenue
+    end
+    
     private
     
     def self.from_csv(record)

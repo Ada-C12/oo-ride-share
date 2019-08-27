@@ -104,11 +104,11 @@ describe "TripDispatcher class" do
         first_driver = @dispatcher.drivers.first
         last_driver = @dispatcher.drivers.last
         
-        expect(first_driver.name).must_equal "Driver2"
-        expect(first_driver.id).must_equal 2
+        expect(first_driver.name).must_equal "Driver 1 (unavailable)"
+        expect(first_driver.id).must_equal 1
         expect(first_driver.status).must_equal :UNAVAILABLE
-        expect(last_driver.name).must_equal "Driver8"
-        expect(last_driver.id).must_equal 8
+        expect(last_driver.name).must_equal "Driver 3 (no trips)"
+        expect(last_driver.id).must_equal 3
         expect(last_driver.status).must_equal :AVAILABLE
       end
       
@@ -120,6 +120,41 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+  end
+  
+  describe "request trip method" do
+    before do
+      @dispatcher = build_test_dispatcher
+    end
+    
+    it "returns an instance of trip" do
+      expect(@dispatcher.request_trip(7)).must_be_kind_of RideShare::Trip
+    end
+    
+    it "finds first available driver" do
+      driver_id = @dispatcher.drivers.find { |driver| driver.status == :AVAILABLE}.id
+      
+      expect(@dispatcher.find_driver(driver_id).status).must_equal :AVAILABLE
+      
+      expect(@dispatcher.request_trip(6).driver_id).must_equal driver_id
+      expect(@dispatcher.find_driver(driver_id).status).must_equal :UNAVAILABLE
+    end
+    
+    it "updates driver trip list" do
+      @dispatcher.request_trip(3)
+      expect(@dispatcher.find_driver(2).trips.length).must_equal 4
+    end
+    
+    it "updates passenger trip list" do
+      @dispatcher.request_trip(1)
+      expect(@dispatcher.find_passenger(1).trips.length).must_equal 2
+    end
+    
+    it "raises an error when no drivers are available" do
+      @dispatcher.request_trip(1)
+      @dispatcher.request_trip(2)
+      expect{ @dispatcher.request_trip(3) }.must_raise ArgumentError
     end
   end
 end
