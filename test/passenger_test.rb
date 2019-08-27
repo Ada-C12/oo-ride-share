@@ -44,15 +44,23 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
       )
+      @driver = RideShare::Driver.new(
+        id: 1,
+        name: "Paul Klee",
+        vin: "WBS76FYD47DJF7206",
+        status: :AVAILABLE
+      )
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
         start_time: Time.parse("2016-08-08"),
         end_time: Time.parse("2016-08-09"),
-        rating: 5
+        rating: 5,
+        driver: @driver
       )
       
       @passenger.add_trip(trip)
+      # @driver.add_trip(trip)
     end
     
     it "each item in array is a Trip instance" do
@@ -77,14 +85,20 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
       )
-      
+      @driver = RideShare::Driver.new(
+        id: 1,
+        name: "Paul Klee",
+        vin: "WBS76FYD47DJF7206",
+        status: :AVAILABLE
+      )
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
         start_time: start_time,
         end_time: start_time + 25 * 60, # 25 minutes
         cost: 3,
-        rating: 5
+        rating: 5,
+        driver: @driver
       )
       
       trip2 = RideShare::Trip.new(
@@ -93,7 +107,8 @@ describe "Passenger class" do
         start_time: start_time,
         end_time: start_time + 35 * 60, # 35 minutes
         cost: 5,
-        rating: 5
+        rating: 5,
+        driver: @driver
       )
       
       @passenger.add_trip(trip)
