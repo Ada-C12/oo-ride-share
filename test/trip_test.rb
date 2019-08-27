@@ -18,6 +18,18 @@ describe "Trip class" do
       @trip = RideShare::Trip.new(@trip_data)
     end
 
+    it "end time is before start time" do
+      start_time = Time.parse('2015-05-20T12:14:00+00:00')
+      end_time = Time.parse('2015-05-20T11:14:00+00:00')
+
+      if @trip_data[:end_time] < @trip_data[:start_time]
+        expect do
+          RideShare::Trip.new(@trip_data)
+        end.must_raise ArgumentError
+      end
+
+    end
+
     it "is an instance of Trip" do
       expect(@trip).must_be_kind_of RideShare::Trip
     end
