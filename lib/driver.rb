@@ -23,6 +23,10 @@ module RideShare
       
       @trips = trips || []
     end
+
+    def add_trip(trip)
+      @trips << trip
+    end
     
     private
     
@@ -31,7 +35,7 @@ module RideShare
         id: record[:id],
         name: record[:name],
         vin: record[:vin],
-        status: record[:status]
+        status: record[:status].to_sym
       )
     end
   end

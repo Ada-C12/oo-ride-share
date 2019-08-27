@@ -58,6 +58,11 @@ module RideShare
       passenger.add_trip(self)
     end
     
+    def connect_drivers(driver)
+      @driver = driver
+      driver.add_trip(self)
+    end
+    
     def duration
       return end_time - start_time
     end
