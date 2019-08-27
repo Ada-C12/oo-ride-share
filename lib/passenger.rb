@@ -17,14 +17,16 @@ module RideShare
     end
     
     def net_expenditures
-      #Return the total amount of money the passenger has spent on their trips.
+      raise ArgumentError.new "No trips for this passenger." if @trips == [] || @trips == nil 
       trip_cost = @trips.map do |trip|
         trip.cost
       end
       return trip_cost.sum
+      
     end
     
     def total_time_spent
+      raise ArgumentError.new "No trips for this passenger." if @trips == [] || @trips == nil 
       time_spent = 0
       trip_cost = @trips.map do |trip|
         time_spent += trip.duration

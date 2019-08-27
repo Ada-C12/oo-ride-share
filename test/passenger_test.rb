@@ -103,6 +103,10 @@ describe "Passenger class" do
       expect(net_expenditures).must_equal 40
       
     end
+    it "Raises an error if passenger has no trips" do
+      test_passenger = RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640")
+      expect{test_passenger.net_expenditures}.must_raise ArgumentError
+    end
   end
   
   describe "Total time spent" do
@@ -138,6 +142,10 @@ describe "Passenger class" do
       time_spent = test_passenger.total_time_spent
       
       expect(time_spent).must_equal 18032.0
+    end
+    it "Raises an error if passenger has no trips" do
+      test_passenger = RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640")
+      expect{test_passenger.total_time_spent}.must_raise ArgumentError
     end
   end
 end
