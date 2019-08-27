@@ -66,12 +66,8 @@ describe "Passenger class" do
       @passenger.add_trip(trip1)
       @passenger.add_trip(trip2)
       
-      trip_costs = []
-      trip_costs << @passenger.trips[0].cost
-      trip_costs << @passenger.trips[1].cost
-      
       # Act
-      total_cost = trip_costs.sum
+      total_cost = @passenger.net_expenditures
       
       # Assert
       expect(total_cost).must_equal 12
