@@ -35,7 +35,20 @@ module RideShare
         total_ratings += one_trip.rating
       end
       return trips.length == 0 ? 0 : (total_ratings.to_f/trips.length)
-      
+    end
+    
+    def total_revenue
+      revenue = 0.0
+      trips.each do |one_trip|
+        cost_minus_fee = one_trip.cost - 1.65
+        if cost_minus_fee <= 0
+          revenue += cost_minus_fee
+        else
+          trip_revenue = cost_minus_fee * 0.8
+          revenue += trip_revenue
+        end  
+      end
+      return revenue.floor(2)
     end
     
     private

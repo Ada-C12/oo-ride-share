@@ -142,6 +142,82 @@ describe "Driver class" do
   end
   
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        cost: 4.00,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-08"),
+        rating: 5
+      )
+      @driver.add_trip(trip)
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 4,
+        cost: 5.00,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-08"),
+        rating: 5
+      )
+      @driver.add_trip(trip2)
+    end
+    
+    it "returns a float" do
+      expect(@driver.total_revenue).must_be_kind_of Float
+    end
+    
+    # This method calculates that driver's total revenue across all their trips. Each driver gets 80% of the trip cost after a fee of $1.65 per trip is subtracted.
+    it "returns correct total revenue (80% of each trip minus $1.65)" do
+      revenue = @driver.total_revenue
+      expect(revenue).must_equal 4.56
+    end
+    
+    it "returns zero if no driven trips" do
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      expect(driver.total_revenue).must_equal 0
+    end
+    
+    it "handles trips that earn less than $1.65 appropriately." do
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: driver,
+        passenger_id: 3,
+        cost: 4.00,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-08"),
+        rating: 5
+      )
+      driver.add_trip(trip)
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: driver,
+        passenger_id: 4,
+        cost: 1.00,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-08"),
+        rating: 5
+      )
+      driver.add_trip(trip2)
+      
+      expect(driver.total_revenue).must_equal 1.23
+    end 
+    
   end
 end

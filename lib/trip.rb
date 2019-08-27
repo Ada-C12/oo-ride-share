@@ -62,14 +62,6 @@ module RideShare
       driver.add_trip(self)
     end
     
-    # duration method
-    # instance method, difference between start time and end time
-    # def duration
-    #   difference = end - start
-    #   IF difference is less than or equal to zero
-    #     raise argument error
-    #   END
-    # end
     def duration
       if end_time.nil? || start_time.nil?
         raise ArgumentError.new("Time (start or end) cannot be nil")
@@ -81,15 +73,9 @@ module RideShare
       return difference
     end
     
-    
-    
     private
     
     def self.from_csv(record)
-      # Modify Trip.from_csv to turn start_time and end_time into Time instances before passing them to Trip#initialize
-      
-      # START => 2018-12-27 02:39:05 -0800
-      # END => 2018-12-27 03:38:08 -0800
       start_time = Time.parse(record[:start_time])
       end_time = Time.parse(record[:end_time])
       
@@ -105,5 +91,3 @@ module RideShare
     end
   end
 end
-
-# duration = end_time - start_time
