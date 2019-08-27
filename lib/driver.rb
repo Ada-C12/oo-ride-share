@@ -37,7 +37,7 @@ module RideShare
       
       @trips.each do |trip|
         if trip.cost > 1.65
-          net_profit = trip.cost - 1.65
+          net_profit += trip.cost - 1.65
         end
       end
       
