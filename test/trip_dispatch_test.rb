@@ -23,7 +23,7 @@ describe "TripDispatcher class" do
 
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      #expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
 
     it "loads the development data by default" do
@@ -78,7 +78,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -103,11 +103,11 @@ describe "TripDispatcher class" do
         first_driver = @dispatcher.drivers.first
         last_driver = @dispatcher.drivers.last
 
-        expect(first_driver.name).must_equal "Driver2"
-        expect(first_driver.id).must_equal 2
+        expect(first_driver.name).must_equal "Driver 1 (unavailable)"
+        expect(first_driver.id).must_equal 1
         expect(first_driver.status).must_equal :UNAVAILABLE
-        expect(last_driver.name).must_equal "Driver8"
-        expect(last_driver.id).must_equal 8
+        expect(last_driver.name).must_equal "Driver 3 (no trips)"
+        expect(last_driver.id).must_equal 3
         expect(last_driver.status).must_equal :AVAILABLE
       end
 
