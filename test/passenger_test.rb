@@ -69,7 +69,7 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    it "returns total amount customer has spent on trips" do
+    it "returns total amount passenger has spent on trips" do
       #grab first two trips from trips.csv
       trip1, trip2 = RideShare::Trip.load_all(directory: './support')
 
@@ -83,6 +83,17 @@ describe "Passenger class" do
       #load those trips into passenger for testing. id's may be incorrect
       expect(passenger.net_expenditures).must_equal 28
       expect(passenger2.net_expenditures).must_equal 0
+    end
+  end
+
+  describe "total_time_spent" do
+    it "returns total amount of time that a passenger has spent on trips" do
+      #grab first two trips from trips.csv
+      trip1, trip2 = RideShare::Trip.load_all(directory: './support')
+
+      passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "8765309", trips: [trip1, trip2])
+
+      expect(passenger.total_time_spent).must_equal 5523
     end
   end
 end
