@@ -102,4 +102,41 @@ describe "Passenger class" do
       expect(@passenger.net_expenditures).must_equal 30
     end
   end
+
+  describe "total_time_spent" do
+    it "returns correct amount of time passenger spent during trips" do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+     
+      trip_1 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.parse('2015-05-20T12:14:00+00:00'),
+        end_time: Time.parse('2015-05-20T12:14:20+00:00'),
+        cost: 10,
+        rating: 5
+        )
+      
+      trip_2 = RideShare::Trip.new(
+        id: 7,
+        passenger: @passenger,
+        start_time: Time.parse('2015-05-21T12:14:00+00:00'),
+        end_time: Time.parse('2015-05-21T12:14:20+00:00'),
+        cost: 20,
+        rating: 5
+        )
+      @passenger.add_trip(trip_1)
+      @passenger.add_trip(trip_2)
+
+      expect(@passenger.total_time_spent).must_equal 40
+      
+    end
+
+    it "raises ArgumentError if passenger has nil trips" do
+    end
+  end
 end
