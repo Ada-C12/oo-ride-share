@@ -71,7 +71,7 @@ module RideShare
     
     # Returns value in seconds.
     def duration
-      return @end_time - @start_time
+      return @end_time != nil ? @end_time - @start_time : nil
     end
     
     private

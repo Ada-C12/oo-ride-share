@@ -84,21 +84,40 @@ describe "Trip class" do
         end_time: Time.parse('2015-05-20T12:14:01+00:00'), 
         cost: 3.00, 
         rating: 3,
-        driver_id: 123)
-        
-        expect(dur_test.duration).must_equal 1
-        
-        dur_test = RideShare::Trip.new(
-          id: 3, 
-          passenger: RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640"), 
-          start_time: Time.parse('2015-05-20T12:14:00+00:00'), 
-          end_time: Time.parse('2015-05-20T12:15:01+00:00'), 
-          cost: 3.00, 
-          rating: 3,
-          driver_id: 123)
-          
-          expect(dur_test.duration).must_equal 61
-        end
-      end
+        driver_id: 123
+      )
+      
+      expect(dur_test.duration).must_equal 1
+      
+      dur_test = RideShare::Trip.new(
+        id: 3, 
+        passenger: RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640"), 
+        start_time: Time.parse('2015-05-20T12:14:00+00:00'), 
+        end_time: Time.parse('2015-05-20T12:15:01+00:00'), 
+        cost: 3.00, 
+        rating: 3,
+        driver_id: 123
+      )
+      
+      expect(dur_test.duration).must_equal 61
     end
     
+    it "does not calculate duration for in-progress trips" do
+      dur_test = RideShare::Trip.new(
+        id: 3, 
+        passenger: RideShare::Passenger.new(
+          id: 1, 
+          name: "Ada", 
+          phone_number: "412-432-7640"
+        ), 
+        start_time: Time.parse('2015-05-20T12:14:00+00:00'), 
+        end_time: nil, 
+        cost: nil, 
+        rating: nil,
+        driver_id: 123
+      )
+      
+      expect(dur_test.duration).must_be_nil
+    end
+  end
+end

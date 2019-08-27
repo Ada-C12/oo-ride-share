@@ -70,7 +70,7 @@ describe "Passenger class" do
   end
   
   describe "net_expenditures" do
-    it "returns the correct net expenditure" do
+    before do
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -99,13 +99,31 @@ describe "Passenger class" do
       
       @passenger.add_trip(trip_1)
       @passenger.add_trip(trip_2)
-      
+    end
+    
+    it "returns the correct net expenditure" do
       expect(@passenger.net_expenditures).must_equal 7.75
     end 
+    
+    it "excludes cost for trips with end time of nil" do
+      trip_3 = RideShare::Trip.new(
+        id: 11,
+        passenger: @passenger,
+        start_time: Time.parse("2016-08-08"),
+        end_time: nil,
+        cost: nil,
+        rating: nil,
+        driver_id: 123
+      )
+      
+      @passenger.add_trip(trip_3)
+      
+      expect(@passenger.net_expenditures).must_equal 7.75
+    end
   end
   
   describe "total_time_spent" do
-    it "returns the correct total time spent" do
+    before do
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -134,6 +152,24 @@ describe "Passenger class" do
       
       @passenger.add_trip(trip_1)
       @passenger.add_trip(trip_2)
+    end
+    
+    it "returns the correct total time spent" do
+      expect(@passenger.total_time_spent).must_equal 120
+    end
+    
+    it "excludes trips that are in-prograss in total time spent" do
+      trip_3 = RideShare::Trip.new(
+        id: 11,
+        passenger: @passenger,
+        start_time: Time.parse("2016-08-08"),
+        end_time: nil,
+        cost: nil,
+        rating: nil,
+        driver_id: 123
+      )
+      
+      @passenger.add_trip(trip_3)
       
       expect(@passenger.total_time_spent).must_equal 120
     end
