@@ -5,26 +5,47 @@ module RideShare
     
     attr_reader :name, :vin, :status, :trips
     
-    def initialize(id:, name:, vin:, status:, trips: nil)
+    def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       super(id)
       @id = id 
       @name = name 
       @trips = trips || []
       @status = status 
-      @vin = vin 
       
-      # if status == :AVAILABLE || status == :UNAVAILABLE
-      #   @status = status 
-      # else 
-      #   raise ArgumentError 
-      # end 
-      # if vin.length == 17 
-      #   @vin = vin 
-      # else 
-      #   raise ArgumentError
-      # end 
+      if vin.length == 17 
+        @vin = vin 
+      else 
+        raise ArgumentError
+      end 
       
     end
+    def add_trip(new_trip) 
+      if new_trip.driver_id == @id 
+        @trips << new_trip 
+      end 
+    end 
+    
+    def average_rating 
+      if @trips.length > 0
+        ratings = @trips.map do |trip|
+          trip.rating
+        end
+        (ratings.sum / ratings.length).to_f
+      elsif @trips.length == 0
+        return 0
+      end
+    end 
+    
+    def total_revenue 
+      if @trips.length > 0 
+        revenue = @trips.map do |trip|
+          (trip.cost - 1.65) * 0.8 
+        end 
+        revenue.sum
+      elsif @trips.length == 0 
+        return 0 
+      end 
+    end 
     
     
     private

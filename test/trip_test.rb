@@ -51,7 +51,7 @@ describe "Trip class" do
       
       trip = RideShare::Trip.from_csv(id: 8,
       passenger_id: 1, start_time: '2018-06-11 22:22:00 -0700',
-      end_time: '2018-06-11 23:22:00 -0700', cost: 23.45, rating: 3)
+      end_time: '2018-06-11 23:22:00 -0700', cost: 23.45, rating: 3, driver_id: 1)
       
       expect(trip.start_time).must_be_instance_of Time
       expect(trip.end_time).must_be_instance_of Time
@@ -66,7 +66,7 @@ describe "Trip class" do
     end 
     
     it "gives the difference in seconds between start_time and end_time" do
-      trip = RideShare::Trip.new(id:8, passenger_id: 1, start_time: Time.parse('2018-12-17 16:09:21 -0800'), end_time: Time.parse('2018-12-17 16:42:31 -0800'), cost: 22.22, rating: 3)
+      trip = RideShare::Trip.new(id:8, passenger_id: 1, start_time: Time.parse('2018-12-17 16:09:21 -0800'), end_time: Time.parse('2018-12-17 16:42:31 -0800'), cost: 22.22, rating: 3, driver_id: 1)
       
       difference = trip.calculate_duration
       
