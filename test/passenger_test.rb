@@ -69,6 +69,18 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+   it "will return the total amount of money a specific passenger has spent" do
+    @passenger_data = {
+    id: 1, 
+    name: "Paul Pollich", 
+    phone_number: (358) 263-9381
+    }
+
+    @passenger = RideShare::Passenger.new(@passenger_data)
+    
+    @passenger.net_expenditures 
+
+
+
   end
 end
