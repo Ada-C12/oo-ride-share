@@ -8,7 +8,7 @@ module RideShare
     
     def initialize(id:,
       passenger: nil, passenger_id: nil,
-      start_time:, end_time:, cost: nil, rating:, driver_id:, driver: nil)
+      start_time:, end_time:, cost: nil, rating:, driver_id: nil, driver: nil)
       super(id)
       
       if passenger
@@ -22,7 +22,7 @@ module RideShare
       
       ###JULIA### WHOLE BLOCK CHANGED, Wave 1.1.3
       # Evaluate Time obj args from .from_csv     
-      if end_time > start_time
+      if end_time >= start_time
         @start_time = start_time
         @end_time = end_time
       else

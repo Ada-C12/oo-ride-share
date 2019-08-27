@@ -54,13 +54,14 @@ module RideShare
     
     ###JULIA### CHANGED BLOCK for Wave 2:Loading Drivers
     def connect_trips
+      # each TripInstance knows who the driver and passengers are, but we need to log this ride in each person's @trips too
       # add each TripInstance from @trips to corresponding DriverInstance's or PassengerInstance's @trips array
       @trips.each do |trip|
         passenger = find_passenger(trip.passenger_id)
-        trip.connect(passenger)
+        driver = find_driver(trip.driver_id)    
         
-        driver = find_driver(trip.driver_id)    ###JULIA### added for Wave2: Loading Drivers
-        trip.connect(driver)                    ###JULIA### added for Wave2: Loading Drivers
+        # update the @trips for the Driver and Passenger instances
+        trip.connect(driver, passenger)                    
       end
       
       return trips

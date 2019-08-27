@@ -4,7 +4,7 @@ require_relative 'csv_record'
 
 module RideShare
   class Driver < CsvRecord
-    attr_reader :name, :vin, :status, :trips
+    attr_reader :name, :vin, :status, :trips, :average_rating
     
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       # using superclass CsvRecord's initialize() to validate id
@@ -25,6 +25,28 @@ module RideShare
     ###JULIA### ADDED for Wave2: Loading Drivers
     def add_trip(trip)
       @trips << trip
+    end
+    
+    ###JULIA### ADDED for Wave2: Driver Methods
+    def average_rating
+      # Assigns @average_rating of all trips, rounded to 2 places.  Or zero if no trips yet.
+      
+      ratings_sum = trips.sum do |trip_instance|
+        trip_instance.rating
+      end
+      
+      if trips.length != 0
+        @average_rating = (ratings_sum.to_f/trips.length).round(2)
+      else  
+        @average_rating = 0
+      end
+      
+      return @average_rating
+    end
+    
+    ###JULIA### ADDED for Wave2: Driver Methods
+    def total_revenue
+      return "TODO"
     end
     
     
