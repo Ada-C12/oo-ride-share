@@ -59,7 +59,7 @@ describe "Driver class" do
       )
       @trip = RideShare::Trip.new(
         id: 8,
-        # driver: @driver,
+        driver: @driver,
         passenger: pass,
         start_time: "2016-08-08",
         end_time: "2018-08-09",
