@@ -42,11 +42,17 @@ describe "Passenger class" do
       id: 9,
       name: "Merl Glover III",
       phone_number: "1-602-620-2330 x3723",
-      trips: []
-      )
+      trips: [])
+      
+      @driver = RideShare::Driver.new(
+      id: 54,
+      name: "Rogers Bartell IV",
+      vin: "1C9EVBRM0YBC564DZ")
+      
       trip = RideShare::Trip.new(
       id: 8,
       passenger: @passenger,
+      driver: @driver,
       start_time: Time.parse("2019-01-09 08:30:31 -0800"),
       end_time: Time.parse("2019-01-09 08:48:50 -0800"),
       rating: 5
@@ -76,9 +82,15 @@ describe "Passenger class" do
       phone_number: "1-602-620-2330 x3723",
       trips: [])
       
+      @driver = RideShare::Driver.new(
+      id: 54,
+      name: "Rogers Bartell IV",
+      vin: "1C9EVBRM0YBC564DZ")
+      
       trip1 = RideShare::Trip.new(
       id: 8,
       passenger: @passenger,
+      driver: @driver,
       start_time: Time.parse("2019-01-09 08:30:31 -0800"),
       end_time: Time.parse("2019-01-09 08:48:50 -0800"),
       cost: 7,
@@ -87,6 +99,7 @@ describe "Passenger class" do
       trip2 = RideShare::Trip.new(
       id: 10,
       passenger: @passenger,
+      driver: @driver,
       start_time: Time.parse("2019-01-17 04:33:18 -0800"),
       end_time: Time.parse("2019-01-17 05:15:59 -0800"),
       cost: 20,
@@ -113,7 +126,7 @@ describe "Passenger class" do
       expect (no_trip_passenger.net_expenditures).must_equal 0
     end
   end
-
+  
   describe "total_time_spent" do
     before do
       @passenger = RideShare::Passenger.new(
@@ -122,9 +135,15 @@ describe "Passenger class" do
       phone_number: "1-602-620-2330 x3723",
       trips: [])
       
+      @driver = RideShare::Driver.new(
+      id: 54,
+      name: "Rogers Bartell IV",
+      vin: "1C9EVBRM0YBC564DZ")
+      
       trip1 = RideShare::Trip.new(
       id: 8,
       passenger: @passenger,
+      driver: @driver,
       start_time: Time.parse("2019-01-09 08:30:31 -0800"),
       end_time: Time.parse("2019-01-09 08:48:50 -0800"),
       cost: 7,
@@ -133,6 +152,7 @@ describe "Passenger class" do
       trip2 = RideShare::Trip.new(
       id: 10,
       passenger: @passenger,
+      driver: @driver,
       start_time: Time.parse("2019-01-17 04:33:18 -0800"),
       end_time: Time.parse("2019-01-17 05:15:59 -0800"),
       cost: 20,
@@ -140,18 +160,18 @@ describe "Passenger class" do
       
       @passenger.add_trip(trip1)
       @passenger.add_trip(trip2)
-
+      
       TOTAL_DURATION = trip1.duration + trip2.duration
     end
-
+    
     it "returns a number" do
       expect (@passenger.total_time_spent).must_be_kind_of Numeric
     end
-
+    
     it "returns the total amount of time in seconds passenger has spent on their trips" do
       expect (@passenger.total_time_spent).must_equal TOTAL_DURATION
     end
-
+    
     it "returns 0 if passenger doesn't have any trip" do
       no_trip_passenger = RideShare::Passenger.new(
       id: 9,
