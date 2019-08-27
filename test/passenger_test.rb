@@ -13,7 +13,7 @@ describe "Passenger class" do
 
     it "throws an argument error with a bad ID value" do
       expect do
-        RideShare::Passenger.new(id: 0, name: "Smithy")
+        RideShare::Passenger.new(id: 0, name: "Smithy", phone_number: "353-223-3452")
       end.must_raise ArgumentError
     end
 

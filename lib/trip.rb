@@ -6,9 +6,16 @@ module RideShare
   class Trip < CsvRecord
     attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
 
-    def initialize(id:,
-      passenger: nil, passenger_id: nil,
-      start_time:, end_time:, cost: nil, rating:)
+    def initialize(
+      id:,
+      passenger: nil, 
+      passenger_id: nil,
+      start_time:, 
+      end_time:, 
+      cost: nil, 
+      rating:
+      )
+
       super(id)
 
       if passenger
