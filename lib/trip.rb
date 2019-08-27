@@ -27,6 +27,11 @@ module RideShare
       @cost = cost
       @rating = rating
       
+      # Raise ArgumentError if end time is before start time
+      if end_time < start_time
+        raise ArgumentError.new("End time cannot be before the start time")
+      end
+      
       if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
@@ -52,9 +57,7 @@ module RideShare
         id: record[:id],
         passenger_id: record[:passenger_id],
         
-        
-        # start_time: record[Time.parse(:start_time.to_s)],
-        # end_time: record[Time.parse(:end_time.to_s)],
+        # Change start_time and end_time from String to Time class
         start_time: Time.parse(record[:start_time]),
         end_time: Time.parse(record[:end_time]),
         
