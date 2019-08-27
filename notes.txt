@@ -57,6 +57,8 @@ Using the pry session we started above, how would you...
 
 >>> trip1 = allInfo.trips[0]
 >>> trip1::rating
+>>> trip1.rating
+# either one fo the above is ok for access to rating
 # Cannot use trip1[:rating] b/c trip1.class is NOT hash, it's RideShare::Trip
 
 2. Print the name of the passenger for trip 7
@@ -83,6 +85,12 @@ Instead of the loop, can do the cheapo way of...
   end
   
   => answers = 20 and 296
+
+  ###### ANOTHER Method   ### JULIA CHECK THIS OUT! ###
+  # this way is better, bc there are fewer Passenger instances to sift thru, vs 600 Trip instances
+  p9 = allInfo.passengers.find {|passenger| passenger.id ==9}
+  puts p9.trips
+
   
   4. Print the ID of the trip that cost the most money
   mostExpensiveTrip = allTrips.max_by do |trip|
@@ -120,10 +128,16 @@ Instead of the loop, can do the cheapo way of...
   
   4. Add an instance method to the Trip class to calculate the duration of the trip in seconds, and a corresponding test
   Hint: If you're hitting a NoMethodError for Time.parse, be aware that you need to require 'time' in order for it to work.
-  
+  done & pushed.  Time.parse deprecating? causing a bunch of warning msgs but Dee says it's not our fault, she's looking into it.
+
   1.2: Passenger Methods
   Now that we have data for trip time stored in a more convenient way, we can do some interesting data processing. Each of these should be implemented as an instance method on Passenger.
     
-    Add an instance method, net_expenditures, to Passenger that will return the total amount of money that passenger has spent on their trips
-    Add an instance method, total_time_spent to Passenger that will return the total amount of time that passenger has spent on their trips
-    Each of these methods must have tests. What happens if the passenger has no trips?
+    1.Add an instance method, net_expenditures, to Passenger that will return the total amount of money that passenger has spent on their trips
+      done & pushed  
+
+    2. Add an instance method, total_time_spent to Passenger that will return the total amount of time that passenger has spent on their trips
+      done & pushed
+    
+    # Each of these methods must have tests. What happens if the passenger has no trips? 
+      Accounted for in tests files :-)
