@@ -17,17 +17,14 @@ module RideShare
     end
     
     def net_expenditures
-      # CHECK we know the number of trips this passenger has taken 
-      # CHECK we need to use Trips to get access to the cost of each trip
-      # CHECK we need to pair each trip with it's cost based off of a common value; like ID
-      # CHECK add all the trips into an array
-      # add all the costs into an array 
-      # sum all the trip costs an return the total spent
+      trip_costs = []
       
+      @passenger.trips.each_with_index do |trip, index|
+        trip_costs << trip[index].cost
+      end
       
-      
+      total_cost = trip_costs.sum    
     end
-    
     
     private
     

@@ -65,22 +65,17 @@ describe "Passenger class" do
       trip2 = RideShare::Trip.new(id: 9, passenger: @passenger, start_time: Time.parse("2016-08-10"), end_time: Time.parse("2016-08-11"), cost: 10, rating: 4)
       @passenger.add_trip(trip1)
       @passenger.add_trip(trip2)
-      # p @passenger.trips.length
       
       trip_costs = []
       trip_costs << @passenger.trips[0].cost
       trip_costs << @passenger.trips[1].cost
       
-      total_cost = trip_costs.sum
-      p total_cost
       # Act
+      total_cost = trip_costs.sum
       
       # Assert
       expect(total_cost).must_equal 12
-      
     end
-    
-    
     
   end
 end
