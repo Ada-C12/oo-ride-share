@@ -1,4 +1,5 @@
 require_relative 'test_helper'
+require 'pry'
 
 describe "Passenger class" do
 
@@ -137,6 +138,14 @@ describe "Passenger class" do
     end
 
     it "raises ArgumentError if passenger has nil trips" do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: nil
+        )
+      #binding.pry
+      expect{@passenger.total_time_spent}.must_raise ArgumentError
     end
   end
 end
