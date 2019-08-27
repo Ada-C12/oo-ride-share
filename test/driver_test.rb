@@ -85,11 +85,11 @@ describe "Driver class" do
     it "returns accurate trip info" do
       @driver.add_trip(@trip)
       
-      expect(@driver.trips[@driver.trips.length - 1]).must_be_instance_of RideShare::Trip, "#{@driver.trips[@driver.trips.length - 1]}"
+      expect(@driver.trips[@driver.trips.length - 1]).must_be_instance_of RideShare::Trip
     end
   end
   
-  xdescribe "average_rating method" do
+  describe "average_rating method" do
     before do
       @driver = RideShare::Driver.new(
         id: 54,
