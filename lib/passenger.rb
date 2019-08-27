@@ -26,6 +26,19 @@ module RideShare
       total_cost = trip_costs.sum    
     end
     
+    def total_time_spent
+      each_trip_duration = []
+      
+      self.trips.each do |trip|
+        each_trip_duration << trip.calculate_duration
+      end
+      
+      total_duration_seconds = each_trip_duration.sum
+      total_duration_minutes = total_duration_seconds / 60
+    end
+    
+    
+    
     private
     
     def self.from_csv(record)

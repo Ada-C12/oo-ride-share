@@ -57,20 +57,24 @@ describe "Passenger class" do
     # end
   end
   
-  # describe "net_expenditures" do
-  #   it "Will return total amount a passenger spent on their trips taken" do
-  #     # Arrange
-  #     @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
-  #     trip1 = RideShare::Trip.new(id: 8, passenger: @passenger, start_time: Time.parse("2016-08-08"), end_time: Time.parse("2016-08-09"), cost: 2, rating: 5)
-  #     trip2 = RideShare::Trip.new(id: 9, passenger: @passenger, start_time: Time.parse("2016-08-10"), end_time: Time.parse("2016-08-11"), cost: 10, rating: 4)
-  
-  #     # Act
-  #     total_cost = @passenger.net_expenditures
-  
-  #     # Assert
-  #     expect(total_cost).must_equal 12
-  #   end 
-  # end
+  describe "net_expenditures" do
+    it "Will return total amount a passenger spent on their trips taken" do
+      # Arrange
+      @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
+      trip1 = RideShare::Trip.new(id: 8, passenger: @passenger, start_time: Time.parse("2016-08-08"), end_time: Time.parse("2016-08-09"), cost: 2, rating: 5)
+      trip2 = RideShare::Trip.new(id: 9, passenger: @passenger, start_time: Time.parse("2016-08-10"), end_time: Time.parse("2016-08-11"), cost: 10, rating: 4)
+      @passenger.add_trip(trip1)
+      @passenger.add_trip(trip2)
+      trip_costs = []	
+      trip_costs << @passenger.trips[0].cost	
+      trip_costs << @passenger.trips[1].cost
+      # Act
+      total_cost = @passenger.net_expenditures
+      
+      # Assert
+      expect(total_cost).must_equal 12
+    end 
+  end
   
   describe "total_time_spent" do
     it "will return total amount of time a passenger spent on their trips taken" do
@@ -85,9 +89,9 @@ describe "Passenger class" do
       time2 = @passenger.trips[1].calculate_duration
       
       # Act
-      total_time = (time1 + time2) / 60
+      total_time = @passenger.total_time_spent
       # Assert
-      p total_time
+      expect(total_time).must_equal 60.0
       # expect total to be 60.0 min
     end 
   end
