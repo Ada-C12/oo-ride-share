@@ -21,6 +21,10 @@ module RideShare
       @trips << trip
     end
 
+    def average_rating
+      @trips.empty? ? 0 : @trips.map(&:rating).sum / @trips.length.to_f
+    end
+
     private
     
     def self.from_csv(record)
