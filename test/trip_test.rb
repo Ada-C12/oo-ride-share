@@ -49,7 +49,6 @@ describe "Trip class" do
       timeend = Time.parse("2018-12-17 16:09:21 -0800")
       passenger = RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640")
       
-      
       expect do 
         RideShare::Trip.new(
           id: 8,
@@ -62,4 +61,26 @@ describe "Trip class" do
       end.must_raise ArgumentError
     end
   end
+  
+  describe "Duration of trip in seconds" do
+    it "calculates the duration of trip in seconds" do
+      time1 = Time.parse("2018-12-17 02:39:05 -0800")
+      time2 = Time.parse("2018-12-17 5:09:21 -0800")
+      passenger = RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640")
+      testtrip = RideShare::Trip.new(
+        id: 8,
+        passenger: passenger,
+        start_time:time1, 
+        end_time:time2, 
+        cost: 23 , 
+        rating: 3
+      )
+      expect(testtrip.duration).must_equal 9016.0
+    end
+  end
+  
+  
+  
+  
+  
 end 
