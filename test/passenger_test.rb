@@ -128,7 +128,7 @@ describe "Passenger class" do
       
       # trip 2
       start_time_2 = Time.parse('2015-05-20T12:14:00+00:00')
-      end_time_2 = start_time_2 + 30 * 60 #* 30 minutes
+      end_time_2 = start_time_2 + 30 * 60 # 30 minutes
       @trip_2_data = {
         id: 8,
         passenger: @passenger,
@@ -175,8 +175,8 @@ describe "Passenger class" do
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
-        start_time: "2016-08-08",
-        end_time: "2016-08-09",
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
         rating: 5
       )
       

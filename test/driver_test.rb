@@ -65,8 +65,8 @@ describe "Driver class" do
         id: 8,
         driver: @driver,
         passenger: pass,
-        start_time: "2016-08-08",
-        end_time: "2018-08-09",
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2018-08-09"),
         rating: 5
       )
     end
@@ -93,8 +93,8 @@ describe "Driver class" do
         id: 8,
         driver: @driver,
         passenger_id: 3,
-        start_time: "2016-08-08",
-        end_time: "2016-08-08",
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-08"),
         rating: 5
       )
       @driver.add_trip(trip)
@@ -124,8 +124,8 @@ describe "Driver class" do
         id: 8,
         driver: @driver,
         passenger_id: 3,
-        start_time: "2016-08-08",
-        end_time: "2016-08-09",
+        start_time:  Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
         rating: 1
       )
       @driver.add_trip(trip2)
