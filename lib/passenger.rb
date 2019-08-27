@@ -16,6 +16,16 @@ module RideShare
       @trips << trip
     end
     
+    def net_expenditures
+      total_amount_of_money = 0
+      @trips.each do |one_trip|
+        total_amount_of_money += one_trip.cost
+      end
+      return total_amount_of_money.to_f.round(2)
+    end
+    
+    def total_time_spent
+    end
     
     private
     
