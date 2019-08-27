@@ -18,8 +18,13 @@ module RideShare
         raise ArgumentError, "VIN must be string of length 17"
       end
       
-      @status = status
+      @status = status.to_sym
       @trips = trips || []
+    end
+    
+    ###JULIA### ADDED for Wave2: Loading Drivers
+    def add_trip(trip)
+      @trips << trip
     end
     
     

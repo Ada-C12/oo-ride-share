@@ -1,8 +1,9 @@
 require 'csv'
+require 'time'   
 
 module RideShare
   class CsvRecord
-    # parent class of Trip & Passenger
+    # parent class of Trip, Passenger, and Driver
     attr_reader :id
     
     def initialize(id)
@@ -18,10 +19,10 @@ module RideShare
       # takes file_name and turns each line into a new instance of that child (Passenger or Trip)
       # then returns an array of those Child instances
       return CSV.read(
-      full_path,
-      headers: true,
-      header_converters: :symbol,
-      converters: :numeric
+        full_path,
+        headers: true,
+        header_converters: :symbol,
+        converters: :numeric
       ).map { |record| from_csv(record) }
     end
     
