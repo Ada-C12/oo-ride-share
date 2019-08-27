@@ -25,6 +25,18 @@ module RideShare
       @trips.empty? ? 0 : @trips.map(&:rating).sum / @trips.length.to_f
     end
 
+    def total_revenue
+      @trips.map do |trip|
+        trip_revenue = (trip.cost - 1.65) * 0.8
+        
+        if trip_revenue > 0
+          trip_revenue
+        else
+          raise ArgumentError
+        end
+      end.sum
+    end
+
     private
     
     def self.from_csv(record)
