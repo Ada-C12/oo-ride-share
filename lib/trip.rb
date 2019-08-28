@@ -57,13 +57,6 @@ module RideShare
       "PassengerID=#{passenger&.id.inspect}>"
     end
     
-    ###CAROLINE### Gonna leave this here for now just in case, this was the original version
-    # def connect(passenger)
-    #   @passenger = passenger
-    #   passenger.add_trip(self)
-    # end
-    
-    
     ###JULIA### Changed this whole block for Wave 2: Loading Drivers
     def connect(driver, passenger)
       # given known Passenger and Driver instances, add this Trip instance to each person's @trips array

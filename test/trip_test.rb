@@ -14,9 +14,9 @@ describe "Trip class" do
       end_time: end_time,
       cost: 23.45,
       rating: 3,
-      ###JARED or DEE or DEVIN or KAIDA### I can only get "stores an instance of driver" to work if I add the 2 lines below myself... 
-      driver_id: 10, ###CAROLINE### I added this but IDK if I'm supposed to... 
-      driver: RideShare::Driver.new(id: 1, name: "Fakey McFake", vin:'12345678901234567')###CAROLINE### I added this but IDK if I'm supposed to... 
+      ###JULIA### following 2 lines are added for Wave 2: Updating Drivers
+      driver_id: 10,  
+      driver: RideShare::Driver.new(id: 1, name: "Fakey McFake", vin:'12345678901234567')
     }
       @trip = RideShare::Trip.new(@trip_data)
     end
@@ -30,9 +30,6 @@ describe "Trip class" do
     end
     
     it "stores an instance of driver" do
-      # the seed data had NEITHER driver NOR driver_id
-      puts "\n\nWHY IS THIS HAPPENING???? >>>#{@trip.driver}<<<"
-      puts @trip
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
     
