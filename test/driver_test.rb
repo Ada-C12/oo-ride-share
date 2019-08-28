@@ -136,6 +136,79 @@ describe "Driver class" do
   end
   
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    before do
+      @pass = RideShare::Passenger.new(
+        id: 1,
+        name: "Test Passenger",
+        phone_number: "412-432-7640"
+      )
+      
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      
+      trip1 = RideShare::Trip.new(
+        id: 8,
+        passenger: @pass,
+        driver: @driver,
+        start_time: Time.parse("2019-01-09 08:30:31 -0800"),
+        end_time: Time.parse("2019-01-09 08:48:50 -0800"),
+        cost: 7,
+        rating: 5
+      )      
+      
+      trip2 = RideShare::Trip.new(
+        id: 10,
+        passenger: @pass,
+        driver: @driver,
+        start_time: Time.parse("2019-01-17 04:33:18 -0800"),
+        end_time: Time.parse("2019-01-17 05:15:59 -0800"),
+        cost: 20,
+        rating: 2
+      )
+      @driver.add_trip(trip1)
+      @driver.add_trip(trip2)
+      
+      TRIP_FEE = 1.65
+      PERCENTAGE_PAY = 0.8
+      
+      TOTAL_REVENUE = ( (trip1.cost - TRIP_FEE) + (trip2.cost - TRIP_FEE) ) * PERCENTAGE_PAY
+      
+      
+    end
+    
+    it "returns a float with two decimal places" do
+      expect (@driver.total_revenue.to_s).must_match /\d+\.\d\d?/
+    end
+    
+    it "returns correct total revenue" do
+      expect (@driver.total_revenue).must_equal TOTAL_REVENUE.round(2)
+    end
+    
+    it "returns 0.00 if there are no trips" do
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      expect (driver.total_revenue).must_equal 0.0
+    end
+    
+    it "only takes 'trip fee' off of trips that cost more than the trip fee" do
+      trip3 = RideShare::Trip.new(
+        id: 15,
+        passenger: @pass,
+        driver: @driver,
+        start_time: Time.parse("2019-01-17 04:33:18 -0800"),
+        end_time: Time.parse("2019-01-17 05:15:59 -0800"),
+        cost: 1,
+        rating: 2
+      )
+      @driver.add_trip(trip3)
+      expect(@driver.total_revenue).must_equal (TOTAL_REVENUE + (trip3.cost * PERCENTAGE_PAY)).round(2)
+    end
+    
   end
 end

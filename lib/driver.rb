@@ -3,6 +3,8 @@ require_relative 'csv_record'
 module RideShare
   class Driver < CsvRecord
     STATUSES = [:AVAILABLE, :UNAVAILABLE]
+    TRIP_FEE = 1.65
+    PERCENTAGE_PAY = 0.8
     
     attr_reader :name, :vin, :status, :trips
     
@@ -29,6 +31,14 @@ module RideShare
       end
       
       @trips << trip
+    end
+    
+    def total_revenue
+      revenue_minus_trip_fee = @trips.sum do |trip|
+        trip.cost <= TRIP_FEE ? trip.cost : trip.cost - TRIP_FEE
+      end
+      total_revenue = revenue_minus_trip_fee * PERCENTAGE_PAY
+      return total_revenue.round(2)      
     end
     
     def average_rating
