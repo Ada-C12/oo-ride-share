@@ -29,7 +29,16 @@ describe "Driver class" do
       expect(RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567").status).must_equal :AVAILABLE
     end
     
-    it "throws an error if status is not AVAILABLE or UNAVAILABLE" do
+    it "can accept a status of :UNAVAILABLE" do
+      expect(RideShare::Driver.new(
+        id: 100, 
+        name: "George", 
+        vin: "12345678901234567", 
+        status: :UNAVAILABLE
+      ).status).must_equal :UNAVAILABLE
+    end
+    
+    it "throws an error if status is not :AVAILABLE or :UNAVAILABLE" do
       expect { RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567", status: :COOL) }.must_raise ArgumentError
     end
     
@@ -57,11 +66,13 @@ describe "Driver class" do
         name: "Test Passenger",
         phone_number: "412-432-7640"
       )
+      
       @driver = RideShare::Driver.new(
         id: 3,
         name: "Test Driver",
         vin: "12345678912345678"
       )
+      
       @trip = RideShare::Trip.new(
         id: 8,
         driver: @driver,
@@ -122,7 +133,7 @@ describe "Driver class" do
     
     it "correctly calculates the average rating" do
       trip2 = RideShare::Trip.new(
-        id: 8,
+        id: 9,
         driver: @driver,
         passenger_id: 3,
         start_time: Time.parse("2016-08-08"),
@@ -133,6 +144,56 @@ describe "Driver class" do
       
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
+    
+    it "correctly calculates the average rating when there is an in progress trip" do
+      trip3 = RideShare::Trip.new(
+        id: 10,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: nil,
+        rating: nil
+      )
+      @driver.add_trip(trip3)
+      
+      expect(@driver.average_rating).must_equal 5
+    end
+    
+    it "returns an average rating of 0 if there is only an in progress trip" do
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      
+      trip3 = RideShare::Trip.new(
+        id: 10,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: nil,
+        rating: nil
+      )
+      
+      driver.add_trip(trip3)
+      
+      expect(driver.average_rating).must_equal 0
+    end 
+    
+    it "returns the appropriate floating point number" do
+      trip4 = RideShare::Trip.new(
+        id: 11,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        rating: 2
+      )
+      
+      @driver.add_trip(trip4)
+      
+      expect(@driver.average_rating).must_equal 3.5
+    end
   end
   
   describe "total_revenue" do
@@ -142,11 +203,13 @@ describe "Driver class" do
         name: "Test Passenger",
         phone_number: "412-432-7640"
       )
+      
       @driver = RideShare::Driver.new(
         id: 3,
         name: "Test Driver",
         vin: "12345678912345678"
       )
+      
       @trip1 = RideShare::Trip.new(
         id: 8,
         driver: @driver,
@@ -156,6 +219,7 @@ describe "Driver class" do
         cost: 10,
         rating: 5
       )
+      
       @trip2 = RideShare::Trip.new(
         id: 8,
         driver: @driver,
@@ -165,6 +229,7 @@ describe "Driver class" do
         cost: 10,
         rating: 5
       )
+      
       @trip3 = RideShare::Trip.new(
         id: 8,
         driver: @driver,
@@ -173,6 +238,16 @@ describe "Driver class" do
         end_time: "2018-08-09",
         cost: 1.50,
         rating: 5
+      )
+      
+      @trip4 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger: pass,
+        start_time: "2016-08-08",
+        end_time: nil,
+        cost: nil,
+        rating: nil
       )
     end
     
@@ -187,6 +262,23 @@ describe "Driver class" do
       @driver.add_trip(@trip3)
       
       expect(@driver.total_revenue).must_equal 0
+    end
+    
+    it "returns 0 if there are no trips" do
+      expect(@driver.total_revenue).must_equal 0
+    end
+    
+    it "returns 0 if there is only an in progress trip" do
+      @driver.add_trip(@trip4)
+      expect(@driver.total_revenue).must_equal 0
+    end
+    
+    it "returns the correct total if the trips include an in progress trip" do
+      @driver.add_trip(@trip1)
+      @driver.add_trip(@trip2)
+      @driver.add_trip(@trip4)
+      
+      expect(@driver.total_revenue).must_equal 13.36
     end
   end
 end

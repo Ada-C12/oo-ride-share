@@ -125,16 +125,35 @@ describe "TripDispatcher class" do
       end
       
       it "correctly creates a new trip" do
+        existing_trips = @dispatcher.trips.count
         new_trip = @dispatcher.request_trip(5)
         
-        expect(new_trip.id).must_equal 6
+        expect(new_trip).must_be_kind_of RideShare::Trip
+        expect(new_trip.id).must_equal (existing_trips + 1)
+        expect(@dispatcher.trips.count).must_equal (existing_trips + 1)
+      end      
+      
+      it "correctly updates the driver" do
+        new_trip = @dispatcher.request_trip(7)
+        
         expect(new_trip.driver_id).must_equal 2
         expect(new_trip.driver.status).must_equal :UNAVAILABLE
         expect(new_trip.driver.trips.length).must_equal 4
-        expect(new_trip.passenger.trips.length).must_equal 1
-        expect(@dispatcher.trips.length).must_equal 6
-        expect(new_trip).must_be_kind_of RideShare::Trip
-      end      
+      end
+      
+      it "correctly updates the passenger" do
+        new_trip = @dispatcher.request_trip(7)
+        
+        expect(new_trip.passenger.id).must_equal 7
+        expect(new_trip.passenger.trips.length).must_equal 2
+      end
+      
+      it "raises an Argument Error if there are no available drivers" do
+        new_trip1 = @dispatcher.request_trip(1)
+        new_trip2 = @dispatcher.request_trip(2)
+        
+        expect { @dispatcher.request_trip(3) }.must_raise ArgumentError
+      end
     end
   end
 end

@@ -27,11 +27,16 @@ module RideShare
       @trips << trip
     end
     
+    def start_trip(trip)
+      add_trip(trip)
+      @status = :UNAVAILABLE
+    end
+    
     def average_rating
       ratings = []
       
       @trips.each do |trip|
-        ratings.push(trip.rating)
+        ratings.push(trip.rating) if trip.rating
       end
       
       return 0 if ratings.length == 0
@@ -43,12 +48,14 @@ module RideShare
       total_revenue = 0
       
       @trips.each do |trip|
-        net_cost = trip.cost - 1.65
-        
-        if net_cost > 0
-          total_revenue += net_cost * 0.8
+        if trip.cost
+          net_cost = trip.cost - 1.65
+          if net_cost > 0
+            total_revenue += (net_cost * 0.8).round(2)
+          end
         end
       end
+      
       return total_revenue
     end
     
