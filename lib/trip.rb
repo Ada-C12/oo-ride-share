@@ -15,10 +15,8 @@ module RideShare
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
-        
       elsif passenger_id
         @passenger_id = passenger_id
-        
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
@@ -26,32 +24,21 @@ module RideShare
       if driver
         @driver = driver
         @driver_id = driver.id
-        
       elsif driver_id
         @driver_id = driver_id
-        
       else
         raise ArgumentError, 'Driver or driver_id is required'
       end
       
       @start_time = start_time
-      
       @end_time = end_time
       
-      if end_time != nil
-        if (@end_time - @start_time) < 0
-          raise ArgumentError, 'End time is before start time'
-        end
-      end
+      raise ArgumentError, 'End time is before start time' if end_time != nil && (@end_time - @start_time) < 0
       
       @cost = cost
       @rating = rating
       
-      if rating != nil
-        if @rating > 5 || @rating < 1
-          raise ArgumentError.new("Invalid rating #{@rating}")
-        end
-      end
+      raise ArgumentError.new("Invalid rating #{@rating}") if rating != nil && (@rating > 5 || @rating < 1)
     end
     
     def inspect

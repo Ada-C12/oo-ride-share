@@ -4,7 +4,7 @@ module RideShare
   class Driver < CsvRecord
     attr_reader :name, :vin, :status, :trips
     
-    def initialize (id:, name:, vin:, status: :AVAILABLE, trips: nil)
+    def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       super(id)
       
       @name = name
