@@ -31,6 +31,31 @@ module RideShare
             @trips << trip
         end
         
+        def total_revenue
+            if @trips == nil || @trips == []
+                return 0
+            end
+            costs = @trips.map do |trip|
+                trip.cost
+            end 
+            if costs.sum < 1.65
+                return 0
+            end
+            revenue = (costs.sum- 1.65) * 0.80
+            return revenue.to_f
+        end
+        
+        
+        def average_rating
+            if @trips == nil || @trips == []
+                return 0
+            end
+            ratings = @trips.map do |trip|
+                trip.rating
+            end 
+            return (ratings.sum/ratings.length).to_f
+        end
+        
         private
         
         def self.from_csv(record)
