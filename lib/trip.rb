@@ -5,7 +5,7 @@ require_relative 'csv_record'
 
 module RideShare
   class Trip < CsvRecord
-    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
+    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating, :driver_id, :driver
     
     def initialize(id:,
       passenger: nil, passenger_id: nil,
@@ -35,6 +35,10 @@ module RideShare
       if @start_time > @end_time
         raise ArgumentError.new("Start time must occur prior to end time")
       end
+      
+      
+      
+      
     end
     
     def inspect
@@ -45,8 +49,9 @@ module RideShare
       "PassengerID=#{passenger&.id.inspect}>"
     end
     
-    def connect(passenger)
+    def connect(passenger, driver)
       @passenger = passenger
+      @driver = driver
       passenger.add_trip(self)
     end
     
@@ -54,13 +59,16 @@ module RideShare
     
     def self.from_csv(record)
       return self.new(
-      id: record[:id],
-      passenger_id: record[:passenger_id],
-      start_time: Time.parse(record[:start_time]),
-      end_time: Time.parse(record[:end_time]),
-      cost: record[:cost],
-      rating: record[:rating]
+        id: record[:id],
+        passenger_id: record[:passenger_id],
+        start_time: Time.parse(record[:start_time]),
+        end_time: Time.parse(record[:end_time]),
+        cost: record[:cost],
+        rating: record[:rating]
       )
     end
+    
+    
+    
   end
 end
