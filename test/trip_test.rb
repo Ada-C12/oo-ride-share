@@ -13,7 +13,8 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver: RideShare::Driver.new(id: 5, name: "V", vin:"12345678976543346", status: "AVAILABLE")
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
@@ -32,13 +33,16 @@ describe "Trip class" do
       start_time = Time.parse('2019-04-23T15:03:00+00:00')
       end_time = Time.parse('2019-04-23T12:10:00+00:00')
 
-      @trip_data = {id: 1, passenger: RideShare::Passenger.new(id:8,
-                                                              name: "Sara",
-                                                              phone_number: "983-584-0908"),
+      @trip_data = {
+        id: 1, 
+        passenger: RideShare::Passenger.new(id:8,
+                                            name: "Sara",
+                                            phone_number: "983-584-0908"),
         start_time: start_time, 
         end_time: end_time,
         cost: 5.87,
-        rating: 4
+        rating: 4,
+        driver: RideShare::Driver.new(id: 5, name: "V", vin:"12345678976543346", status: "AVAILABLE")
         }
 
       expect{RideShare::Trip.new(@trip_data)}.must_raise ArgumentError

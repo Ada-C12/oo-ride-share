@@ -49,7 +49,8 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: "2016-08-08",
         end_time: "2016-08-09",
-        rating: 5
+        rating: 5,
+        driver_id: 8
         )
 
       @passenger.add_trip(trip)
@@ -85,7 +86,8 @@ describe "Passenger class" do
         start_time: Time.parse('2019-04-23T14:00:00+00:00'),
         end_time: Time.parse('2019-04-23T14:10:00+00:00'),
         cost: 6,
-        rating: 5
+        rating: 5,
+        driver_id: 6
         )
 
 
@@ -95,7 +97,8 @@ describe "Passenger class" do
           start_time: Time.parse('2019-04-30T15:03:00+00:00'),
           end_time: Time.parse('2019-04-30T15:13:00+00:00'),
           cost: 12,
-          rating: 4
+          rating: 4,
+          driver_id: 6
           )
         
       @passenger.add_trip(trip)
