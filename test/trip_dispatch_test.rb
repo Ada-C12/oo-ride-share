@@ -195,7 +195,10 @@ describe "TripDispatcher class" do
       end
       
       it "adds the trip to the passenger's list of trips" do
-        # passenger.add_trip(new_trip)
+        passenger_one = @dispatcher.find_passenger(1)
+        trip_length_before = passenger_one.trips.length
+        new_trip = @dispatcher.request_trip(1)
+        expect(passenger_one.trips.length).must_be :>, trip_length_before
       end
       
     end
