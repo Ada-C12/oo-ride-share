@@ -23,16 +23,25 @@ module RideShare
       end
 
       #we want to make sure that start time is BEFORE end time
-      if 
 
       @start_time = start_time
       @end_time = end_time
       @cost = cost
       @rating = rating
 
+      if @end_time < @start_time
+        raise ArgumentError, 'Start time must be before end time!'
+      end
+
       if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
+    end
+
+    #Measure the length of trips by subtracting our start from end time
+    def duration_in_seconds
+      duration = @end_time - @start_time
+      return duration
     end
 
     def inspect
