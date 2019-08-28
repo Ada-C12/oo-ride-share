@@ -146,10 +146,25 @@ describe "TripDispatcher class" do
       end
 
       it "should add the trip to @trips in TripDispatcher" do
+        dispatcher = build_test_dispatcher
+        trip = dispatcher.request_trip(1)
+
+        expect(dispatcher.trips).must_include trip
       end
 
       it "properly creates trip" do
+        dispatcher = build_test_dispatcher
+        passenger_id = 1
+        
+        trip = dispatcher.request_trip(passenger_id)
 
+        expect(trip.passenger.id).must_equal passenger_id
+      end
+
+      it "does something when no drivers are available" do
+        dispatcher = build_test_dispatcher
+        dispatcher.drivers.select! { |driver| driver.status == :UNAVAILABLE }
+        expect { dispatcher.request_trip(1) }.must_raise RuntimeError
       end
     end
   end
