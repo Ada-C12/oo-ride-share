@@ -78,7 +78,7 @@ describe "Driver class" do
     end
   end
   
-  xdescribe "average_rating method" do
+  describe "average_rating method" do
     before do
       @driver = RideShare::Driver.new(
         id: 54,
@@ -130,7 +130,78 @@ describe "Driver class" do
     end
   end
   
-  xdescribe "total_revenue" do
-    # You add tests for the total_revenue method
-  end
+  describe "total_revenue" do
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-08"),
+        rating: 5,
+        cost: 3
+      )
+      @driver.add_trip(trip)
+    end
+    
+    it "returns a float" do
+      expect(@driver.total_revenue).must_be_kind_of Float
+    end
+    
+    it "returns zero if no driven trips" do
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      expect(driver.total_revenue).must_equal 0
+    end
+    
+    it "correctly calculates the total revenue" do
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        rating: 1,
+        cost: 7
+      )
+      @driver.add_trip(trip2)
+      
+      expect(@driver.total_revenue).must_be_close_to ((3 - 1.65) + (7 - 1.65)) * 0.8, 0.01
+    end
+    
+    it "correctly calculates a trip that costs less than 1.65" do
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        rating: 1,
+        cost: 7
+      )
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        rating: 1,
+        cost: 1.5
+      )
+      
+      @driver.add_trip(trip2)
+      @driver.add_trip(trip3)
+      
+      expect(@driver.total_revenue).must_be_close_to ((3 - 1.65) + (7 - 1.65)) * 0.8, 0.01
+    end
+  end  
 end
+
