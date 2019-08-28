@@ -7,7 +7,7 @@ module RideShare
   class Trip < CsvRecord
     attr_reader :id, :driver, :driver_id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
     
-    def initialize(id:, driver: nil, driver_id: nil, passenger: nil, passenger_id: nil, start_time:, end_time:, cost: nil, rating:)
+    def initialize(id:, driver: nil, driver_id: nil, passenger: nil, passenger_id: nil, start_time:, end_time: nil, cost: nil, rating: nil)
       super(id)
       
       if driver
@@ -28,22 +28,27 @@ module RideShare
         raise ArgumentError, 'Passenger or Passenger ID is required.'
       end
       
-      if start_time > end_time
+      if end_time && (start_time > end_time)
         raise ArgumentError, "Start time cannot be after end time."
       end
       
       @start_time = start_time
       @end_time = end_time
       @cost = cost
-      @rating = rating
       
-      if @rating > 5 || @rating < 1
+      if rating && (rating > 5 || rating < 1)
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
+      
+      @rating = rating
     end
     
     def duration
-      return end_time - start_time
+      if !end_time
+        return nil
+      else
+        return end_time - start_time
+      end
     end
     
     def inspect

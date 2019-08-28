@@ -141,6 +141,44 @@ describe "Passenger class" do
       expect(@passenger.net_expenditures).must_equal 0
     end
     
+    it "should return 0 cost if passenger has one in progress trip" do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+      )
+      
+      trip3 = RideShare::Trip.new(
+        id: 6,
+        driver: @driver, 
+        passenger: @passenger,
+        start_time: Time.parse('2015-05-20T12:10:00+00:00'),
+        end_time: nil,
+        cost: nil,
+        rating: nil
+      )
+      
+      @passenger.add_trip(trip3)
+      
+      expect(@passenger.net_expenditures).must_equal 0
+    end
+    
+    it "should return total cost of all trips and skip in progress trips" do
+      trip3 = RideShare::Trip.new(
+        id: 6,
+        driver: @driver, 
+        passenger: @passenger,
+        start_time: Time.parse('2015-05-20T12:10:00+00:00'),
+        end_time: nil,
+        cost: nil,
+        rating: nil
+      )
+      
+      @passenger.add_trip(trip3)
+      expect(@passenger.net_expenditures).must_equal 15
+    end
+    
     it "should return duration of all trips" do 
       expect(@passenger.total_time_spent).must_equal 480
     end
@@ -154,6 +192,45 @@ describe "Passenger class" do
       )
       
       expect(@passenger.total_time_spent).must_equal 0
+    end
+    
+    it "should return 0 duration if passenger has one in progress trip" do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+      )
+      
+      trip3 = RideShare::Trip.new(
+        id: 6,
+        driver: @driver, 
+        passenger: @passenger,
+        start_time: Time.parse('2015-05-20T12:10:00+00:00'),
+        end_time: nil,
+        cost: nil,
+        rating: nil
+      )
+      
+      @passenger.add_trip(trip3)
+      
+      expect(@passenger.total_time_spent).must_equal 0
+    end
+    
+    it "should return the correct total duration if there is an in progress trip" do      
+      trip3 = RideShare::Trip.new(
+        id: 6,
+        driver: @driver, 
+        passenger: @passenger,
+        start_time: Time.parse('2015-05-20T12:10:00+00:00'),
+        end_time: nil,
+        cost: nil,
+        rating: nil
+      )
+      
+      @passenger.add_trip(trip3)
+      
+      expect(@passenger.total_time_spent).must_equal 480
     end
   end
 end

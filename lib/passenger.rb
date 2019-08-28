@@ -17,14 +17,14 @@ module RideShare
     
     def net_expenditures 
       total = @trips.sum do |trip|
-        trip.cost
+        trip.cost ? trip.cost : 0
       end 
       return total 
     end 
     
     def total_time_spent
       total = @trips.sum do |trip|
-        trip.duration
+        trip.duration ? trip.duration : 0
       end 
       return total 
     end

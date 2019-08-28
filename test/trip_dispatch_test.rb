@@ -118,5 +118,23 @@ describe "TripDispatcher class" do
         end
       end
     end
+    
+    describe "request trip method" do
+      before do
+        @dispatcher = build_test_dispatcher
+      end
+      
+      it "correctly creates a new trip" do
+        new_trip = @dispatcher.request_trip(5)
+        
+        expect(new_trip.id).must_equal 6
+        expect(new_trip.driver_id).must_equal 2
+        expect(new_trip.driver.status).must_equal :UNAVAILABLE
+        expect(new_trip.driver.trips.length).must_equal 4
+        expect(new_trip.passenger.trips.length).must_equal 1
+        expect(@dispatcher.trips.length).must_equal 6
+        expect(new_trip).must_be_kind_of RideShare::Trip
+      end      
+    end
   end
 end

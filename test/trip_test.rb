@@ -58,6 +58,22 @@ describe "Trip class" do
       }
       expect{ RideShare::Trip.new(@trip_data) }.must_raise ArgumentError
     end
+    
+    it "doesn't throw an error if end time is nil" do
+      start_time = Time.parse('2015-05-20T12:30:00+00:00')
+      end_time = nil
+      
+      @trip_data = {
+        id: 8,
+        driver_id: 2, 
+        passenger: RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640"),
+        start_time: start_time,
+        end_time: end_time,
+        cost: 23.45,
+        rating: 3 
+      }
+      expect(RideShare::Trip.new(@trip_data).end_time).must_equal nil
+    end
   end
   
   describe "duration method" do 
@@ -76,6 +92,23 @@ describe "Trip class" do
       @trip = RideShare::Trip.new(@trip_data)
       
       expect(@trip.duration).must_equal 900.0
+    end
+    
+    it "returns nil for duration if the trip hasn't finished" do
+      start_time = Time.parse('2015-05-20T12:15:00+00:00')
+      end_time = nil
+      @trip_data = {      
+        id: 8,
+        driver_id: 2, 
+        passenger: RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640"),
+        start_time: start_time,
+        end_time: end_time,
+        cost: 23.45,
+        rating: 3 
+      }
+      @trip = RideShare::Trip.new(@trip_data)
+      
+      expect(@trip.duration).must_equal nil
     end
   end
 end
