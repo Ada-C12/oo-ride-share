@@ -51,6 +51,7 @@ module RideShare
       new_trip = self.start_trip(driver: driver, passenger: passenger)
       driver.assign_new_trip(new_trip)
       passenger.add_trip(new_trip)
+      trips.push(new_trip)
       return new_trip
     end
     
@@ -60,13 +61,6 @@ module RideShare
       return Trip.new(id: new_id, passenger: passenger, driver: driver, start_time: current_time)
     end
     
-    
-    
-    # YOU SHOULD:
-    
-    
-    #   add the trip to the passenger's list of trips
-    ##### test: was the passenger's trip list updated?
     
     #   add the new trip to the TripDispatcher's collection of all trips
     ##### test: was the tripdispatcher's trip list updated?

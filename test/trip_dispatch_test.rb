@@ -201,6 +201,12 @@ describe "TripDispatcher class" do
         expect(passenger_one.trips.length).must_be :>, trip_length_before
       end
       
+      it "Adds new trip to dispatcher's list of trips" do
+        trip_length_before = @dispatcher.trips.length
+        new_trip = @dispatcher.request_trip(1)
+        expect(@dispatcher.trips.length).must_be :>, trip_length_before
+      end
+      
     end
     
   end
