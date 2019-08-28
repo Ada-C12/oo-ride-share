@@ -47,7 +47,12 @@ describe "Trip class" do
     end
 
     it "stores an instance of driver" do
-      skip # Unskip after wave 2
+      # skip # Unskip after wave 2
+      # we modified this test
+      td = RideShare::TripDispatcher.new(directory: './support')
+      driver = td.find_driver(@trip.driver_id)
+      
+      @trip.connect(@trip.passenger, driver)
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
 
