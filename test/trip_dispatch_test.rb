@@ -2,6 +2,7 @@ require_relative 'test_helper'
 
 TEST_DATA_DIRECTORY = 'test/test_data'
 UNAVAILABLE_TEST_DATA = 'test/all_unavailable_test_data'
+NIL_END_TIME_TEST_DATA = 'test/nil_end_time_test_data'
 
 describe "TripDispatcher class" do
   def build_test_dispatcher
@@ -159,6 +160,25 @@ describe "TripDispatcher class" do
           dispatcher.request_trip(1)
         }.must_raise ArgumentError
         
+      end
+    end
+    
+    describe "find available driver, nil end_time" do
+      def build_nil_end_time_test_dispatcher
+        return RideShare::TripDispatcher.new(
+          directory: NIL_END_TIME_TEST_DATA
+        )
+      end
+      
+      it "ignores Drivers with in-progress trips" do
+        dispatcher = build_nil_end_time_test_dispatcher
+        passenger = dispatcher.find_passenger(1)
+        driver = dispatcher.find_driver(3)
+        in_progress_trip = RideShare::Trip.new(id: 6, passenger: passenger, driver: driver, start_time: Time.new)
+        driver.add_trip(in_progress_trip)
+        expect {
+          dispatcher.request_trip(2)
+        }.must_raise ArgumentError
       end
     end
     

@@ -37,16 +37,25 @@ module RideShare
     
     def find_available_driver
       drivers.each do |driver|
-        if driver.status == :AVAILABLE 
+        
+        nil_trips = []
+        driver.trips.each do |trip|
+          if trip.end_time.nil?
+            nil_trips << trip
+          end
+        end
+        
+        if driver.status == :AVAILABLE && nil_trips.length == 0
           return driver   
         end
       end
       raise ArgumentError, "No Available Drivers at this Time."
     end
     
-    def request_trip(passenger_id)
-      
-      
+    
+    
+    
+    def request_trip(passenger_id)  
       driver = self.find_available_driver
       passenger = self.find_passenger(passenger_id)
       new_trip = self.start_trip(driver: driver, passenger: passenger)
