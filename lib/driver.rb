@@ -5,7 +5,8 @@ require_relative 'trip'
 
 module RideShare
   class Driver < CsvRecord
-    attr_reader :name, :vin, :status, :trips
+    attr_reader :name, :vin, :trips
+    attr_writer :status
     
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       super(id)
@@ -39,7 +40,6 @@ module RideShare
       return (total_ratings / trips.length.to_f).round(2) 
     end 
     
-    #TODO
     def total_revenue
       total_revenue = 0
       if trips.length == 0
@@ -57,6 +57,15 @@ module RideShare
         return total_revenue.round(2)
       end 
     end
+    
+    # Modify this selected driver using a new helper method in Driver:
+    # Add the new trip to the collection of trips for that Driver
+    # Set the driver's status to :UNAVAILABLE
+
+    def requested_driver_helper(requested_trip)
+      @trip << requested_trip
+      @status = :UNAVAILABLE 
+    end 
     
     private
     
