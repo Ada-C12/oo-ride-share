@@ -20,19 +20,26 @@ module RideShare
       @cost = cost
       @rating = rating
       @driver_id = driver_id
-      # @driver = driver[:id]
+      @driver = driver
 
       if end_time < start_time
         raise ArgumentError.new, "end time can't be earlier than start time"
       end
 
+      if driver
+        @driver = driver
+        @driver_id = driver.id
+      elsif driver_id
+        @driver_id = driver_id
+      else
+        raise ArgumentError, "Driver or driver id is required"
+      end
+
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
-
       elsif passenger_id
         @passenger_id = passenger_id
-
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
@@ -41,10 +48,10 @@ module RideShare
         raise ArgumentError, "Invalid rating #{@rating}"
       end
 
-      if @driver_id = nil && @driver = nil
-        raise ArgumentError, "Either driver ID or driver is required"
-      end
-    end
+    #   if @driver_id = nil && @driver = nil
+    #     raise ArgumentError, "Either driver ID or driver is required"
+    #   end
+    # end
 
     def inspect
       # Prevent infinite loop when puts-ing a Trip
