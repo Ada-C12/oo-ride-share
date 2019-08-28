@@ -11,7 +11,10 @@ module RideShare
       start_time:, end_time:, cost: nil, rating:, driver_id: nil, driver: nil)
       super(id)
 
-      raise ArgumentError if start_time > end_time
+      if end_time 
+        raise ArgumentError if start_time > end_time
+      end
+      
       #TODO: Refactor this!
       if passenger
         @passenger = passenger
@@ -39,9 +42,11 @@ module RideShare
       @end_time = end_time
       @cost = cost
       @rating = rating
-      
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+
+      if @rating
+        if @rating > 5 || @rating < 1
+          raise ArgumentError.new("Invalid rating #{@rating}")
+        end
       end
     end
     
