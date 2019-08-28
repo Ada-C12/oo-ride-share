@@ -25,7 +25,6 @@ module RideShare
       if driver
         @driver = driver
         @driver_id = driver.id
-        # @driver_id = driver_id
         
       elsif driver_id
         @driver_id = driver_id
@@ -57,9 +56,11 @@ module RideShare
       "PassengerID=#{passenger&.id.inspect}>"
     end
     
-    def connect(passenger)
+    def connect(passenger, driver)
       @passenger = passenger
       passenger.add_trip(self)
+      @driver = driver
+      driver.add_trip(self)
     end
     
     def duration
