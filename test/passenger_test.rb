@@ -1,7 +1,6 @@
 require_relative 'test_helper'
 
 describe "Passenger class" do
-  
   describe "Passenger instantiation" do
     before do
       @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
@@ -34,10 +33,8 @@ describe "Passenger class" do
     end
   end
   
-  
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -45,9 +42,16 @@ describe "Passenger class" do
         trips: []
       )
       
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Test Driver",
+        vin: "12345678901234567",
+        status: :AVAILABLE
+      )
+      
       trip1 = RideShare::Trip.new(
         id: 8,
-        driver_id: 1, 
+        driver: @driver, 
         passenger: @passenger,
         start_time: Time.parse("2016-08-08"),
         end_time: Time.parse("2016-08-09"),
@@ -57,7 +61,7 @@ describe "Passenger class" do
       
       trip2 = RideShare::Trip.new(
         id: 6,
-        driver_id: 1, 
+        driver: @driver, 
         passenger: @passenger,
         start_time: Time.parse("2016-08-02"),
         end_time: Time.parse("2016-08-09"),
@@ -91,9 +95,16 @@ describe "Passenger class" do
         trips: []
       )
       
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Test Driver",
+        vin: "12345678901234567",
+        status: :AVAILABLE
+      )
+      
       trip1 = RideShare::Trip.new(
         id: 8,
-        driver_id: 1, 
+        driver: @driver, 
         passenger: @passenger,
         start_time: Time.parse('2015-05-20T12:15:00+00:00'),
         end_time: Time.parse('2015-05-20T12:20:00+00:00'),
@@ -103,7 +114,7 @@ describe "Passenger class" do
       
       trip2 = RideShare::Trip.new(
         id: 6,
-        driver_id: 1, 
+        driver: @driver, 
         passenger: @passenger,
         start_time: Time.parse('2015-05-20T12:10:00+00:00'),
         end_time: Time.parse('2015-05-20T12:13:00+00:00'),
@@ -120,14 +131,14 @@ describe "Passenger class" do
     end
     
     it "should return 0 cost if passenger has no trips" do
-      @new_passenger = RideShare::Passenger.new(
+      @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
         phone_number: "1-602-620-2330 x3723",
         trips: []
       )
       
-      expect(@new_passenger.net_expenditures).must_equal 0
+      expect(@passenger.net_expenditures).must_equal 0
     end
     
     it "should return duration of all trips" do 
@@ -135,16 +146,14 @@ describe "Passenger class" do
     end
     
     it "should return 0 duration if passenger has no trips" do
-      @new_passenger = RideShare::Passenger.new(
+      @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
         phone_number: "1-602-620-2330 x3723",
         trips: []
       )
       
-      expect(@new_passenger.total_time_spent).must_equal 0
+      expect(@passenger.total_time_spent).must_equal 0
     end
-    
-    
   end
 end

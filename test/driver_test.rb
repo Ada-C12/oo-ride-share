@@ -1,6 +1,7 @@
 require_relative 'test_helper'
 
 describe "Driver class" do
+  
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -15,7 +16,7 @@ describe "Driver class" do
       expect(@driver).must_be_kind_of RideShare::Driver
     end
     
-    it "throws an argument error with a bad VIN" do
+    it "throws an argument error with a bad ID" do
       expect { RideShare::Driver.new(id: 0, name: "George", vin: "33133313331333133") }.must_raise ArgumentError
     end
     
@@ -26,6 +27,10 @@ describe "Driver class" do
     
     it "has a default status of :AVAILABLE" do
       expect(RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567").status).must_equal :AVAILABLE
+    end
+    
+    it "throws an error if status is not AVAILABLE or UNAVAILABLE" do
+      expect { RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567", status: :COOL) }.must_raise ArgumentError
     end
     
     it "sets driven trips to an empty array if not provided" do
@@ -181,12 +186,7 @@ describe "Driver class" do
     it "returns 0 if trip cost 1.65 or less" do
       @driver.add_trip(@trip3)
       
-      p @driver.trips.length
-      
-      
       expect(@driver.total_revenue).must_equal 0
     end
-    
   end
-  
 end

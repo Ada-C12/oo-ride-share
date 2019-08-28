@@ -26,8 +26,6 @@ module RideShare
       return @drivers.find { |driver| driver.id == id }
     end
     
-    
-    
     def inspect
       # Make puts output more useful
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \
@@ -44,7 +42,6 @@ module RideShare
         driver = find_driver(trip.driver_id)
         trip.connect(passenger, driver)
       end
-      
       return trips
     end
   end

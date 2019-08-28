@@ -7,7 +7,6 @@ module RideShare
     
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       super(id)
-      
       @name = name
       
       if vin.length != 17
@@ -20,18 +19,13 @@ module RideShare
         raise ArgumentError.new("The driver status must be available or unavailable.")
       end
       
-      
-      
-      
       @status = status
       @trips = trips || []
     end
-    # end
     
     def add_trip(trip)
       @trips << trip
     end
-    
     
     def average_rating
       ratings = []
@@ -43,9 +37,7 @@ module RideShare
       return 0 if ratings.length == 0
       average_rating = ratings.sum / ratings.length.to_f
       return average_rating
-      
     end
-    
     
     def total_revenue
       total_revenue = 0
