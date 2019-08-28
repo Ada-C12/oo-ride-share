@@ -4,7 +4,7 @@ require_relative 'csv_record'
 
 module RideShare
   class Driver < CsvRecord
-    attr_reader :name, :vin, :status, :trips, :average_rating
+    attr_reader :name, :vin, :status, :trips
     
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       # using superclass CsvRecord's initialize() to validate id
@@ -36,17 +36,26 @@ module RideShare
       end
       
       if trips.length != 0
-        @average_rating = (ratings_sum.to_f/trips.length).round(2)
+        return (ratings_sum.to_f/trips.length).round(2)
       else  
-        @average_rating = 0
+        return 0
       end
-      
-      return @average_rating
     end
     
     ###JULIA### ADDED for Wave2: Driver Methods
     def total_revenue
-      return "TODO"
+      # This method calculates that driver's total revenue across all their trips. 
+      # Each driver gets 80% of the trip cost AFTER a fee of $1.65 per trip is subtracted
+      # What if there are no trips?   => zero
+      # What if the cost of a trip was less that $1.65? => zero
+      
+      total_revenue = 0.0
+      trips.each do |trip_instance|
+        cost = trip_instance.cost
+        total_revenue += (cost - 1.65) * 0.8
+      end
+      
+      return total_revenue.round(2)
     end
     
     
