@@ -11,7 +11,6 @@ module RideShare
     # binding.pry 
     def initialize(id:, driver: nil, driver_id: nil, passenger: nil, passenger_id: nil, start_time:, end_time:, cost: nil, rating:)
       super(id)
-      
       if driver
         @driver = driver
         @driver_id = driver.id
@@ -55,19 +54,31 @@ module RideShare
       # trip contains a passenger contains a trip contains a passenger...
       "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
       "ID=#{id.inspect} " +
+      "DriverID=#{driver&.id.inspect}>" +
       "PassengerID=#{passenger&.id.inspect}>"
     end
     
-    def connect(passenger)
+    
+    def connect(driver, passenger)
       @passenger = passenger
       passenger.add_trip(self)
+      
+      @driver = driver
+      driver.add_trip(self)
     end
+    
+    # def connect(driver)
+    #   @driver = driver
+    #   driver.add_trip(self)
+    # end
+    
     
     private
     
     def self.from_csv(record)
       return self.new(
       id: record[:id],
+      driver_id: record[:driver_id],
       passenger_id: record[:passenger_id],
       start_time: Time.new(record[:start_time]),
       end_time: Time.new(record[:end_time]),

@@ -17,13 +17,13 @@ describe "TripDispatcher class" do
     
     it "establishes the base data structures when instantiated" do
       dispatcher = build_test_dispatcher
-      [:trips, :passengers].each do |prop|
+      [:trips, :passengers, :drivers].each do |prop|
         expect(dispatcher).must_respond_to prop
       end
       
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
     
     it "loads the development data by default" do
@@ -103,7 +103,6 @@ describe "TripDispatcher class" do
       it "accurately loads driver information into drivers array" do
         first_driver = @dispatcher.drivers.first
         last_driver = @dispatcher.drivers.last
-        p first_driver.status
         expect(first_driver.name).must_equal "Driver 1"
         expect(first_driver.id).must_equal 1
         expect(first_driver.status).must_equal :UNAVAILABLE
@@ -115,7 +114,6 @@ describe "TripDispatcher class" do
       it "connects trips and drivers" do
         dispatcher = build_test_dispatcher
         dispatcher.trips.each do |trip|
-          p "#{trip}"
           expect(trip.driver).wont_be_nil
           expect(trip.driver.id).must_equal trip.driver_id
           expect(trip.driver.trips).must_include trip
