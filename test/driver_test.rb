@@ -45,7 +45,7 @@ describe "Driver class" do
     end
   end
   
-  xdescribe "add_trip method" do
+  describe "add_trip method" do
     before do
       pass = RideShare::Passenger.new(
         id: 1,
@@ -79,7 +79,7 @@ describe "Driver class" do
     end
   end
   
-  xdescribe "average_rating method" do
+  describe "average_rating method" do
     before do
       @driver = RideShare::Driver.new(
         id: 54,
@@ -132,7 +132,70 @@ describe "Driver class" do
     end
   end
   
-  xdescribe "total_revenue" do
-    # You add tests for the total_revenue method
+  describe "total_revenue" do
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        trips: []
+      )
+      @trip_1 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: "2016-08-08",
+        end_time: "2016-08-08",
+        rating: 5,
+        driver_id: 3,
+        cost: 10
+      )
+      @trip_2 = RideShare::Trip.new(
+        id: 9,
+        driver: @driver,
+        passenger_id: 4,
+        start_time: "2016-08-09",
+        end_time: "2016-08-09",
+        rating: 5,
+        driver_id: 3,
+        cost: 20
+      )
+      @trip_3 = RideShare::Trip.new(
+        id: 10,
+        driver: @driver,
+        passenger_id: 5,
+        start_time: "2016-08-07",
+        end_time: "2016-08-07",
+        rating: 5,
+        driver_id: 3,
+        cost: 1.60
+      )
+      
+    end
+
+    it "accurately calculates total revenue" do
+      @driver.add_trip(@trip_1)
+      @driver.add_trip(@trip_2)
+
+      revenue = @driver.total_revenue
+
+      expect(revenue).must_equal 21.36
+    end
+
+    it "returns 0 if no trips were made" do
+      revenue = @driver.total_revenue
+
+      expect(revenue).must_equal 0
+    end
+
+    it "calculates a trip's revenue as 0 if its cost is less than $1.65" do
+      @driver.add_trip(@trip_1)
+      @driver.add_trip(@trip_3)
+
+      revenue = @driver.total_revenue
+
+      expect(revenue).must_equal 6.68
+    end
+
   end
 end
