@@ -121,4 +121,41 @@ describe "TripDispatcher class" do
       end
     end
   end
+  
+  describe "Create a new trip with request_trip" do 
+    it "The request_trip method will have the correct attributes" do
+      # should contain a driver, passenger, start_time
+      # end_date, cost, rating will be nil
+    end 
+    
+    it "Will create a new instance of Trip" do
+      # make a new instance of Trip 
+      # return the newly created trip
+    end 
+    
+    it "Will choose the first driver who's status is available" do
+      # add test
+    end 
+    
+    it "Will add the new trip to the Driver's list of trips" do
+      # add test
+    end
+    
+    it "Will change the Driver's status to unavailable" do 
+      # add test
+    end 
+    
+    it "Will add the new trip to the Passenger's list of trips" do
+      # add test
+    end 
+    
+    it "Will add the newly created trip to the collection of all Trips in TripDispatcher" do
+      # add test
+    end 
+    
+  end
+  
+  
+  
+  
 end
