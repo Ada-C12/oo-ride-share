@@ -23,7 +23,7 @@ describe "TripDispatcher class" do
       
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
     
     it "loads the development data by default" do
@@ -120,6 +120,33 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+  end
+  
+  describe "request_trip method" do
+    before do
+      @dispatcher = build_test_dispatcher
+      @requested_trip = @dispatcher.request_trip(1234)
+    end
+    
+    it "Creates a new instance of Trip" do
+      expect(@requested_trip).must_be_kind_of RideShare::Trip
+    end
+    
+    it "Assigned the correct next sequential trip ID number" do
+      expect(@requested_trip.id).must_equal 6
+    end
+    
+    it "Assigned the correct passenger ID number" do
+      expect(@requested_trip.passenger_id).must_equal 1234
+    end
+    
+    it "Assigned the correct driver ID number" do
+      expect(@requested_trip.driver_id).must_equal 2
+    end
+    
+    it "Start time is an instance of Time" do
+      expect(@requested_trip.start_time).must_be_kind_of Time
     end
   end
 end
