@@ -18,9 +18,8 @@ module RideShare
         
       elsif passenger_id
         @passenger_id = passenger_id
-        
       else
-        raise ArgumentError, 'Passenger or passenger_id is required'
+        raise ArgumentError.new('Passenger or passenger_id is required')
       end
       
       @start_time = start_time
@@ -42,9 +41,8 @@ module RideShare
         
       elsif driver_id
         @driver_id = driver_id
-        
       else
-        raise ArgumentError, "Driver or driver id is required"
+        raise ArgumentError.new("Driver or driver id is required")
       end
       
       

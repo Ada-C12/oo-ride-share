@@ -17,11 +17,9 @@ module RideShare
       else
         @vin = vin
       end
-      
-      @status = status
-      
+            
       valid_status = %i[AVAILABLE UNAVAILABLE]
-      if valid_status.include?(@status)
+      if valid_status.include?(status)
         @status = status
       else
         raise ArgumentError
@@ -37,11 +35,11 @@ module RideShare
     private
     
     def self.from_csv(record)
-      return self.new(
+      return new(
         id: record[:id],
         name: record[:name],
         vin: record[:vin],
-        status: record[:status]
+        status: record[:status].to_sym
       )
     end
   end

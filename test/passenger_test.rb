@@ -149,7 +149,6 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: nil
       )
-      #binding.pry
       expect{@passenger.total_time_spent}.must_raise ArgumentError
     end
   end
