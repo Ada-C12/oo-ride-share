@@ -31,6 +31,20 @@ module RideShare
     def add_trip(trip)
       @trips << trip
     end
+
+    def average_rating
+      if @trips.length == 0
+        return 0
+      else
+        avg_rating = 0
+        @trips.each do |trip|
+          avg_rating += trip.rating
+        end
+
+        avg_rating = (avg_rating/@trips.length).to_f.round(2)
+        return avg_rating
+      end
+    end
     
     private
     
