@@ -4,10 +4,10 @@ describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
-      id: 54,
-      name: "Test Driver",
-      vin: "12345678901234567",
-      status: :AVAILABLE
+        id: 54,
+        name: "Test Driver",
+        vin: "12345678901234567",
+        status: :AVAILABLE
       )
     end
     
@@ -48,23 +48,28 @@ describe "Driver class" do
   describe "add_trip method" do
     before do
       pass = RideShare::Passenger.new(
-      id: 1,
-      name: "Test Passenger",
-      phone_number: "412-432-7640"
+        id: 1,
+        name: "Test Passenger",
+        phone_number: "412-432-7640"
       )
       @driver = RideShare::Driver.new(
-      id: 3,
-      name: "Test Driver",
-      vin: "12345678912345678"
+        id: 3,
+        name: "Test Driver",
+        vin: "12345678912345678"
       )
       @trip = RideShare::Trip.new(
-      id: 8,
-      driver: @driver,
-      passenger: pass,
-      start_time: "2016-08-08",
-      end_time: "2018-08-09",
-      rating: 5
+        id: 8,
+        driver: @driver,
+        passenger: pass,
+        start_time: "2016-08-08",
+        end_time: "2018-08-09",
+        rating: 5
       )
+    end
+    
+    it "raises an ArgumentError if argument is not an instance of Trip" do
+      trip = "Not an instance of Trip"
+      expect {@driver.add_trip(trip)}.must_raise ArgumentError
     end
     
     it "adds the trip" do
@@ -81,17 +86,17 @@ describe "Driver class" do
   describe "average_rating method" do
     before do
       @driver = RideShare::Driver.new(
-      id: 54,
-      name: "Rogers Bartell IV",
-      vin: "1C9EVBRM0YBC564DZ"
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
       )
       trip = RideShare::Trip.new(
-      id: 8,
-      driver: @driver,
-      passenger_id: 3,
-      start_time: "2016-08-08",
-      end_time: "2016-08-08",
-      rating: 5
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: "2016-08-08",
+        end_time: "2016-08-08",
+        rating: 5
       )
       @driver.add_trip(trip)
     end
@@ -108,21 +113,21 @@ describe "Driver class" do
     
     it "returns zero if no driven trips" do
       driver = RideShare::Driver.new(
-      id: 54,
-      name: "Rogers Bartell IV",
-      vin: "1C9EVBRM0YBC564DZ"
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
       )
       expect(driver.average_rating).must_equal 0
     end
     
     it "correctly calculates the average rating" do
       trip2 = RideShare::Trip.new(
-      id: 8,
-      driver: @driver,
-      passenger_id: 3,
-      start_time: "2016-08-08",
-      end_time: "2016-08-09",
-      rating: 1
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: "2016-08-08",
+        end_time: "2016-08-09",
+        rating: 1
       )
       @driver.add_trip(trip2)
       

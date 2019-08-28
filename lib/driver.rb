@@ -24,14 +24,19 @@ module RideShare
     end  
     
     def add_trip(trip)
+      if !trip.instance_of? Trip
+        raise ArgumentError.new("Input must be an instance of Trip")
+      end
+      
+      @trips << trip
     end
     
     def self.from_csv(record)
       return new(
-      id: record[:id],
-      name: record[:name],
-      vin: record[:vin],
-      status: record[:status].to_sym
+        id: record[:id],
+        name: record[:name],
+        vin: record[:vin],
+        status: record[:status].to_sym
       )
     end    
   end
