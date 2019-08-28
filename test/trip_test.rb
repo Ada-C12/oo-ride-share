@@ -10,6 +10,7 @@ describe "Trip class" do
       # binding.pry
       @trip_data = {
       id: 8,
+      driver: RideShare::Driver.new(id: 54, name: "Test Driver", vin: "12345678901234567", status: :AVAILABLE),
       passenger: RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640"),
       start_time: start_time,
       end_time: end_time,
@@ -24,7 +25,8 @@ describe "Trip class" do
     start_time = Time.parse('2015-05-20T12:14:00+00:00')
     end_time = Time.parse('2015-05-20T11:14:00+00:00')
     @time_checking_trip_data = {
-    id: 8, 
+    id: 8,
+    driver: RideShare::Driver.new(id: 54, name: "Test Driver", vin: "12345678901234567", status: :AVAILABLE),
     passenger: RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640"), 
     start_time: start_time, 
     end_time: end_time, 
@@ -64,6 +66,7 @@ describe "The trip duration can be calculated" do
   it "Returns the trip duration in seconds" do 
     @trip_data = {
     id: 8, 
+    driver: RideShare::Driver.new(id: 54, name: "Test Driver", vin: "12345678901234567", status: :AVAILABLE),
     passenger: RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640"), 
     start_time: Time.parse("2015-05-20T12:14:00+00:00"), 
     end_time: Time.parse("2015-05-20T12:44:00+00:00"), 
@@ -72,7 +75,6 @@ describe "The trip duration can be calculated" do
   }
   trip = RideShare::Trip.new(@trip_data)
   duration = (trip.end_time - trip.start_time)
-  p duration
   
   expect(trip.calculate_duration).must_equal 1800.0
   
