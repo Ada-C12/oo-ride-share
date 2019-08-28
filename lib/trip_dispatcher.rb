@@ -47,8 +47,9 @@ module RideShare
     
     def request_trip(passenger_id)
       driver = self.find_available_driver
-      driver.set_status_to_unavailable()
-      self.start_trip(driver: driver, passenger_id: passenger_id)
+      new_trip = self.start_trip(driver: driver, passenger_id: passenger_id)
+      driver.assign_new_trip(new_trip)
+      return new_trip
     end
     
     def start_trip(driver:, passenger_id:)
@@ -61,13 +62,7 @@ module RideShare
     
     
     # YOU SHOULD:
-    #   modify the selected driver
-    #     create a new helper method in driver that will:
-    #     add the new trip to the driver's collection of trips
-    ##### test: was the driver's trip list updated?
-    #     set the driver's status to :UNAVAILABLE
-    #     (might need to use attr_accessor instead of attr_reader for status)
-    ##### test: was the driver who was selected re-set to unavailable?
+    
     
     #   add the trip to the passenger's list of trips
     ##### test: was the passenger's trip list updated?
