@@ -2,15 +2,25 @@ require 'csv'
 require 'time'
 
 require_relative 'csv_record'
+require_relative 'driver'
 
 module RideShare
   class Trip < CsvRecord
-    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
+    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating, :driver_id, :driver
 
     def initialize(id:,
       passenger: nil, passenger_id: nil,
-      start_time:, end_time:, cost: nil, rating:)
+      start_time:, end_time:, cost: nil, rating:, driver_id: nil, driver: nil)
       super(id)
+
+      @passenger = passenger
+      @passenger_id = passenger_id
+      @start_time = start_time
+      @end_time = end_time
+      @cost = cost
+      @rating = rating
+      @driver_id = driver_id
+      @driver = ???
 
       if end_time < start_time
         raise ArgumentError.new, "end time can't be earlier than start time"
@@ -27,13 +37,12 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
 
-      @start_time = start_time
-      @end_time = end_time
-      @cost = cost
-      @rating = rating
-
       if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+        raise ArgumentError, "Invalid rating #{@rating}"
+      end
+
+      if @driver_id = nil && @driver = nil
+        raise ArgumentError, "Either driver ID or driver is required"
       end
     end
 
@@ -62,11 +71,14 @@ module RideShare
     def self.from_csv(record)
       return self.new(
         id: record[:id],
+        passenger: record[:passenger]
         passenger_id: record[:passenger_id],
         start_time: Time.parse("#{record[:start_time]}"),
         end_time: Time.parse("#{record[:end_time]}"),
         cost: record[:cost],
-        rating: record[:rating]
+        rating: record[:rating],
+        driver_id: record[:driver_id],
+        driver: record[:driver]
         )
     end
   end
