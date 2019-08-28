@@ -3,6 +3,8 @@ require 'time'
 
 require_relative 'passenger'
 require_relative 'trip'
+require_relative 'driver'
+# require_relative 'csv_record'
 
 module RideShare
   class TripDispatcher

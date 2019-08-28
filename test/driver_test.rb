@@ -1,6 +1,7 @@
 require_relative 'test_helper'
+# require_relative '../lib/driver'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -45,7 +46,7 @@ xdescribe "Driver class" do
     end
   end
 
-  describe "add_trip method" do
+  xdescribe "add_trip method" do
     before do
       pass = RideShare::Passenger.new(
         id: 1,
@@ -78,7 +79,7 @@ xdescribe "Driver class" do
     end
   end
 
-  describe "average_rating method" do
+  xdescribe "average_rating method" do
     before do
       @driver = RideShare::Driver.new(
         id: 54,
@@ -130,7 +131,7 @@ xdescribe "Driver class" do
     end
   end
 
-  describe "total_revenue" do
+  xdescribe "total_revenue" do
     # You add tests for the total_revenue method
   end
 end
