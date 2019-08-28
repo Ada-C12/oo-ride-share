@@ -5,6 +5,10 @@ describe "Trip class" do
     before do
       start_time = Time.parse('2015-05-20T12:14:00+00:00')
       end_time = start_time + 25 * 60 # 25 minutes
+      
+      # driver_for_test = Driver.new(askdfjlsdf)
+      # driver_for_test = Driver.load_all("test_data").first
+      
       @trip_data = {
         id: 8,
         passenger: RideShare::Passenger.new(
@@ -15,7 +19,15 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver: RideShare::Driver.new(
+          id:1,
+          name: "Paul Klee",
+          vin: "WBS76FYD47DJF7206",
+          status: :AVAILABLE
+          
+        )
+        
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
@@ -24,6 +36,7 @@ describe "Trip class" do
       expect(@trip.duration_calculation).must_equal 1500
       
     end
+    
     
     it "is an instance of Trip" do
       expect(@trip).must_be_kind_of RideShare::Trip
@@ -60,7 +73,14 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver: RideShare::Driver.new(
+          id:1,
+          name: "Paul Klee",
+          vin: "WBS76FYD47DJF7206",
+          status: :AVAILABLE
+        )
+        
       }
       
       expect do

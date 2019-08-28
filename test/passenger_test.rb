@@ -49,7 +49,8 @@ describe "Passenger class" do
         passenger: @passenger,
         start_time: Time.new(2016, 8, 8),
         end_time: Time.new(2016, 8, 9),
-        rating: 5
+        rating: 5,
+        driver_id: 1
       )
       
       @passenger.add_trip(trip)
@@ -85,7 +86,8 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 8, 14, 30, 0),
         end_time: Time.new(2016, 8, 8, 14, 45, 0),
         rating: 5,
-        cost: 6
+        cost: 6,
+        driver_id: 1
       )
       trip2 = RideShare::Trip.new(
         id: 10,
@@ -93,7 +95,8 @@ describe "Passenger class" do
         start_time: Time.new(2016, 10, 10, 14, 30, 0),
         end_time: Time.new(2016, 10, 10, 14, 45, 0),
         rating: 4,
-        cost: 5
+        cost: 5,
+        driver_id: 1
         
       )
       @passenger.add_trip(trip)
@@ -128,7 +131,8 @@ describe "Passenger class" do
         start_time: Time.new(2016, 8, 8, 14, 30, 0),
         end_time: Time.new(2016, 8, 8, 14, 45, 0),
         rating: 5,
-        cost: 6
+        cost: 6,
+        driver_id: 1
       )
       trip2 = RideShare::Trip.new(
         id: 10,
@@ -136,7 +140,8 @@ describe "Passenger class" do
         start_time: Time.new(2016, 10, 10, 14, 30, 0),
         end_time: Time.new(2016, 10, 10, 14, 45, 0),
         rating: 4,
-        cost: 5
+        cost: 5,
+        driver_id: 1
         
       )
       @passenger.add_trip(trip)
