@@ -122,7 +122,7 @@ describe "TripDispatcher class" do
       end
     end
     
-    describe "request trip" do
+    describe "Find available Driver" do
       #   find a driver to assign to the trip
       it "finds an available driver" do
         dispatcher = build_test_dispatcher
@@ -148,8 +148,6 @@ describe "TripDispatcher class" do
         dispatcher.request_trip(1)
         expect(driver_found.status).must_equal :UNAVAILABLE
       end
-      
-      
     end
     
     describe "Build a trip" do
@@ -170,7 +168,35 @@ describe "TripDispatcher class" do
       it "returns a trip with the correct passenger" do
         expect(@trip.passenger.name).must_equal "Passenger 1"
       end
+      
+      it "returns nil for end time, cost, and rating" do
+        expect(@trip.end_time).must_be_nil
+        expect(@trip.cost).must_be_nil
+        expect(@trip.rating).must_be_nil
+      end
     end
+    
+    
+    describe "Was the trip created" do
+      before do
+        @dispatcher = build_test_dispatcher
+        @driver_found = @dispatcher.find_available_driver()
+        
+      end
+      
+      it "creates an instance of trip" do
+        new_trip = @dispatcher.request_trip(1)
+        expect(new_trip).must_be_instance_of RideShare::Trip
+      end
+    end
+    
+    describe "was the time actually the current time?" do
+    end
+    ##### test: was the time actually the current time? (how to test when current time changes? maybe check against another Time.new instead of a specific time)
+    
+    
+    ##### test: were the end time, cost, and rating `nil`?
+    
     
   end
 end
