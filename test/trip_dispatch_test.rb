@@ -122,5 +122,64 @@ describe "TripDispatcher class" do
         end
       end
     end
+
+    describe "request_trip" do
+      it "selects an available driver for the trip" do
+        dispatcher = build_test_dispatcher
+
+        trip = dispatcher.request_trip(2)
+
+        available_drivers = dispatcher.drivers.select{|driver| driver.status == :AVAILABLE}
+
+        num_drivers = available_drivers.length
+
+        expect(num_drivers).must_equal 1
+      end
+
+      it "raises an ArgumentError if no drivers are available" do
+        dispatcher = build_test_dispatcher
+        trip = dispatcher.request_trip(2)
+        trip = dispatcher.request_trip(2)
+        expect{dispatcher.request_trip(2)}.must_raise ArgumentError
+      end
+
+      it "changes driver's status from 'available' to 'unavailable'" do
+        dispatcher = build_test_dispatcher
+
+        trip = dispatcher.request_trip(2)
+
+        expect(trip.driver.status).must_equal :UNAVAILABLE
+      end
+
+      it "adds the requested trip to the trip dispatcher's list of trips" do
+        dispatcher = build_test_dispatcher
+        trip = dispatcher.request_trip(2)
+        expect(dispatcher.trips).must_include trip
+      end
+
+      it "adds the requested trip to the passenger's list of trips" do
+        dispatcher = build_test_dispatcher
+        trip = dispatcher.request_trip(2)
+        cur_passenger = dispatcher.find_passenger(2)
+        expect(cur_passenger.trips).must_include trip
+      end
+
+      it "adds the requested trip to the driver's list of trips" do
+        dispatcher = build_test_dispatcher
+        trip = dispatcher.request_trip(2)
+        cur_driver = trip.driver
+        expect(cur_driver.trips).must_include trip
+      end
+
+      it "returns the newly created trip" do
+        dispatcher = build_test_dispatcher
+        trip = dispatcher.request_trip(2)
+        expect(trip).must_be_kind_of RideShare::Trip
+      end
+
+
+
+    end
+
   end
 end
