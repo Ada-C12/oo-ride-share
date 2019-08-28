@@ -45,6 +45,18 @@ module RideShare
         return avg_rating
       end
     end
+
+    def total_revenue
+      total_rev = 0
+      @trips.each do |trip|
+        if trip.cost <= 1.65
+          total_rev += trip.cost * 0.8
+        else
+          total_rev += (trip.cost - 1.65) * 0.8
+        end
+      end
+      return total_rev
+    end
     
     private
     
