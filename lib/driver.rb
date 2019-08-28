@@ -22,8 +22,40 @@ module RideShare
       @trips = trips || []
     end 
     
+    #Similar method exists in passenger 
     def add_trip(trip)
       @trips << trip
+    end
+    
+    #TODO
+    def average_rating
+      total_ratings = 0
+      if trips.length == 0
+        return 0
+      end 
+      trips.each do |trip|
+        total_ratings += trip.rating
+      end 
+      return (total_ratings / trips.length.to_f).round(2) 
+    end 
+    
+    #TODO
+    def total_revenue
+      total_revenue = 0
+      if trips.length == 0
+        return 0 
+      else
+        @trips.each do |trip|
+          gross_profit = trip.cost
+          if gross_profit < 1.65
+            drivers_share = gross_profit * 0.8
+          else
+            drivers_share = (gross_profit - 1.65) * 0.8
+          end          
+          total_revenue += drivers_share
+        end
+        return total_revenue.round(2)
+      end 
     end
     
     private
