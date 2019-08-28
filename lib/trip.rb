@@ -20,7 +20,7 @@ module RideShare
       @cost = cost
       @rating = rating
       @driver_id = driver_id
-      @driver = ???
+      # @driver = driver[:id]
 
       if end_time < start_time
         raise ArgumentError.new, "end time can't be earlier than start time"
@@ -54,9 +54,11 @@ module RideShare
       "PassengerID=#{passenger&.id.inspect}>"
     end
 
-    def connect(passenger)
+    def connect(passenger, driver)
       @passenger = passenger
       passenger.add_trip(self)
+      @driver = driver
+      driver.add_trip(self)
     end
 
     def duration

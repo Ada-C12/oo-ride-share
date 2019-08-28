@@ -27,7 +27,14 @@ module RideShare
       @trips << trip
     end
 
-   
+    def average_rating
+      n = 0 
+      
+    end
+
+    def total_revenue
+    end
+     
     private
 
     def self.from_csv(record)
