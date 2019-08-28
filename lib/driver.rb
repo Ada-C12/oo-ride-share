@@ -22,11 +22,11 @@ module RideShare
     end
 
     def average_rating
-      @trips.empty? ? 0 : @trips.map(&:rating).sum / @trips.length.to_f
+      completed_trips.empty? ? 0 : completed_trips.map(&:rating).sum / completed_trips.length.to_f
     end
 
     def total_revenue
-      @trips.map do |trip|
+      completed_trips.map do |trip|
         trip_revenue = (trip.cost - 1.65) * 0.8
         
         if trip_revenue > 0
@@ -50,7 +50,11 @@ module RideShare
         name: record[:name],
         vin: record[:vin],
         status: record[:status].to_sym
-        )
+      )
+    end
+
+    def completed_trips
+      @trips.select(&:end_time)
     end
   end
 end
