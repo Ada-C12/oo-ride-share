@@ -1,5 +1,4 @@
 require 'csv'
-
 require_relative 'csv_record'
 
 module RideShare
@@ -29,14 +28,9 @@ module RideShare
       @driver = driver
       @driver_id = driver_id
 
+      raise ArgumentError.new("End time must be after start time") if end_time != nil && start_time > end_time
 
-      if start_time > end_time
-        raise ArgumentError.new("End time must be after start time")
-      end
-
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
-      end
+      raise ArgumentError.new("Invalid rating #{@rating}") if @rating != nil && (@rating > 5 || @rating < 1)
     end
 
     def inspect
@@ -58,9 +52,11 @@ module RideShare
     end
 
     def calculate_duration_seconds
+      if end_time == nil
+        return 0
+      end
       return end_time - start_time
     end
-
 
     private
 

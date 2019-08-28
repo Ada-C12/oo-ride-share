@@ -34,6 +34,38 @@ module RideShare
       #{passengers.count} passengers>"
     end
 
+    def request_trip(passenger_id)
+      available_driver = @drivers.select{|driver| driver.status == :AVAILABLE}
+      if available_driver.length == 0
+        raise ArgumentError, 'No available drivers'
+      end
+      id = @trips.length + 1
+
+      chosen_driver_id = available_driver[0].id
+      chosen_driver = find_driver(chosen_driver_id)
+      passenger = find_passenger(passenger_id)
+
+      trip_data = {
+        id: id,
+        driver_id: chosen_driver_id,
+        passenger: passenger,
+        passenger_id: passenger_id,
+        start_time: Time.now,
+        end_time: nil,
+        cost: nil,
+        rating: nil,
+        driver: chosen_driver
+      }
+
+      trip = Trip.new(trip_data)
+
+      chosen_driver.status = :UNAVAILABLE
+      chosen_driver.add_trip(trip)
+      passenger.add_trip(trip)
+      @trips << trip
+      return trip
+    end
+
     private
 
     def connect_trips
@@ -44,21 +76,6 @@ module RideShare
         trip.connect_driver(driver)
       end
       return trips
-    end
-
-    def request_trip(passenger_id)
-      available_driver = @drivers.find{|driver| driver.status == :AVAILABLE}
-      id = @trips.length + 1
-
-      passenger = find_passenger(passenger_id)
-      chosen_driver_id = available_driver.id
-      chosen_driver = find_driver(chosen_driver_id)
-      trip = Trip.new(id, chosen_driver_id, passenger, passenger_id, Time.now, nil, nil, nil, chosen_driver)
-
-      chosen_driver.status = :UNAVAILABLE
-      passenger.add_trip(trip)
-      @trips << trip
-      return trip
     end
   end
 end
