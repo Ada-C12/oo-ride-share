@@ -26,13 +26,9 @@ module RideShare
     def average_rating
       return 0 if @trips == []
       
-      total_rating = 0.0
-      
       completed_trips = @trips.select {|trip| trip.end_time != nil}
       
-      completed_trips.each do |trip|
-        total_rating += trip.rating 
-      end
+      total_rating = completed_trips.map {|trip| trip.rating}.sum.to_f
       
       return (total_rating/completed_trips.length)
     end
@@ -44,15 +40,13 @@ module RideShare
       
       completed_trips = @trips.select {|trip| trip.end_time != nil}
       
-      # NOTE: If trips are less than $1.65, no fee is applied for trip.
+      # If trips are less than $1.65, no fee is applied for trip.
       completed_trips.each do |trip|
         total_revenue += trip.cost
         total_revenue -= 1.65 if trip.cost >= 1.65
       end
       
-      total_revenue *= 0.80
-      
-      return total_revenue
+      return total_revenue *= 0.80
     end
     
     private
@@ -66,6 +60,5 @@ module RideShare
         status: record[:status].to_sym
       )
     end
-    
   end
 end

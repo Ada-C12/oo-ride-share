@@ -189,8 +189,6 @@ describe "TripDispatcher class" do
       )
       
       expect{ @dispatcher.request_trip(3) }.must_raise ArgumentError
-      
-      puts "#{@dispatcher.drivers}"
     end
   end
 end
