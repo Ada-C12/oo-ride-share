@@ -70,7 +70,7 @@ describe "Passenger class" do
   end
   
   describe "net_expenditures" do
-    it "verify the total expenditure by passenger" do
+    it "verifies the total expenditure by passenger" do
       
       # populates passenger and trip instances
       all_trips = RideShare::Trip.load_all(directory: './support')
@@ -92,5 +92,31 @@ describe "Passenger class" do
       
     end
   end
+  
+  describe "total_time_spent" do
+    it "verifies the total time spent by passenger" do
+      
+      # populates passenger and trip instances
+      all_trips = RideShare::Trip.load_all(directory: './support')
+      
+      # pulls the cost of all trips taken by passenger 3
+      total_time_by_passenger = 0
+      trips_by_passenger = []
+      
+      
+      all_trips.each do |trip|
+        if trip.passenger_id == 3
+          total_time_by_passenger += trip.duration
+          trips_by_passenger.push(trip)
+        end
+      end
+      
+      passenger = RideShare::Passenger.new(id: 3, name: "Melvin Gerlach DDS", phone_number: "562-716-1794", trips: trips_by_passenger)
+      
+      expect(passenger.total_time_spent).must_equal total_time_by_passenger
+      
+    end
+    
+  end
+  
 end
-
