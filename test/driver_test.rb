@@ -167,6 +167,27 @@ describe "Driver class" do
 
       expect(driver2.total_revenue).must_be_close_to 51.00, 0.01
     end
-
   end
+
+  describe "dispatch" do
+    it "adds a new trip to driver" do
+      driver = RideShare::Driver.new(
+        id: 3,
+        name: "Test Driver",
+        vin: "12345678912345678"
+      )
+      trip1 = RideShare::Trip.load_all(directory: './test/test_data').first
+      trip_count = driver.trips.count
+
+      driver.dispatch(trip1)
+
+      expect(driver.trips.count).must_equal trip_count + 1
+      expect(driver.trips).must_include trip1
+    end
+
+    it "sets the driver status to :UNAVAILABLE" do
+    
+    end 
+  end
+
 end

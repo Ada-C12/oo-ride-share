@@ -37,6 +37,11 @@ module RideShare
       end.sum
     end
 
+    def dispatch(trip)
+      add_trip(trip)
+      @status = :UNAVAILABLE
+    end
+
     private
     
     def self.from_csv(record)
