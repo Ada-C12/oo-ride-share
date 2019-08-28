@@ -123,7 +123,6 @@ describe "TripDispatcher class" do
     end
     
     describe "Find available Driver" do
-      #   find a driver to assign to the trip
       it "finds an available driver" do
         dispatcher = build_test_dispatcher
         driver_found = dispatcher.find_available_driver()
@@ -188,19 +187,18 @@ describe "TripDispatcher class" do
         new_trip = @dispatcher.request_trip(1)
         expect(new_trip).must_be_instance_of RideShare::Trip
       end
-    end
-    
-    describe "was the time actually the current time?" do
-      before do
-        @dispatcher = build_test_dispatcher
-        @driver_found = @dispatcher.find_available_driver()
-      end
       
       it "checks that the time is actually current" do
         cur_time = Time.new
         new_trip = @dispatcher.request_trip(1)
         expect(new_trip.start_time).must_be_close_to cur_time
       end
+      
+      it "adds the trip to the passenger's list of trips" do
+        # passenger.add_trip(new_trip)
+      end
+      
     end
+    
   end
 end
