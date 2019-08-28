@@ -107,8 +107,8 @@ describe "TripDispatcher class" do
         expect(first_driver.name).must_equal "Driver 1 (unavailable)"
         expect(first_driver.id).must_equal 1
         expect(first_driver.status).must_equal :UNAVAILABLE
-        expect(last_driver.name).must_equal "Driver 3 (no trips)"
-        expect(last_driver.id).must_equal 3
+        expect(last_driver.name).must_equal "Driver 8 (no trips)"
+        expect(last_driver.id).must_equal 8
         expect(last_driver.status).must_equal :AVAILABLE
       end
       
@@ -126,6 +126,71 @@ describe "TripDispatcher class" do
   describe "request trip method" do
     before do
       @dispatcher = build_test_dispatcher
+      
+      # @dispatcher.drivers << RideShare::Driver.new(
+      #   id: 4,
+      #   name: "Driver 4 (unavailable)",
+      #   vin: "1B6CF40K1J3Y74UYA",
+      #   status: :UNAVAILABLE
+      # )
+      
+      # @dispatcher.drivers << RideShare::Driver.new(
+      #   id: 5,
+      #   name: "Driver 5",
+      #   vin: "1B6CF40K1J3Y74UYB",
+      #   status: :AVAILABLE
+      # )
+      
+      # @dispatcher.drivers << RideShare::Driver.new(
+      #   id: 6,
+      #   name: "Driver 6 (long idle)",
+      #   vin: "1B6CF40K1J3Y74UYC",
+      #   status: :AVAILABLE
+      # )
+      
+      # @dispatcher.drivers << RideShare::Driver.new(
+      #   id: 7,
+      #   name: "Driver 7",
+      #   vin: "1B6CF40K1J3Y74UYD",
+      #   status: :AVAILABLE
+      # )
+      
+      # @dispatcher.drivers << RideShare::Driver.new(
+      #   id: 8,
+      #   name: "Driver 8 (no trips),",
+      #   vin: "1B6CF40K1J3Y74UYE",
+      #   status: :AVAILABLE
+      # )
+      
+      # @dispatcher.trips << RideShare::Trip.new(
+      #   id: 6,
+      #   driver_id: 5,
+      #   passenger_id: 7,
+      #   start_time: Time.parse("2018-05-25 11:52:40 -0700"),
+      #   end_time: Time.parse("2018-05-25 12:25:00 -0700"),
+      #   cost: 10,
+      #   rating: 5
+      # )
+      
+      # @dispatcher.trips << RideShare::Trip.new(
+      #   id: 7,
+      #   driver_id: 6,
+      #   passenger_id: 7,
+      #   start_time: Time.parse("2018-08-01 15:04:00 -0700"),
+      #   end_time: Time.parse("2018-08-01 15:14:00 -0700"),
+      #   cost: 8,
+      #   rating: 1
+      # )
+      
+      # @dispatcher.trips << RideShare::Trip.new(
+      #   id: 8,
+      #   driver_id: 7,
+      #   passenger_id: 7,
+      #   start_time: Time.parse("2018-08-16 15:04:00 -0700"),
+      #   end_time: Time.parse("2018-08-16 15:14:00 -0700"),
+      #   cost: 8,
+      #   rating: 1
+      # )
     end
     
     it "returns an instance of trip" do
@@ -149,10 +214,10 @@ describe "TripDispatcher class" do
     end
     
     it "finds longest idle driver when all available drivers have at least one trip" do
-      # @dispatcher.request_trip(5)
-      # @dispatcher.request_trip(2)
+      @dispatcher.request_trip(5)
+      @dispatcher.request_trip(2)
       
-      # expect(@dispatcher.request_trip(6).driver_id).must_equal 6
+      expect(@dispatcher.request_trip(1).driver_id).must_equal 6, "#{@dispatcher.drivers}"
     end
     
     it "updates driver trip list" do
@@ -166,9 +231,52 @@ describe "TripDispatcher class" do
     end
     
     it "raises an error when no drivers are available" do
-      @dispatcher.request_trip(1)
-      @dispatcher.request_trip(2)
+      6.times do 
+        @dispatcher.request_trip(2)
+      end
+      
       expect{ @dispatcher.request_trip(3) }.must_raise ArgumentError
+    end
+    
+    it "does not include drivers with a status of available and trip end time of nil" do 
+      6.times do 
+        @dispatcher.request_trip(2)
+      end
+      
+      expect{ @dispatcher.request_trip(3) }.must_raise ArgumentError
+      
+      trip = RideShare::Trip.new(
+        id: 123,
+        driver_id: 11,
+        passenger_id: 7,
+        start_time: Time.parse("2018-08-16 15:04:00 -0700"),
+        end_time: nil,
+        cost: 8,
+        rating: 1
+      )
+      
+      @dispatcher.drivers << RideShare::Driver.new(
+        id: 11,
+        name: "Driver 11",
+        vin: "1B6CF40K1J3Y74UYZ",
+        status: :AVAILABLE,
+        trips: [trip]
+      )
+      
+      # @dispatcher.trips << [RideShare::Trip.new(
+      #   id: 123,
+      #   driver_id: 11,
+      #   passenger_id: 7,
+      #   start_time: Time.parse("2018-08-16 15:04:00 -0700"),
+      #   end_time: nil,
+      #   cost: 8,
+      #   rating: 1
+      # )]
+      
+      
+      expect{ @dispatcher.request_trip(3) }.must_raise ArgumentError
+      
+      puts "#{@dispatcher.drivers}"
     end
   end
 end
