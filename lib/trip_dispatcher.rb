@@ -39,7 +39,9 @@ module RideShare
     end
 
     def find_available_driver
-      @drivers.find { |driver| driver.status == :AVAILABLE }
+      driver = @drivers.find { |driver| driver.status == :AVAILABLE }
+      raise RuntimeError.new("No available drivers") unless driver
+      return driver
     end
 
     def request_trip(passenger_id)
@@ -52,6 +54,7 @@ module RideShare
 
       driver.dispatch(trip)
       passenger.add_trip(trip)
+      @trips << trip
 
       return trip
     end
