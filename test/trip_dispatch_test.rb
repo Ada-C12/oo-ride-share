@@ -137,6 +137,20 @@ describe "TripDispatcher class" do
 
         expect(trip_ids.uniq.count).must_equal trip_ids.count
       end
+
+      it "should add the trip to the passenger's list of trips" do
+        dispatcher = build_test_dispatcher
+        trip = dispatcher.request_trip(1)
+
+        expect(trip.passenger.trips).must_include trip
+      end
+
+      it "should add the trip to @trips in TripDispatcher" do
+      end
+
+      it "properly creates trip" do
+
+      end
     end
   end
 end
