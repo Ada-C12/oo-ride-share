@@ -40,7 +40,7 @@ describe "Driver class" do
     end
   end
   
-  xdescribe "add_trip method" do
+  describe "add_trip method" do
     before do
       pass = RideShare::Passenger.new(
       id: 1,
@@ -73,7 +73,7 @@ describe "Driver class" do
     end
   end
   
-  xdescribe "average_rating method" do
+  describe "average_rating method" do
     before do
       @driver = RideShare::Driver.new(
       id: 54,

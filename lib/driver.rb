@@ -27,6 +27,23 @@ module RideShare
       @trips << trip
     end
     
+    def average_rating
+      trip_ratings = []
+      
+      if self.trips.empty?
+        return 0
+      else
+        self.trips.each do |trip|
+          trip_ratings << trip.rating
+        end 
+        
+        total_rating = trip_ratings.sum
+        return average_rating = total_rating.to_f / trip_ratings.length 
+      end 
+    end 
+    
+    
+    
     private
     
     def self.from_csv(record)
@@ -37,5 +54,6 @@ module RideShare
       status: record[:status]
       )
     end
+    
   end 
 end
