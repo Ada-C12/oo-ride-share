@@ -121,5 +121,56 @@ describe "TripDispatcher class" do
         end
       end
     end
+    
+    describe "request trip" do
+      #   find a driver to assign to the trip
+      it "finds an available driver" do
+        dispatcher = build_test_dispatcher
+        driver_found = dispatcher.find_available_driver()
+        expect(driver_found.name).must_equal "Driver 2"
+      end
+      
+      it "finds the first available driver" do 
+        dispatcher = build_test_dispatcher
+        driver_found = dispatcher.find_available_driver()
+        expect(driver_found.name).wont_equal "Driver 3 (no trips)"
+      end
+      
+      it "The first available driver has the status :AVAILABLE" do
+        dispatcher = build_test_dispatcher
+        driver_found = dispatcher.find_available_driver()
+        expect(driver_found.status).must_equal :AVAILABLE
+      end
+      
+      it "Reassigns status when driver is chosen" do
+        dispatcher = build_test_dispatcher
+        driver_found = dispatcher.find_available_driver()
+        dispatcher.request_trip(1)
+        expect(driver_found.status).must_equal :UNAVAILABLE
+      end
+      
+      
+    end
+    
+    describe "Build a trip" do
+      before do
+        @dispatcher = build_test_dispatcher
+        @driver_found = @dispatcher.find_available_driver()
+        @trip = @dispatcher.start_trip(driver: @driver_found, passenger_id: 1)
+      end
+      
+      it "returns an instance of trip" do
+        expect(@trip).must_be_instance_of RideShare::Trip
+      end
+      
+      it "returns a trip with a passenger instance assigned to it" do
+        expect(@trip.passenger).must_be_instance_of RideShare::Passenger
+      end
+      
+      it "returns a trip with the correct passenger" do
+        expect(@trip.passenger.name).must_equal "Passenger 1"
+      end
+    end
+    
   end
 end

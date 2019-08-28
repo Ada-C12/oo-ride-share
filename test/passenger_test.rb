@@ -132,7 +132,6 @@ describe "Passenger class" do
       
       # trip 2
       start_time_2 = Time.parse('2015-05-20T12:14:00+00:00')
-      end_time_2 = start_time_2 + 30 * 60 # 25 minutes
       trip_2_data = {
         id: 8,
         passenger: passenger,
