@@ -6,8 +6,9 @@ module RideShare
     TRIP_FEE = 1.65
     PERCENTAGE_PAY = 0.8
     
-    attr_reader :name, :vin, :status, :trips
-    
+    attr_reader :name, :vin, :trips
+    attr_accessor :status
+
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: [])
       super(id)
       
