@@ -1,11 +1,13 @@
 require_relative 'test_helper'
 require 'time'
 
+
 describe "Trip class" do
   describe "initialize" do
     before do
       start_time = Time.parse('2015-05-20T12:14:00+00:00')
       end_time = start_time + 25 * 60 # 25 minutes
+      driver = RideShare::Driver.new(id:1, name: "Emily", vin: "WBS76FYD47DJF7206", status: :AVAILABLE, trips: nil)
       @trip_data = {
         id: 8,
         passenger: RideShare::Passenger.new(id: 1,
@@ -15,7 +17,9 @@ describe "Trip class" do
         start_time: start_time,
         end_time: end_time,
         cost: 23.45,
-        rating: 3
+        rating: 3,
+        driver_id: 1,
+        driver: driver
       }
       @trip = RideShare::Trip.new(@trip_data)
     end
@@ -48,7 +52,7 @@ describe "Trip class" do
       timestart = Time.parse("2018-12-27 02:39:05 -0800")
       timeend = Time.parse("2018-12-17 16:09:21 -0800")
       passenger = RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640")
-      
+      driver = RideShare::Driver.new(id: 1, name: "Emily", vin: "WBS76FYD47DJF7206", status: :AVAILABLE, trips: nil)
       expect do 
         RideShare::Trip.new(
           id: 8,
@@ -56,7 +60,9 @@ describe "Trip class" do
           start_time:timestart, 
           end_time:timeend, 
           cost: 23 , 
-          rating: 3
+          rating: 3,
+          driver_id: 1,
+          driver: driver
         )
       end.must_raise ArgumentError
     end
@@ -67,13 +73,16 @@ describe "Trip class" do
       time1 = Time.parse("2018-12-17 02:39:05 -0800")
       time2 = Time.parse("2018-12-17 5:09:21 -0800")
       passenger = RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640")
+      driver = RideShare::Driver.new(id: 1, name: "Emily", vin: "WBS76FYD47DJF7206", status: :AVAILABLE, trips: nil)
       testtrip = RideShare::Trip.new(
         id: 8,
         passenger: passenger,
         start_time:time1, 
         end_time:time2, 
         cost: 23 , 
-        rating: 3
+        rating: 3,
+        driver_id: 1,
+        driver: driver
       )
       expect(testtrip.duration).must_equal 9016.0
     end

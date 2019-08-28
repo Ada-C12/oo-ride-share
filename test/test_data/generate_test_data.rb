@@ -29,19 +29,19 @@ passengers = [
 trips = [
   { id: 1, driver_id: 1, passenger_id: 1,
     start_time: '2018-05-25 11:52:40 -0700',
-    end_time: '2018-05-25 12:25:00 -0700', cost: 10, rating: 5 },
+    end_time: '2018-05-25 12:25:00 -0700', cost: 10, rating: 5, driver: drivers[0], driver_id: 8 },
   { id: 2, driver_id: 1, passenger_id: 3,
     start_time: '2018-05-25 04:39:00 -0700',
-    end_time: '2018-05-25 04:55:00 -0700', cost: 7, rating: 3 },
+    end_time: '2018-05-25 04:55:00 -0700', cost: 7, rating: 3 , driver: drivers[1], driver_id: 3 },
   { id: 3, driver_id: 2, passenger_id: 4,
     start_time: '2018-06-11 22:22:00 -0700',
-    end_time: '2018-06-11 22:57:00 -0700', cost: 15, rating: 4 },
+    end_time: '2018-06-11 22:57:00 -0700', cost: 15, rating: 4, driver: drivers[2], driver_id: 4  },
   { id: 4, driver_id: 2, passenger_id: 7,
     start_time: '2018-08-12 15:04:00 -0700',
-    end_time: '2018-08-12 15:14:00 -0700', cost: 8, rating: 1 },
+    end_time: '2018-08-12 15:14:00 -0700', cost: 8, rating: 1, driver: drivers[0], driver_id: 2 },
   { id: 5, driver_id: 2, passenger_id: 6,
     start_time: '2018-08-05 08:58:00 -0700',
-    end_time: '2018-08-05 09:30:00 -0700', cost: 32, rating: 1 }
+    end_time: '2018-08-05 09:30:00 -0700', cost: 32, rating: 1, driver: drivers[1], driver_id: 7  }
 ]
 
 drivers.each do |driver|

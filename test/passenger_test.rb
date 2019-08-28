@@ -44,12 +44,15 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
       )
+      driver = RideShare::Driver.new(id:1, name: "Emily", vin: "WBS76FYD47DJF7206", status: :AVAILABLE, trips: nil)
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
         start_time: "2016-08-08",
         end_time: "2016-08-09",
-        rating: 5
+        rating: 5,
+        driver: driver,
+        driver_id: 1
       )
       
       @passenger.add_trip(trip)
@@ -71,6 +74,7 @@ describe "Passenger class" do
   describe "net expenditures" do
     it "returns the total amount of money passenger spend on trips" do
       test_passenger = RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640")
+      driver = RideShare::Driver.new(id:1, name: "Emily", vin: "WBS76FYD47DJF7206", status: :AVAILABLE, trips: nil)
       trip_one = {
         id: 8,
         passenger: RideShare::Passenger.new(id: 1,
@@ -80,8 +84,11 @@ describe "Passenger class" do
         start_time: Time.parse("2018-12-17 02:39:05 -0800"),
         end_time: Time.parse("2018-12-17 5:09:21 -0800"),
         cost: 20,
-        rating: 3
+        rating: 3,
+        driver_id: 1,
+        driver: driver
       }
+      
       trip_two = {
         id: 8,
         passenger: RideShare::Passenger.new(id: 1,
@@ -91,7 +98,9 @@ describe "Passenger class" do
         start_time: Time.parse("2018-12-17 02:39:05 -0800"),
         end_time: Time.parse("2018-12-17 5:09:21 -0800"),
         cost: 20,
-        rating: 3
+        rating: 3,
+        driver: driver,
+        driver_id: 1
       }
       trip1 = RideShare::Trip.new(trip_one)
       trip2 = RideShare::Trip.new(trip_two)
@@ -112,6 +121,7 @@ describe "Passenger class" do
   describe "Total time spent" do
     it "returns the total amount of time passenger spent on trips" do
       test_passenger = RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640")
+      driver = RideShare::Driver.new(id:1, name: "Emily", vin: "WBS76FYD47DJF7206", status: :AVAILABLE, trips: nil)
       trip_one = {
         id: 8,
         passenger: RideShare::Passenger.new(id: 1,
@@ -121,7 +131,9 @@ describe "Passenger class" do
         start_time: Time.parse("2018-12-17 02:39:05 -0800"),
         end_time: Time.parse("2018-12-17 5:09:21 -0800"),
         cost: 20,
-        rating: 3
+        rating: 3,
+        driver_id: 2,
+        driver: driver
       }
       trip_two = {
         id: 8,
@@ -132,7 +144,9 @@ describe "Passenger class" do
         start_time: Time.parse("2018-12-17 02:39:05 -0800"),
         end_time: Time.parse("2018-12-17 5:09:21 -0800"),
         cost: 20,
-        rating: 3
+        rating: 3,
+        driver_id: 2,
+        driver: driver
       }
       trip1 = RideShare::Trip.new(trip_one)
       trip2 = RideShare::Trip.new(trip_two)
