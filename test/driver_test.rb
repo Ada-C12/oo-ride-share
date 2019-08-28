@@ -142,7 +142,6 @@ describe "Driver class" do
       @driver.add_trip(trip2)
 
       expect(@driver.average_rating).must_be_close_to 5.0, 0.01
-
     end
   end
 
@@ -183,6 +182,28 @@ describe "Driver class" do
 
       expect(driver2.total_revenue).must_be_close_to 51.00, 0.01
     end
+
+    it "ignores in-progress trips when calculating total_revenue" do
+      trips = RideShare::Trip.load_all(directory: './test/test_data')
+      
+      driver2 = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        trips: trips
+      )
+
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: driver2,
+        passenger_id: 3,
+        start_time: "2016-08-08",
+        end_time: nil,
+        rating: nil
+      )
+      
+      expect(driver2.total_revenue).must_be_close_to 51.00, 0.01
+    end
   end
 
   describe "dispatch" do
@@ -202,7 +223,17 @@ describe "Driver class" do
     end
 
     it "sets the driver status to :UNAVAILABLE" do
-    
+      driver = RideShare::Driver.new(
+        id: 3,
+        name: "Test Driver",
+        vin: "12345678912345678"
+      )
+
+      trip1 = RideShare::Trip.load_all(directory: './test/test_data').first
+
+      driver.dispatch(trip1)
+
+      expect(driver.status).must_equal :UNAVAILABLE
     end 
   end
 
