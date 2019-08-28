@@ -23,7 +23,7 @@ describe "TripDispatcher class" do
       
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
     
     it "loads the development data by default" do
@@ -35,6 +35,23 @@ describe "TripDispatcher class" do
       expect(dispatcher.trips.length).must_equal trip_count
     end
   end
+  
+  # describe "drivers" do 
+  #   describe "find_driver" do 
+  #     before do 
+  #       @dispatcher = build_test_dispatcher
+  #     end
+  
+  #     it "throws an argument error for a bad ID" do 
+  #       expect { @dispatcher.find_driver(0) }.must_raise ArgumentError
+  #     end
+  
+  #     it "finds a driver instance" do 
+  #       @driver = @dispatcher.find_driver(2)
+  #       expect(@driver).must_be_kind_of RideShare::Driver
+  #     end
+  #   end
+  # end 
   
   describe "passengers" do
     describe "find_passenger method" do
@@ -79,7 +96,7 @@ describe "TripDispatcher class" do
   end
   
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher

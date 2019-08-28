@@ -131,6 +131,76 @@ describe "Driver class" do
   end
   
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        cost: 20,
+        rating: 5
+      )
+      @driver.add_trip(trip)
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2017, 8, 8),
+        end_time: Time.new(2017, 8, 8),
+        cost: 25,
+        rating: 5
+      )
+      @driver.add_trip(trip2) 
+    end
+    
+    it "returns zero if no trips taken" do 
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      expect(driver.total_revenue).must_equal 0
+    end
+    
+    it "returns zero if trip costs $1.65 or less" do 
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2016, 8, 8),
+        end_time: Time.new(2016, 8, 8),
+        cost: 1.15,
+        rating: 5
+      )
+      @driver.add_trip(trip)
+      
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new(2017, 8, 8),
+        end_time: Time.new(2017, 8, 8),
+        cost: 30,
+        rating: 5
+      )
+      @driver.add_trip(trip2) 
+      expect(@driver.total_revenue).must_equal 22.68
+      
+    end
+    
+    it "returns returns the correct amount of total revenue" do 
+      expect(@driver.total_revenue).must_equal 33.36
+    end
   end
 end
