@@ -20,10 +20,7 @@ module RideShare
       return 0 if @trips == []
       
       total = 0
-      
-      @trips.each do |trip|
-        total += trip.cost unless trip.end_time == nil
-      end
+      @trips.each { |trip| total += trip.cost unless trip.end_time == nil }
       
       return total
     end
@@ -32,10 +29,7 @@ module RideShare
       return 0 if @trips == []
       
       total = 0
-      
-      @trips.each do |trip|
-        total += trip.duration unless trip.end_time == nil
-      end
+      @trips.each { |trip| total += trip.duration unless trip.end_time == nil }
       
       return total
     end
