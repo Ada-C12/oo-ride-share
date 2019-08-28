@@ -48,7 +48,7 @@ describe "Passenger class" do
         id: 4,
         name: "Lovelace",
         vin: "12345678901234567",
-        status: :AVAILABLE,
+        status: "AVAILABLE",
         trips: []
       )
       trip = RideShare::Trip.new(
@@ -88,7 +88,7 @@ describe "Passenger class" do
         id: 4,
         name: "Lovelace",
         vin: "12345678901234567",
-        status: :AVAILABLE,
+        status: "AVAILABLE",
         trips: []
       )
       trip_01 = RideShare::Trip.new(
@@ -134,7 +134,7 @@ describe "Passenger class" do
         id: 4,
         name: "Lovelace",
         vin: "12345678901234567",
-        status: :AVAILABLE,
+        status: "AVAILABLE",
         trips: []
       )
       trip_01 = RideShare::Trip.new(
