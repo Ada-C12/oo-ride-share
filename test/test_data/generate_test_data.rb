@@ -11,9 +11,9 @@ trips_csv = CSV.open('./trips.csv', 'w+',
                                :end_time, :cost, :rating])
 
 drivers = [
-  { id: 1, name: 'Driver 1 (unavailable)', vin: '1B6CF40K1J3Y74UY0', status: 'UNAVAILABLE' },
-  { id: 2, name: 'Driver 2', vin: '1B6CF40K1J3Y74UY2', status: 'AVAILABLE' },
-  { id: 3, name: 'Driver 3 (no trips)', vin: '1C6CF40K1J3Y74UY2', status: 'AVAILABLE' }
+  { id: 1, name: 'Driver 1 (unavailable)', vin: '1B6CF40K1J3Y74UY0', status: :AVAILABLE },
+  { id: 2, name: 'Driver 2', vin: '1B6CF40K1J3Y74UY2', status: :AVAILABLE },
+  { id: 3, name: 'Driver 3 (no trips)', vin: '1C6CF40K1J3Y74UY2', status: :AVAILABLE }
 ]
 passengers = [
   { id: 1, name: 'Passenger 1', phone_num: '111-111-1111' },
