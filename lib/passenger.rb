@@ -25,6 +25,13 @@ module RideShare
       return total_cost = costs.sum
     end
     
+    def total_time_spent
+      times = []
+      trips.each do |trip|
+        times << trip.duration
+      end
+      return total_time = times.sum
+    end
     
     private
     
