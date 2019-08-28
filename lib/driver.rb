@@ -42,6 +42,15 @@ module RideShare
       end 
     end 
     
+    def calculate_total_revenue 
+      trip_costs = []
+      
+      self.trips.each do |trip|
+        trip_costs << (trip.cost - 1.65)
+      end
+      total_cost = trip_costs.sum
+      total_revenue = total_cost * 0.8
+    end
     
     
     private
