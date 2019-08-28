@@ -201,11 +201,5 @@ describe "TripDispatcher class" do
         expect(new_trip.start_time).must_be_close_to cur_time
       end
     end
-    ##### test: was the time actually the current time? (how to test when current time changes? maybe check against another Time.new instead of a specific time)
-    
-    
-    ##### test: were the end time, cost, and rating `nil`?
-    
-    
   end
 end

@@ -65,6 +65,18 @@ module RideShare
       self.status = :UNAVAILABLE
     end
     
+    def assign_new_trip(trip)
+      self.add_trip(trip)
+      self.set_status_to_unavailable
+    end 
+    
+    #   modify the selected driver
+    #     create a new helper method in driver that will:
+    #     add the new trip to the driver's collection of trips
+    ##### test: was the driver's trip list updated?
+    #     set the driver's status to :UNAVAILABLE
+    #     (might need to use attr_accessor instead of attr_reader for status)
+    ##### test: was the driver who was selected re-set to unavailable?
     private
     
     def self.from_csv(record)

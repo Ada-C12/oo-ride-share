@@ -59,18 +59,6 @@ module RideShare
     end
     
     
-    # TripDispatcher#request_trip(passenger_id)
-    # passenger_id = passenger who is requesting the trip
-    
-    # CODE SHOULD:
-    
-    #   create a new instance of Trip
-    #     use the current time for the start time
-    #      (Time.new with no arguments returns current time)
-    #     the end time, cost, and rating are all `nil`
-    ##### test: was the trip created?
-    ##### test: was the time actually the current time? (how to test when current time changes? maybe check against another Time.new instead of a specific time)
-    ##### test: were the end time, cost, and rating `nil`?
     
     # YOU SHOULD:
     #   modify the selected driver
