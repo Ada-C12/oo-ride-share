@@ -67,6 +67,51 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    before do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: [],
+      )
+      trip1 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        rating: 5,
+        cost: 18,
+      )
+      trip2 = RideShare::Trip.new(
+        id: 500,
+        passenger: @passenger,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        rating: 5,
+        cost: 10,
+      )
+      trip3 = RideShare::Trip.new(
+        id: 7,
+        passenger: @passenger,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        rating: 5,
+        cost: 12,
+      )
+      @passenger.add_trip(trip1)
+      @passenger.add_trip(trip2)
+      @passenger.add_trip(trip3)
+    end
+
+    it "Sums all costs from a single instance of passenger" do
+      total = @passenger.net_expenditures
+
+      expect(total).must_equal 40
+    end
+
+    it "returns a value in the form of an integer." do
+      total = @passenger.net_expenditures
+      expect(total).must_be_instance_of Integer
+    end
   end
 end
