@@ -45,17 +45,20 @@ module RideShare
       end
       return trips
     end
-    # def request_trip(passenger_id)
-    #   available_drivers = @drivers.select(|driver| driver.status == :AVAILABLE)
-    #   id = @trips.length + 1
 
-    #   passenger = find_passenger(passenger_id)
-    #   chosen_driver_id = available_drivers[0].id
-    #   chosen_driver = find_driver(chosen_driver_id)
-    #   trip = Trip.new(id, chosen_driver_id, passenger, passenger_id, Time.now, nil, nil, nil, chosen_driver)
+    def request_trip(passenger_id)
+      available_driver = @drivers.find{|driver| driver.status == :AVAILABLE}
+      id = @trips.length + 1
 
+      passenger = find_passenger(passenger_id)
+      chosen_driver_id = available_driver.id
+      chosen_driver = find_driver(chosen_driver_id)
+      trip = Trip.new(id, chosen_driver_id, passenger, passenger_id, Time.now, nil, nil, nil, chosen_driver)
 
-
-    # end
+      chosen_driver.status = :UNAVAILABLE
+      passenger.add_trip(trip)
+      @trips << trip
+      return trip
+    end
   end
 end
