@@ -120,5 +120,23 @@ describe "TripDispatcher class" do
         end
       end
     end
+
+    describe "request_trip" do
+      it "must return a trip" do
+        dispatcher = build_test_dispatcher
+        trip = dispatcher.request_trip(1)
+
+        expect(trip).must_be_instance_of RideShare::Trip
+      end
+
+      it "creates a unique trip id" do
+        dispatcher = build_test_dispatcher
+        dispatcher.request_trip(1)
+
+        trip_ids = dispatcher.trips.map(&:id)
+
+        expect(trip_ids.uniq.count).must_equal trip_ids.count
+      end
+    end
   end
 end
