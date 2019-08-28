@@ -181,7 +181,6 @@ describe "TripDispatcher class" do
       before do
         @dispatcher = build_test_dispatcher
         @driver_found = @dispatcher.find_available_driver()
-        
       end
       
       it "creates an instance of trip" do
@@ -191,6 +190,16 @@ describe "TripDispatcher class" do
     end
     
     describe "was the time actually the current time?" do
+      before do
+        @dispatcher = build_test_dispatcher
+        @driver_found = @dispatcher.find_available_driver()
+      end
+      
+      it "checks that the time is actually current" do
+        cur_time = Time.new
+        new_trip = @dispatcher.request_trip(1)
+        expect(new_trip.start_time).must_be_close_to cur_time
+      end
     end
     ##### test: was the time actually the current time? (how to test when current time changes? maybe check against another Time.new instead of a specific time)
     
