@@ -47,15 +47,16 @@ module RideShare
     
     def request_trip(passenger_id)
       driver = self.find_available_driver
-      new_trip = self.start_trip(driver: driver, passenger_id: passenger_id)
+      passenger = self.find_passenger(passenger_id)
+      new_trip = self.start_trip(driver: driver, passenger: passenger)
       driver.assign_new_trip(new_trip)
+      # passenger.add_trip(new_trip)
       return new_trip
     end
     
-    def start_trip(driver:, passenger_id:)
+    def start_trip(driver:, passenger:)
       current_time = Time.new
       new_id = (trips.last.id + 1)
-      passenger = self.find_passenger(passenger_id)
       return Trip.new(id: new_id, passenger: passenger, driver: driver, start_time: current_time)
     end
     

@@ -154,7 +154,8 @@ describe "TripDispatcher class" do
       before do
         @dispatcher = build_test_dispatcher
         @driver_found = @dispatcher.find_available_driver()
-        @trip = @dispatcher.start_trip(driver: @driver_found, passenger_id: 1)
+        @passenger = @dispatcher.find_passenger(1)
+        @trip = @dispatcher.start_trip(driver: @driver_found, passenger: @passenger)
       end
       
       it "returns an instance of trip" do
