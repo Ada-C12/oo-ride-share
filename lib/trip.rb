@@ -53,7 +53,7 @@ module RideShare
       set_end = Time.parse(end_time)
       set_start = Time.parse(start_time)
       duration = set_end - set_start
-      return duration
+      return duration.to_i
     end
 
     private

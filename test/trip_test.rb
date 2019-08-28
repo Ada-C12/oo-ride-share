@@ -52,8 +52,8 @@ describe "Trip class" do
       start_time = "2018-12-31 14:35:22 -0800"
       end_time = "2018-12-31 15:22:40 -0800"
       trip_data = RideShare::Trip.new(id: 558, passenger_id: 141, start_time: start_time, end_time: end_time, cost: 6, rating: 5)
-            duration = trip_data.duration_in_seconds(start_time, end_time)
-            expect(duration).must_equal 2838.0
+      duration = trip_data.duration_in_seconds(start_time, end_time)
+      expect(duration).must_equal 2838.0
     end
   end
 end

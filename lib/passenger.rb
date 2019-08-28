@@ -24,6 +24,15 @@ module RideShare
       return total
     end
 
+    def total_time_spent
+      total_time = 0
+      @trips.each do |trip|
+        duration = trip.duration_in_seconds((trip.start_time), (trip.end_time))
+        total_time += duration
+      end
+      return total_time
+    end
+
     private
 
     def self.from_csv(record)
