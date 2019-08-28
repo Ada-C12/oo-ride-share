@@ -8,9 +8,7 @@ module RideShare
   class Trip < CsvRecord
     attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating, :driver_id, :driver
 
-    def initialize(id:,
-      passenger: nil, passenger_id: nil,
-      start_time:, end_time:, cost: nil, rating:, driver_id: nil, driver: nil)
+    def initialize(id:, passenger: nil, passenger_id: nil, start_time:, end_time:, cost: nil, rating:, driver_id: nil, driver: nil)
       super(id)
 
       @passenger = passenger
@@ -47,7 +45,7 @@ module RideShare
       if @rating > 5 || @rating < 1
         raise ArgumentError, "Invalid rating #{@rating}"
       end
-
+    end
     #   if @driver_id = nil && @driver = nil
     #     raise ArgumentError, "Either driver ID or driver is required"
     #   end
@@ -56,9 +54,14 @@ module RideShare
     def inspect
       # Prevent infinite loop when puts-ing a Trip
       # trip contains a passenger contains a trip contains a passenger...
+      # Added driver component to the method
       "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
       "ID=#{id.inspect} " +
       "PassengerID=#{passenger&.id.inspect}>"
+
+      "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
+      "ID=#{id.inspect} " +
+      "DriverID=#{driver&.id.inspect}>"
     end
 
     def connect(passenger, driver)
@@ -80,7 +83,7 @@ module RideShare
     def self.from_csv(record)
       return self.new(
         id: record[:id],
-        passenger: record[:passenger]
+        passenger: record[:passenger],
         passenger_id: record[:passenger_id],
         start_time: Time.parse("#{record[:start_time]}"),
         end_time: Time.parse("#{record[:end_time]}"),
