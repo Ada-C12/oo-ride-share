@@ -38,47 +38,77 @@ module RideShare
     def request_trip(passenger_id)
       available_drivers = @drivers.select {|driver| driver.status == :AVAILABLE}
       
+      raise ArgumentError, "No drivers currently available" if available_drivers == nil
+      
       requested_driver = available_drivers.find {|driver| driver.trips.length == 0}
       
       if requested_driver == nil
-        requested_driver = available_drivers.min_by do |driver|     
-          driver.trips.max_by do |trip| 
-            trip.end_time
-          end
-        end
-        ende
-        
-        # requested_driver = @drivers.find {|driver| driver.status == :AVAILABLE}
-        
-        raise ArgumentError, "No drivers currently available" if requested_driver == nil
-        
-        start_time = Time::now
-        # NOTE: We assume new trip ID is next consecutive trip ID
-        id = @trips.length + 1
-        
-        current_trip = Trip.new(id: id, passenger: find_passenger(passenger_id), passenger_id: passenger_id, start_time: start_time, end_time: nil, rating: nil, driver: requested_driver)
-        
-        requested_driver.add_trip(current_trip)
-        requested_driver.change_status_to_unavailable
-        
-        current_trip.passenger.add_trip(current_trip)
-        
-        @trips << current_trip
-        
-        return current_trip
+        requested_driver = available_drivers.min_by {|driver| driver.trips.max_by {|ride| ride.end_time}.end_time}
       end
       
-      private
+      start_time = Time::now
+      # NOTE: We assume new trip ID is next consecutive trip ID
+      id = @trips.length + 1
       
-      def connect_trips
-        @trips.each do |trip|
-          passenger = find_passenger(trip.passenger_id)
-          driver = find_driver(trip.driver_id)
-          trip.connect(passenger, driver)
-        end
-        
-        return trips
+      current_trip = Trip.new(id: id, passenger: find_passenger(passenger_id), passenger_id: passenger_id, start_time: start_time, end_time: nil, rating: nil, driver: requested_driver)
+      
+      requested_driver.add_trip(current_trip)
+      requested_driver.change_status_to_unavailable
+      
+      current_trip.passenger.add_trip(current_trip)
+      
+      @trips << current_trip
+      
+      return current_trip
+    end
+    
+    private
+    
+    def connect_trips
+      @trips.each do |trip|
+        passenger = find_passenger(trip.passenger_id)
+        driver = find_driver(trip.driver_id)
+        trip.connect(passenger, driver)
       end
+      
+      return trips
     end
   end
-  
+end
+
+
+# available_drivers.first.trips.max_by {|ride| ride.end_time}
+# => #<RideShare::Trip:0x3ff09e0c2fdc ID=254 PassengerID=26>
+
+# available_drivers.max_by {|driver| driver.name}
+# Does return a driver object
+
+# available_drivers.min_by {|driver| driver.trips.max_by {|ride| ride.end_time}.end_time}
+#  #<RideShare::Driver:0x00007fe13d0c1428
+#  @id=28,
+#  @name="Da Vinci",
+#  @status=:AVAILABLE,
+#  @trips=
+#   [#<RideShare::Trip:0x3ff09e8704f0 ID=44 PassengerID=3>,
+#    #<RideShare::Trip:0x3ff09dd7b93c ID=159 PassengerID=31>,
+#    #<RideShare::Trip:0x3ff09e16654c ID=171 PassengerID=29>,
+#    #<RideShare::Trip:0x3ff09e1071a0 ID=202 PassengerID=121>,
+#    #<RideShare::Trip:0x3ff09e874d34 ID=240 PassengerID=71>,
+#    #<RideShare::Trip:0x3ff09e0c77f8 ID=245 PassengerID=132>,
+#    #<RideShare::Trip:0x3ff09e0bfd00 ID=261 PassengerID=41>,
+#    #<RideShare::Trip:0x3ff09dd1c9c8 ID=310 PassengerID=51>,
+#    #<RideShare::Trip:0x3ff09dd00cdc ID=325 PassengerID=42>,
+#    #<RideShare::Trip:0x3ff09dcd5fa0 ID=371 PassengerID=121>,
+#    #<RideShare::Trip:0x3ff09e1d9bdc ID=387 PassengerID=42>,
+#    #<RideShare::Trip:0x3ff09e1c14ec ID=395 PassengerID=1>,
+#    #<RideShare::Trip:0x3ff09e192714 ID=411 PassengerID=80>,
+#    #<RideShare::Trip:0x3ff09dd7a1a4 ID=429 PassengerID=94>,
+#    #<RideShare::Trip:0x3ff09e11e97c ID=461 PassengerID=66>,
+#    #<RideShare::Trip:0x3ff09e11bc40 ID=462 PassengerID=88>,
+#    #<RideShare::Trip:0x3ff09e114c4c ID=466 PassengerID=140>,
+#    #<RideShare::Trip:0x3ff09e0cb7a4 ID=495 PassengerID=65>,
+#    #<RideShare::Trip:0x3ff09e0ca2c8 ID=497 PassengerID=72>,
+#    #<RideShare::Trip:0x3ff09e874028 ID=506 PassengerID=119>,
+#    #<RideShare::Trip:0x3ff09dd3d3f8 ID=550 PassengerID=30>,
+#    #<RideShare::Trip:0x3ff09dd3c930 ID=551 PassengerID=48>],
+#  @vin="1F1UPW5C7UHBH1CP4">

@@ -132,18 +132,32 @@ describe "TripDispatcher class" do
       expect(@dispatcher.request_trip(7)).must_be_kind_of RideShare::Trip
     end
     
-    it "finds first available driver" do
-      driver_id = @dispatcher.drivers.find { |driver| driver.status == :AVAILABLE}.id
+    it "finds first available driver with no trips" do
+      # driver_id = @dispatcher.drivers.find { |driver| driver.status == :AVAILABLE}.id
       
-      expect(@dispatcher.find_driver(driver_id).status).must_equal :AVAILABLE
+      # expect(@dispatcher.find_driver(driver_id).status).must_equal :AVAILABLE
       
-      expect(@dispatcher.request_trip(6).driver_id).must_equal driver_id
-      expect(@dispatcher.find_driver(driver_id).status).must_equal :UNAVAILABLE
+      # expect(@dispatcher.request_trip(6).driver_id).must_equal driver_id
+      # expect(@dispatcher.find_driver(driver_id).status).must_equal :UNAVAILABLE
+      
+      expect(@dispatcher.find_driver(3).trips).must_equal []
+      expect(@dispatcher.find_driver(3).status).must_equal :AVAILABLE
+      expect(@dispatcher.request_trip(6).driver_id).must_equal 3
+      expect(@dispatcher.find_driver(3).status).must_equal :UNAVAILABLE
+      expect(@dispatcher.find_driver(3).trips.first).must_be_kind_of RideShare::Trip
+      
+    end
+    
+    it "finds longest idle driver when all available drivers have at least one trip" do
+      # @dispatcher.request_trip(5)
+      # @dispatcher.request_trip(2)
+      
+      # expect(@dispatcher.request_trip(6).driver_id).must_equal 6
     end
     
     it "updates driver trip list" do
       @dispatcher.request_trip(3)
-      expect(@dispatcher.find_driver(2).trips.length).must_equal 4
+      expect(@dispatcher.find_driver(3).trips.length).must_equal 1
     end
     
     it "updates passenger trip list" do
