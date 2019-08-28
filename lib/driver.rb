@@ -14,11 +14,10 @@ module RideShare
       @vin = vin
       
       statuses = [:AVAILABLE, :UNAVAILABLE]
-      
-      if !statuses.include?(status)
+      if !statuses.include?(status.to_sym)
         raise ArgumentError, "Invalid status."
       end 
-      @status = status
+      @status = status.to_sym
       
       @trips = trips || []
       
