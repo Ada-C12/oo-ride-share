@@ -1,9 +1,5 @@
 require_relative 'test_helper'
 
-
-
-###################
-
 describe "Trip class" do
   describe "initialize" do
     before do
@@ -18,7 +14,10 @@ describe "Trip class" do
       end_time: end_time,
       cost: 23.45,
       rating: 3,
-      driver_id: 100 }
+      ###JARED or DEE or DEVIN or KAIDA### I can only get "stores an instance of driver" to work if I add the 2 lines below myself... 
+      driver_id: 10, ###CAROLINE### I added this but IDK if I'm supposed to... 
+      driver: RideShare::Driver.new(id: 1, name: "Fakey McFake", vin:'12345678901234567')###CAROLINE### I added this but IDK if I'm supposed to... 
+    }
       @trip = RideShare::Trip.new(@trip_data)
     end
     
@@ -31,7 +30,9 @@ describe "Trip class" do
     end
     
     it "stores an instance of driver" do
-      skip # Unskip after wave 2
+      # the seed data had NEITHER driver NOR driver_id
+      puts "\n\nWHY IS THIS HAPPENING???? >>>#{@trip.driver}<<<"
+      puts @trip
       expect(@trip.driver).must_be_kind_of RideShare::Driver
     end
     
