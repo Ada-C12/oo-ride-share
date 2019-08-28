@@ -37,15 +37,16 @@ module RideShare
     
     def find_available_driver
       drivers.each do |driver|
-        if driver.status == :AVAILABLE
-          return driver     
+        if driver.status == :AVAILABLE 
+          return driver   
         end
       end
+      raise ArgumentError, "No Available Drivers at this Time."
     end
     
-    
-    
     def request_trip(passenger_id)
+      
+      
       driver = self.find_available_driver
       passenger = self.find_passenger(passenger_id)
       new_trip = self.start_trip(driver: driver, passenger: passenger)
@@ -60,13 +61,6 @@ module RideShare
       new_id = (trips.last.id + 1)
       return Trip.new(id: new_id, passenger: passenger, driver: driver, start_time: current_time)
     end
-    
-    
-    #   add the new trip to the TripDispatcher's collection of all trips
-    ##### test: was the tripdispatcher's trip list updated?
-    
-    #   return the newly-created trip
-    ##### test: does the request_trip method return a trip instance?  
     
     
     # other things to test:

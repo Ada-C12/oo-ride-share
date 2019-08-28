@@ -1,6 +1,7 @@
 require_relative 'test_helper'
 
 TEST_DATA_DIRECTORY = 'test/test_data'
+UNAVAILABLE_TEST_DATA = 'test/all_unavailable_test_data'
 
 describe "TripDispatcher class" do
   def build_test_dispatcher
@@ -78,7 +79,6 @@ describe "TripDispatcher class" do
     end
   end
   
-  # TODO: un-skip for Wave 2
   describe "drivers" do
     describe "find_driver method" do
       before do
@@ -147,6 +147,19 @@ describe "TripDispatcher class" do
         dispatcher.request_trip(1)
         expect(driver_found.status).must_equal :UNAVAILABLE
       end
+      
+      it "Raises ArgumentError if no available drivers" do
+        def build_unavailable_test_dispatcher
+          return RideShare::TripDispatcher.new(
+            directory: UNAVAILABLE_TEST_DATA
+          )
+        end
+        dispatcher = build_unavailable_test_dispatcher
+        expect {
+          dispatcher.request_trip(1)
+        }.must_raise ArgumentError
+        
+      end
     end
     
     describe "Build a trip" do
@@ -197,13 +210,13 @@ describe "TripDispatcher class" do
       it "adds the trip to the passenger's list of trips" do
         passenger_one = @dispatcher.find_passenger(1)
         trip_length_before = passenger_one.trips.length
-        new_trip = @dispatcher.request_trip(1)
+        @dispatcher.request_trip(1)
         expect(passenger_one.trips.length).must_be :>, trip_length_before
       end
       
       it "Adds new trip to dispatcher's list of trips" do
         trip_length_before = @dispatcher.trips.length
-        new_trip = @dispatcher.request_trip(1)
+        @dispatcher.request_trip(1)
         expect(@dispatcher.trips.length).must_be :>, trip_length_before
       end
       
