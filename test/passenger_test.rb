@@ -34,7 +34,6 @@ describe "Passenger class" do
     end
   end
 
-
   describe "trips property" do
     before do
       # TODO: you'll need to add a driver at some point here.
@@ -70,6 +69,26 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
+    before do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+      trip = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: "2016-08-08",
+        end_time: "2016-08-09",
+        rating: 5,
+        driver_id: 3,
+        cost: 5
+        )
+
+      @passenger.add_trip(trip)
+    end
+
     it "returns total amount passenger has spent on trips" do
       #grab first two trips from trips.csv
       trip1, trip2 = RideShare::Trip.load_all(directory: './support')
@@ -84,6 +103,21 @@ describe "Passenger class" do
       #load those trips into passenger for testing. id's may be incorrect
       expect(passenger.net_expenditures).must_equal 28
       expect(passenger2.net_expenditures).must_equal 0
+    end
+
+    it "ignores in-progress trips" do
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver_id: 2,
+        passenger_id: 3,
+        start_time: "2016-08-08",
+        end_time: nil,
+        rating: nil
+      )
+      
+      @passenger.add_trip(trip2)
+
+      expect(@passenger.net_expenditures).must_equal 5
     end
   end
 
