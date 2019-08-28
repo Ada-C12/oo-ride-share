@@ -14,6 +14,7 @@ module RideShare
       @passengers = Passenger.load_all(directory: directory)
       @trips = Trip.load_all(directory: directory)
       connect_trips
+      
     end
     
     def find_passenger(id)
@@ -41,6 +42,8 @@ module RideShare
         driver = find_driver(trip.driver_id)
         passenger = find_passenger(trip.passenger_id)
         trip.connect(passenger)
+        trip.connect_driver(driver)
+      
       end
       
       return trips

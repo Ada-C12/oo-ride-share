@@ -62,6 +62,11 @@ module RideShare
       passenger.add_trip(self)
     end
     
+    def connect_driver(driver)
+      @driver = driver 
+      driver.add_trip(self)
+    end
+    
     def calculate_duration 
       start_time_seconds = @start_time.hour * 3600 + @start_time.min * 60 + @start_time.sec 
       
