@@ -1,5 +1,6 @@
 require 'csv'
 require 'time'
+require "pry"
 
 require_relative 'driver'
 require_relative 'passenger'
@@ -35,9 +36,29 @@ module RideShare
     end
     
     def request_trip(passenger_id)
+      cur_driver = nil
+      #binding.pry
+      
+      # same behavior:
+      # cur_driver = drivers.find { |driver| driver.status == :AVAILABLE }
+      
+      drivers.each do |driver|
+        if driver.status == :AVAILABLE
+          cur_driver = driver
+          break
+        end
+      end
+      
+      return Trip.new(id: 1, driver: cur_driver, passenger_id: passenger_id, start_time: Time.now, end_time: nil, rating: 2)
+      # trip id needs to be updated
+      # fix rating look at trip test
+      
+      
+      
       # STARTING REQUIREMENTS
       # passenger_id will be supplied
       # pick the first driver who is :AVAILABLE
+      
       # current time = start_time
       # end_date: nil
       # cost: nil
@@ -51,8 +72,6 @@ module RideShare
       # add the new trip to the passenger's list of trips 
       # add the new trip to the collection of all trips in TripDispatcher
       # return the newly created trip
-      
-      
     end
     
     
