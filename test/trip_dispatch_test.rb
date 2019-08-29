@@ -129,13 +129,14 @@ describe "TripDispatcher class" do
         @driver_found = @dispatcher.find_available_driver()
       end
       
-      it "finds an available driver" do
-        expect(@driver_found.name).must_equal "Driver 2"
-      end
+      ## WAVE 1-3 TESTS (PRE-INTELLIGENT DRIVER ASSIGNMENT)
+      # it "finds an available driver" do
+      #   expect(@driver_found.name).must_equal "Driver 2"
+      # end
       
-      it "finds the first available driver" do 
-        expect(@driver_found.name).wont_equal "Driver 3 (no trips)"
-      end
+      # it "finds the first available driver" do 
+      #   expect(@driver_found.name).wont_equal "Driver 3 (no trips)"
+      # end
       
       it "The first available driver has the status :AVAILABLE" do
         expect(@driver_found.status).must_equal :AVAILABLE
@@ -156,6 +157,10 @@ describe "TripDispatcher class" do
         expect {
           dispatcher.request_trip(1)
         }.must_raise ArgumentError
+      end
+      
+      it "first selects the driver who has never driven before" do
+        expect(@driver_found.name).must_equal "Driver 3 (no trips)"
       end
       
       # From the Drivers that remain, select the one who has never driven or whose most recent trip ended the longest time ago
