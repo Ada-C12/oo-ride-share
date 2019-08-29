@@ -77,12 +77,10 @@ describe "Passenger class" do
   
   describe "net_expenditures" do
     it "calculates the total amount of money a passenger has spent on their trips" do
-      
       td = RideShare::TripDispatcher.new      
       passenger = td.passengers[0]
       
       expect(passenger.net_expenditures).must_equal 15
-      
     end
     
     it "raises ArgumentError if passenger hasn't spent any money" do
@@ -99,7 +97,6 @@ describe "Passenger class" do
       
       expect(passenger.net_expenditures).must_be_kind_of Integer
     end
-    
   end
   
   describe "total_time_spent method " do
@@ -124,7 +121,5 @@ describe "Passenger class" do
       
       expect(passenger.total_time_spent).must_be_kind_of Integer
     end
-    
-  end 
-  
+  end
 end

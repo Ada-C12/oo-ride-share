@@ -2,7 +2,6 @@ require_relative 'csv_record'
 
 module RideShare
   class Driver < CsvRecord
-    
     attr_reader :name, :vin, :trips
     attr_accessor :status
     
@@ -19,6 +18,7 @@ module RideShare
       end 
       
     end
+
     def add_trip(new_trip) 
       if new_trip.driver_id == @id 
         @trips << new_trip 
@@ -63,15 +63,11 @@ module RideShare
     
     def self.from_csv(record)
       return new(
-      id: record[:id],
-      name: record[:name],
-      vin: record[:vin],
-      status: record[:status].to_sym
+        id: record[:id],
+        name: record[:name],
+        vin: record[:vin],
+        status: record[:status].to_sym
       )
     end
-    
-    
-    
-    
   end 
 end

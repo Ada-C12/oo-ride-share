@@ -41,7 +41,6 @@ module RideShare
       if rating != nil 
         if @rating > 5 || @rating < 1
           raise ArgumentError.new("Invalid rating #{@rating}")
-          
         end
       end 
       
@@ -50,7 +49,6 @@ module RideShare
           raise ArgumentError
         end 
       end 
-      
     end
     
     def inspect
@@ -73,13 +71,13 @@ module RideShare
     
     def calculate_duration 
       start_time_seconds = @start_time.hour * 3600 + @start_time.min * 60 + @start_time.sec 
-      
       end_time_seconds = @end_time.hour * 3600 + @end_time.min * 60 + @end_time.sec 
-      
-      end_time_seconds - start_time_seconds 
-      
+      end_time_seconds - start_time_seconds
     end 
+
+
     private
+
     
     def self.from_csv(record)
       
@@ -87,16 +85,14 @@ module RideShare
       parsed_end_time = Time.parse(record[:end_time])
       
       return self.new(
-      id: record[:id],
-      passenger_id: record[:passenger_id],
-      start_time: parsed_start_time,
-      end_time: parsed_end_time,
-      cost: record[:cost],
-      rating: record[:rating],
-      driver_id: record[:driver_id]
+        id: record[:id],
+        passenger_id: record[:passenger_id],
+        start_time: parsed_start_time,
+        end_time: parsed_end_time,
+        cost: record[:cost],
+        rating: record[:rating],
+        driver_id: record[:driver_id]
       )
     end
-    
-    
   end
 end

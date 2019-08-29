@@ -130,56 +130,52 @@ describe "Driver class" do
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
     
-    it "average rating calculation does not include in progress trips" do
-      
+    it "omits in progress trips from average rating calculation" do
       td = RideShare::TripDispatcher.new(directory: './support')
       new_trip = td.request_trip(7)
+
       expect(td.drivers[1].average_rating).must_be_kind_of Float
-      
-      
-      
-      
-    end 
-    
+    end     
   end
   
   describe "total_revenue" do
     # You add tests for the total_revenue method
     it "raises ArgumentError if no driven trips" do
       driver = RideShare::Driver.new(
-      id: 54,
-      name: "Rogers Bartell IV",
-      vin: "1C9EVBRM0YBC564DZ"
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
       )
+
       expect {driver.total_revenue}.must_raise ArgumentError
     end
     
     it "correctly calculates the total revenue" do
       driver = RideShare::Driver.new(
-      id: 54,
-      name: "Rogers Bartell IV",
-      vin: "1C9EVBRM0YBC564DZ"
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
       )
       trip1 = RideShare::Trip.new(
-      id: 8,
-      driver: driver,
-      passenger_id: 3,
-      start_time: Time.parse("2016-08-08"),
-      end_time: Time.parse("2016-08-09"),
-      cost: 32,
-      rating: 1
-      
+        id: 8,
+        driver: driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        cost: 32,
+        rating: 1      
       )
+
       trip2 = RideShare::Trip.new(
-      id: 9,
-      driver: driver,
-      passenger_id: 5,
-      start_time: Time.parse("2016-08-08"),
-      end_time: Time.parse("2016-08-09"),
-      cost: 20,
-      rating: 1
-      
+        id: 9,
+        driver: driver,
+        passenger_id: 5,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        cost: 20,
+        rating: 1      
       )
+
       driver.add_trip(trip2)
       driver.add_trip(trip1)
       
@@ -188,27 +184,26 @@ describe "Driver class" do
     
     it "total_revenue calculation does not include in progress trips" do 
       td = RideShare::TripDispatcher.new
-      
       driver = td.drivers[0]
       
       old_trip1 = RideShare::Trip.new(
-      id: 8,
-      driver: driver,
-      passenger_id: 3,
-      start_time: Time.parse("2016-08-08"),
-      end_time: Time.parse("2016-08-09"),
-      cost: 32,
-      rating: 1
+        id: 8,
+        driver: driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        cost: 32,
+        rating: 1
       )
       
       old_trip2 = RideShare::Trip.new(
-      id: 9,
-      driver: driver,
-      passenger_id: 5,
-      start_time: Time.parse("2016-08-08"),
-      end_time: Time.parse("2016-08-09"),
-      cost: 20,
-      rating: 1      
+        id: 9,
+        driver: driver,
+        passenger_id: 5,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        cost: 20,
+        rating: 1      
       )
       
       driver.add_trip(old_trip1)
@@ -217,10 +212,6 @@ describe "Driver class" do
       new_trip = td.request_trip(7)
       
       expect(td.drivers[0].total_revenue).must_be_kind_of Float
-      
-      
     end 
-    
-    
   end
 end

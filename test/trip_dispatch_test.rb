@@ -126,16 +126,10 @@ describe "TripDispatcher class" do
   describe "request_trip" do
     it "returns an instance of a trip" do
       td = RideShare::TripDispatcher.new 
+
       expect(td.request_trip(6)).must_be_instance_of RideShare::Trip 
-      
-      
     end 
-    # it "returns accurate information" do 
-    #   td = RideShare::TripDispatcher.new 
-    #   # expect(td.request_trip(6)).
-    
-    # end 
-    
+
     it "updates the driver's trips with this trip" do 
       td = RideShare::TripDispatcher.new
       new_trip = td.request_trip(6)
@@ -175,9 +169,7 @@ describe "TripDispatcher class" do
         end
       end
       
-      expect(available_driver.id).must_equal new_trip_driver.id
-      expect(new_trip_driver.status).must_equal :UNAVAILABLE
-      
+      expect(new_trip_driver.status).must_equal :UNAVAILABLE      
     end
     
     it "raises ArgumentError if there are no available drivers" do
@@ -188,7 +180,5 @@ describe "TripDispatcher class" do
       
       expect{td.request_trip(6)}.must_raise ArgumentError
     end
-    
-    
   end
 end
