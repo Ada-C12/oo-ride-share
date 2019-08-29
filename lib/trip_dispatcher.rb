@@ -1,5 +1,6 @@
 require 'csv'
 require 'time'
+require 'date'
 
 require_relative 'passenger'
 require_relative 'trip'
@@ -33,6 +34,33 @@ module RideShare
               #{drivers.count} drivers, \
               #{passengers.count} passengers>"
     end
+
+    def request_trip(passenger_id)
+      @drivers.each do |d|
+        status = driver.instance_variable_get(:@status)
+        if status == :AVAILABLE 
+          driver = d
+          return driver
+        end
+      end
+      id = @trips[-1].id + 1
+      start_time = DateTime.now,
+      end_time = nil,
+      rating = nil, 
+      cost = nil
+      @trip_data = {
+        id: id,
+        passenger_id: passenger_id,
+        start_time: start_time,
+        end_time: end_time,
+        rating: rating,
+        cost: cost,
+        driver: driver
+      }
+      @trip = RideShare::Trip.new(@trip_data)
+    end
+    
+
 
     private
 

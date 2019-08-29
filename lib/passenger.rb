@@ -1,5 +1,6 @@
 require_relative 'csv_record'
 require_relative 'trip'
+require_relative 'trip_dispatcher'
 
 module RideShare
   class Passenger < CsvRecord

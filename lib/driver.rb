@@ -1,6 +1,8 @@
 require_relative 'csv_record'
 require_relative 'trip'
 require_relative 'passenger'
+require_relative 'trip_dispatcher'
+
 
 module RideShare
   class Driver < CsvRecord
@@ -27,6 +29,10 @@ module RideShare
       @trips << trip
     end
 
+    def add_trip_dispatcher(trip)
+      @trip << TripDispatcher.trip
+    end
+    
     def average_rating
       if trips.length == 0
         return 0
