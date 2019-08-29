@@ -63,6 +63,10 @@ module RideShare
       return total_revenue.to_f.round(2)
     end
     
+    def update_driver(in_progress_trip)
+      self.status = :UNAVAILABLE
+      @trips << in_progress_trip
+    end
     
     private
     

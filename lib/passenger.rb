@@ -24,6 +24,10 @@ module RideShare
       return total_amount_of_money.to_f.round(2)
     end
     
+    def update_passenger(in_progress_trip)
+      @trips << in_progress_trip
+    end
+    
     def total_time_spent
       total_time = 0
       @trips.each do |one_trip|

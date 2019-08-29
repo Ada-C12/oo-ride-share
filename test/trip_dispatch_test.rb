@@ -1,4 +1,5 @@
 require_relative 'test_helper'
+require 'pry'
 
 TEST_DATA_DIRECTORY = 'test/test_data'
 
@@ -125,14 +126,23 @@ describe "TripDispatcher class" do
     describe "Request trip method" do 
       it "creates an instance of trip" do 
         dispatcher = build_test_dispatcher
-        in_progress_trip = dispatcher.request_trip(9)
+        in_progress_trip = dispatcher.request_trip(8)
         
         expect(in_progress_trip).must_be_kind_of(RideShare::Trip)
-        expect(in_progress_trip.passenger_id).must_equal 9
-        expect(in_progress_trip.rating).must_equal nil
-        expect(in_progress_trip.end_time).must_equal nil
-        expect(in_progress_trip.cost).must_equal nil
+        expect(in_progress_trip.passenger_id).must_equal 8
+        expect(in_progress_trip.rating).must_be_nil
+        expect(in_progress_trip.end_time).must_be_nil
+        expect(in_progress_trip.cost).must_be_nil
         # expect(in_progress_trip.driver).must_equal () #checks that driver is the first available driver
+      end
+      
+      it "adds trip to driver's list" do
+        dispatcher = build_test_dispatcher
+        driver_object = dispatcher.drivers[1]
+        before_trips = driver_object.trips.length
+        in_progess_trip = dispatcher.request_trip(8)
+        after_trips = driver_object.trips.length 
+        expect(after_trips).must_equal(before_trips + 1) 
       end
       # it "adds trip to driver's list" do 
       # call connect method from trip class?
