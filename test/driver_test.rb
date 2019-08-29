@@ -132,13 +132,13 @@ describe "Driver class" do
 
   describe "total_revenue" do
     # You add tests for the total_revenue method
-    it "returns zero if no driven trips" do
+    it "raises ArgumentError if no driven trips" do
       driver = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
         vin: "1C9EVBRM0YBC564DZ"
       )
-      expect(driver.total_revenue).must_equal 0
+      expect {driver.total_revenue}.must_raise ArgumentError
     end
 
     it "correctly calculates the total revenue" do

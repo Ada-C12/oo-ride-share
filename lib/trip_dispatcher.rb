@@ -38,6 +38,9 @@ module RideShare
     
     def request_trip(passenger_id)
       available_drivers = @drivers.find_all {|driver| driver.status == :AVAILABLE}
+      if available_drivers.length == 0
+        raise ArgumentError, "All drivers are currently unavailable."
+      end
       driver = available_drivers.first 
       passenger = find_passenger(passenger_id)
       trip_id = @trips.last.id + 1

@@ -3,7 +3,8 @@ require_relative 'csv_record'
 module RideShare
   class Driver < CsvRecord
     
-    attr_reader :name, :vin, :status, :trips
+    attr_reader :name, :vin, :trips
+    attr_accessor :status
     
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       super(id)
@@ -27,7 +28,9 @@ module RideShare
     def average_rating 
       if @trips.length > 0
         ratings = @trips.map do |trip|
-          trip.rating
+          if trip.rating != nil
+            trip.rating
+          end
         end
         (ratings.sum / ratings.length).to_f
       elsif @trips.length == 0
@@ -38,18 +41,20 @@ module RideShare
     def total_revenue 
       if @trips.length > 0 
         revenue = @trips.map do |trip|
-          (trip.cost - 1.65) * 0.8 
+          if trip.cost != nil
+            (trip.cost - 1.65) * 0.8 
+          end
         end 
         revenue.sum
       elsif @trips.length == 0 
-        return 0 
+        raise ArgumentError, "Driver has no trips."
       end 
     end 
     
     def make_driver_unavailable
       @status = :UNAVAILABLE
-
     end 
+    
     
     private
     

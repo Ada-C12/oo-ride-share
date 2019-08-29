@@ -160,7 +160,7 @@ describe "TripDispatcher class" do
       expect(passenger.trips).must_include new_trip
     end
     
-    it "checking if driver becomes unavailable" do 
+    it "checks if driver was available and becomes unavailable" do 
       td = build_test_dispatcher
       available_driver = td.drivers[1]
       expect(available_driver.status).must_equal :AVAILABLE      
@@ -176,10 +176,19 @@ describe "TripDispatcher class" do
       end
       
       expect(available_driver.id).must_equal new_trip_driver.id
-      
       expect(new_trip_driver.status).must_equal :UNAVAILABLE
       
-    end 
+    end
+    
+    it "raises ArgumentError if there are no available drivers" do
+      td = build_test_dispatcher
+      td.drivers.each do |driver|
+        driver.status = :UNAVAILABLE
+      end
+      
+      expect{td.request_trip(6)}.must_raise ArgumentError
+    end
+    
     
   end
 end
