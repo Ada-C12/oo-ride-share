@@ -5,7 +5,7 @@ TEST_DATA_DIRECTORY = 'test/test_data'
 describe "TripDispatcher class" do
   def build_test_dispatcher
     return RideShare::TripDispatcher.new(
-      directory: TEST_DATA_DIRECTORY
+    directory: TEST_DATA_DIRECTORY
     )
   end
   
@@ -127,7 +127,7 @@ describe "TripDispatcher class" do
     it "find first available driver" do
       dispatcher = build_test_dispatcher
       result = dispatcher.request_trip(2)
-      expect(result.name).must_equal "Driver 2"
+      expect(result.driver.name).must_equal "Driver 2"
       
       
     end

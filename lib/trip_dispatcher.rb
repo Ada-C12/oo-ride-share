@@ -42,6 +42,25 @@ module RideShare
         end
       end
       
+      passenger = find_passenger(passenger_id)
+      
+      requested_trip = RideShare::Trip.new(
+      id: trips.length + 1,  #revisit later
+      passenger: passenger, 
+      start_time: Time.now, 
+      cost: nil, 
+      end_time: nil, 
+      rating: nil, 
+      driver: trip_driver
+      )
+      
+      trip_driver.status = "UNAVAILABLE"
+      
+      passenger.add_trip(requested_trip)
+      trip_driver.add_trip(requested_trip)
+      @trips << requested_trip
+      
+      return requested_trip
     end
     
     
