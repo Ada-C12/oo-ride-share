@@ -167,11 +167,28 @@ describe "TripDispatcher class" do
       # From the Drivers that remain, select the one who has never driven or whose most recent trip ended the longest time ago
       
       it "selects first the driver with no previous trips, then the driver with the least recent most-recent trip" do
+        
+        # first: select the driver with no previous trips
         first_driver_found = @dispatcher.find_available_driver()
+        
+        first_passenger = @dispatcher.find_passenger(1)
+        first_driver = @dispatcher.find_driver(first_driver_found.id)
+        
+        first_driver_trip = RideShare::Trip.new(id: 6, passenger: first_passenger, driver: first_driver, start_time: Time.new)
+        first_driver.add_trip(first_driver_trip)
+        
         expect(first_driver_found.name).must_equal "Driver 3 (no trips)"
         
-        # second_driver_found = @dispatcher.find_available_driver()
-        # expect(second_driver_found.name).must_equal "Driver 2"
+        # second: select the driver whose most recent trip was longest ago
+        second_driver_found = @dispatcher.find_available_driver()
+        
+        second_passenger = @dispatcher.find_passenger(2)
+        second_driver = @dispatcher.find_driver(second_driver_found.id)
+        
+        second_driver_trip = RideShare::Trip.new(id: 6, passenger: second_passenger, driver: second_driver, start_time: Time.new)
+        second_driver.add_trip(second_driver_trip)
+        
+        expect(second_driver_found.name).must_equal "Driver 2"
       end
       
     end
