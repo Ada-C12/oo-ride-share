@@ -36,23 +36,6 @@ describe "TripDispatcher class" do
     end
   end
   
-  # describe "drivers" do 
-  #   describe "find_driver" do 
-  #     before do 
-  #       @dispatcher = build_test_dispatcher
-  #     end
-  
-  #     it "throws an argument error for a bad ID" do 
-  #       expect { @dispatcher.find_driver(0) }.must_raise ArgumentError
-  #     end
-  
-  #     it "finds a driver instance" do 
-  #       @driver = @dispatcher.find_driver(2)
-  #       expect(@driver).must_be_kind_of RideShare::Driver
-  #     end
-  #   end
-  # end 
-  
   describe "passengers" do
     describe "find_passenger method" do
       before do
@@ -137,6 +120,30 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+    
+    describe "Request trip method" do 
+      it "creates an instance of trip" do 
+        dispatcher = build_test_dispatcher
+        in_progress_trip = dispatcher.request_trip(9)
+        
+        expect(in_progress_trip).must_be_kind_of(RideShare::Trip)
+        expect(in_progress_trip.passenger_id).must_equal 9
+        expect(in_progress_trip.rating).must_equal nil
+        expect(in_progress_trip.end_time).must_equal nil
+        expect(in_progress_trip.cost).must_equal nil
+        # expect(in_progress_trip.driver).must_equal () #checks that driver is the first available driver
+      end
+      # it "adds trip to driver's list" do 
+      # call connect method from trip class?
+      #  end
+      
+      # it "adds trip to passenger's list" do 
+      # end
+      
+      # it "adds the trip to the dispatchers trip list"
+      # end
+      
     end
   end
 end

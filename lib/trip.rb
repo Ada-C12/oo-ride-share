@@ -34,8 +34,10 @@ module RideShare
       end
       
       
-      if start_time > end_time
-        raise ArgumentError, "Invalid start time."
+      unless end_time.nil?
+        if start_time > end_time
+          raise ArgumentError, "Invalid start time."
+        end
       end
       
       
@@ -44,8 +46,10 @@ module RideShare
       @cost = cost
       @rating = rating
       
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      unless @rating.nil?
+        if @rating > 5 || @rating < 1
+          raise ArgumentError.new("Invalid rating #{@rating}")
+        end
       end
       
     end
@@ -63,9 +67,6 @@ module RideShare
       @driver = driver
       passenger.add_trip(self)
       driver.add_trip(self)
-      
-      # @driver = driver
-      # driver.add_trip(self)
     end
     
     def duration_calculation
