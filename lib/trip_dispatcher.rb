@@ -1,5 +1,6 @@
 require 'csv'
 require 'time'
+require 'pry'
 
 require_relative 'passenger'
 require_relative 'trip'
@@ -37,13 +38,13 @@ module RideShare
     
     
     def request_trip(passenger_id)
+      driver = @drivers.find { |driver| driver.status == :AVAILABLE }
       
-      driver = @drivers.find { |driver| driver.status == :AVAIALBLE }
-      
+      passenger = self.find_passenger(passenger_id)
       
       in_progress = Trip.new(
         id: ((@trips[-1].id) + 1),
-        passenger_id: passenger_id,
+        passenger: passenger,
         start_time: Time.now,
         end_time: nil,
         cost: nil,

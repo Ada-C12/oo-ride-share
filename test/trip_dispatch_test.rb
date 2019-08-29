@@ -78,7 +78,6 @@ describe "TripDispatcher class" do
     end
   end
   
-  # TODO: un-skip for Wave 2
   describe "drivers" do
     describe "find_driver method" do
       before do
@@ -135,31 +134,71 @@ describe "TripDispatcher class" do
     end
     
     it "Will automatically assign the first available driver to the trip" do
+      dispatcher = build_test_dispatcher
+
+      trip = dispatcher.request_trip(8)
+
+      expect(trip.driver_id).must_equal 2
       
     end
     
     it "Will raise an ArgumentError if no drivers are available" do
-      
+      dispatcher = build_test_dispatcher
+
+      dispatcher.drivers.each do |driver|
+        if driver.status == :AVAILABLE
+          driver.status = :UNAVAILABLE
+        end
+      end
+
+      expect{dispatcher.request_trip(8)}.must_raise ArgumentError
     end
     
     it "Will assign the current time as start time" do
       #must be close to
+      dispatcher = build_test_dispatcher
+
+      trip = dispatcher.request_trip(8)
+
+      expect(trip.start_time).must_be_instance_of Time
     end
     
     it "Will have a nil value for end time, cost, and rating" do
-      
+      dispatcher = build_test_dispatcher
+
+      trip = dispatcher.request_trip(8)
+
+      expect(trip.end_time).must_equal nil
+      expect(trip.cost).must_equal nil
+      expect(trip.rating).must_equal nil
     end
     
     
-    it "will add the in progress trip to both passenger and driver trips" do
+    it "will add the in progress trip to passenger trips" do
+      dispatcher = build_test_dispatcher
+      
+      before_count = dispatcher.passengers[7].trips.length
+      trip = dispatcher.request_trip(8)
+
+      after_count = dispatcher.passengers[7].trips.length
+
+      expect(after_count - before_count).must_equal 1
+    end
+
+    it "will add the in progress trip to driver trips" do
+      dispatcher = build_test_dispatcher
+      
+      before_count = dispatcher.drivers[1].trips.length
+      trip = dispatcher.request_trip(8)
+      after_count = dispatcher.drivers[1].trips.length
+
+      expect(after_count - before_count).must_equal 1
+    end
+
+    it "will add a trip in the trip dispatcher overall trips" do
       
     end
-    
-    it "Will add the new trip to the csv file of trips" do
-      
-    end
-    
-    
+
   end
   
 end

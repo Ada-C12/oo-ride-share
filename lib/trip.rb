@@ -33,14 +33,15 @@ module RideShare
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
       
-      if @start_time > @end_time
+      if @end_time == nil
+        @end_time = nil
+      elsif @start_time > @end_time
         raise ArgumentError.new("Start time must occur prior to end time")
       end
       
       if driver
         @driver = driver
         @driver_id = driver.id
-        
       elsif driver_id
         @driver_id = driver_id
       else
