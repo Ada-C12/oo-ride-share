@@ -136,7 +136,7 @@ describe "TripDispatcher class" do
         # expect(in_progress_trip.driver).must_equal () #checks that driver is the first available driver
       end
       
-      it "adds trip to driver's list" do
+      it "adds in progress trip to driver's list" do
         dispatcher = build_test_dispatcher
         driver_object = dispatcher.drivers[1]
         before_trips = driver_object.trips.length
@@ -144,9 +144,15 @@ describe "TripDispatcher class" do
         after_trips = driver_object.trips.length 
         expect(after_trips).must_equal(before_trips + 1) 
       end
-      # it "adds trip to driver's list" do 
-      # call connect method from trip class?
-      #  end
+      
+      it "adds in progress trip to passenger's trips" do
+        dispatcher = build_test_dispatcher
+        passenger_object = dispatcher.passengers[0] 
+        before_trips = passenger_object.trips.length
+        in_progess_trip = dispatcher.request_trip(1)
+        after_trips = passenger_object.trips.length
+        expect(after_trips).must_equal(before_trips + 1)
+      end
       
       # it "adds trip to passenger's list" do 
       # end
