@@ -42,6 +42,24 @@ module RideShare
       return average_rating.to_f
     end
 
+    # This method calculates that driver's total revenue
+    # across all their trips. Each driver gets 80% of the
+    #  trip cost after a fee of $1.65 per trip is subtracted.
+    def total_revenue
+      total = 0
+      dollars_for_the_man = 1.65
+
+      @trips.each do |trip|
+        if trip.cost > dollars_for_the_man
+          puts trip.cost
+          total += (trip.cost - dollars_for_the_man)
+        end
+      end
+
+      total = total * 0.80
+      return total.round(2)
+    end
+
     private
 
     def self.from_csv(record)

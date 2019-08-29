@@ -145,6 +145,82 @@ describe "Driver class" do
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        status: :AVAILABLE,
+        trips: [],
+      )
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-08"),
+        cost: 2.85,
+        rating: 5,
+      )
+      @driver.add_trip(trip)
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        cost: 10.15,
+        rating: 1,
+      )
+      @driver.add_trip(trip2)
+    end
+
+    it "returns a float" do
+      expect(@driver.total_revenue).must_be_kind_of Float
+    end
+
+    it "returns a float greater than 0.0" do
+      average = @driver.total_revenue
+      expect(average).must_be :>, 0.00
+    end
+
+    it "returns zero if no driven trips" do
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+      )
+      expect(driver.total_revenue).must_equal 0.00
+    end
+
+    it "calculates the total revenue for a driver" do
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        cost: 10.00,
+        rating: 1,
+      )
+      @driver.add_trip(trip3)
+
+      expect(@driver.total_revenue).must_equal 14.44
+    end
+
+    it "treats a ride whose cost is less than 1.65 as having cost of zero." do
+      trip4 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 8,
+        start_time: Time.parse("2017-08-08"),
+        end_time: Time.parse("2017-08-09"),
+        cost: 1.00,
+        rating: 4,
+      )
+      @driver.add_trip(trip4)
+
+      expect(@driver.total_revenue).must_equal 7.76
+    end
   end
 end
