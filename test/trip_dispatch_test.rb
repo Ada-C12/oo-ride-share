@@ -141,6 +141,16 @@ describe "TripDispatcher class" do
       expect(trip.driver).must_be_kind_of RideShare::Driver
     end
     
+    it "Will choose the first driver who's status is available" do
+      trip = @dispatcher.request_trip(3333)
+      expect(trip.driver.id).must_equal 2
+    end
+    
+    # it "Will return nil if there's no available drivers" do
+    #   # trip = @dispatcher.request_trip(3333)
+    #   # expect()
+    # end
+    
     it "Will change the Driver's status to unavailable" do 
       trip = @dispatcher.request_trip(3333)
       expect(trip.driver.status).must_equal :UNAVAILABLE
@@ -148,30 +158,24 @@ describe "TripDispatcher class" do
     
     it "Will add the new trip to the Driver's list of trips" do
       trip = @dispatcher.request_trip(3333)
-      # updated_trip_list = trip.driver.add_trip(trip)
       expect(trip.driver.trips).must_include trip
     end
     
-    # ADD IT RETURN NIL IF THERE"S NO AVAILABLE DRIVERS 
-    it "Will choose the first driver who's status is available" do
-      trip = @dispatcher.request_trip(3333)
-      expect(trip.driver.id).must_equal 2
-    end
-    
-    # it "Will return nil if there's no available drivers" do
-    #   # add test
-    # end
-    
-    
     # it "Will add the new trip to the Passenger's list of trips" do
-    #   trip = @dispatcher.request_trip(8)
+    #   trip = @dispatcher.request_trip(3333)
+    #   trip.connect(@driver, @passenger)
+    
+    #   p "KRISTINA"
+    #   p trip.passenger
+    #   p "MOSKALETS"
     #   updated_trip_list = trip.passenger.add_trip(trip)
-    #   expect(trip.passenger.trips).must_include trip
+    #   # expect(trip.passenger.trips).must_include trip
     # end 
     
-    # it "Will add the newly created trip to the collection of all Trips in TripDispatcher" do
-    #   # add test
-    # end 
+    it "Will add the newly created trip to the collection of all Trips in TripDispatcher" do
+      trip = @dispatcher.request_trip(3333)
+      expect(@dispatcher.trips).must_include trip
+    end 
     
   end
   
