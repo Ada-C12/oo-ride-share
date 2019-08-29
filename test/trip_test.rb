@@ -44,7 +44,13 @@ describe "Trip class" do
     
     ###JULIA### ADDED BLOCK for Wave 1.1.3
     it "checks if start_time is before end_time" do   
-      assert(@trip_data[:end_time] > @trip_data[:start_time])
+      now = Time.now
+      future = Time.now + 1000
+      expect {
+        RideShare::Trip.new(id:500,
+          passenger: nil, passenger_id: nil,
+          start_time: future, end_time: now, cost: nil, rating: nil, driver_id: nil, driver: nil)
+      }.must_raise ArgumentError, "end_time CANNOT be before start_time!"
     end
     
     ###JULIA### ADDED BLOCK for Wave 1.1.4
