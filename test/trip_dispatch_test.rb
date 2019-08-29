@@ -198,7 +198,6 @@ describe "TripDispatcher class" do
     it "will add a trip in the trip dispatcher overall trips" do
       
     end
-
   end
   
 end

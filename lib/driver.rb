@@ -38,11 +38,14 @@ module RideShare
         return 0
       else
         avg_rating = 0
+        count = 0
         @trips.each do |trip|
-          avg_rating += trip.rating
+          unless trip.rating == nil
+            avg_rating += trip.rating
+            count += 1
+          end
         end
-        
-        avg_rating = (avg_rating/@trips.length).to_f.round(2)
+        avg_rating = (avg_rating/count).to_f.round(2)
         return avg_rating
       end
     end
@@ -50,10 +53,12 @@ module RideShare
     def total_revenue
       total_rev = 0
       @trips.each do |trip|
-        if trip.cost <= 1.65
-          total_rev += trip.cost * 0.8
-        else
-          total_rev += (trip.cost - 1.65) * 0.8
+        unless trip.cost == nil
+          if trip.cost <= 1.65
+            total_rev += trip.cost * 0.8
+          else
+            total_rev += (trip.cost - 1.65) * 0.8
+          end
         end
       end
       return total_rev

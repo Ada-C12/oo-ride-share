@@ -105,6 +105,40 @@ describe "Passenger class" do
       
       expect(@passenger.net_expenditures).must_equal 30
     end
+
+    it "should correctly ignore nil trip cost (in progress trips)" do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+      )
+      
+      trip_1 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: "2016-08-08",
+        end_time: "2016-08-09",
+        cost: 10,
+        rating: 5,
+        driver_id: 1
+      )
+      
+      trip_2 = RideShare::Trip.new(
+        id: 7,
+        passenger: @passenger,
+        start_time: "2016-08-08",
+        end_time: "2016-08-09",
+        cost: nil,
+        rating: 5,
+        driver_id: 1
+      )
+
+      @passenger.add_trip(trip_1)
+      @passenger.add_trip(trip_2)
+      
+      expect(@passenger.net_expenditures).must_equal 10
+    end
   end
   
   describe "total_time_spent" do
@@ -150,6 +184,39 @@ describe "Passenger class" do
         trips: nil
       )
       expect{@passenger.total_time_spent}.must_raise ArgumentError
+    end
+
+    it "correctly ignores nil end time for in progress trip" do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+      )
+      
+      trip_1 = RideShare::Trip.new(
+        id: 8,
+        passenger: @passenger,
+        start_time: Time.parse('2015-05-20T12:14:00+00:00'),
+        end_time: Time.parse('2015-05-20T12:14:20+00:00'),
+        cost: 10,
+        rating: 5,
+        driver_id: 1
+      )
+      
+      trip_2 = RideShare::Trip.new(
+        id: 7,
+        passenger: @passenger,
+        start_time: Time.parse('2015-05-21T12:14:00+00:00'),
+        end_time: nil,
+        cost: 20,
+        rating: 5,
+        driver_id: 1
+      )
+      @passenger.add_trip(trip_1)
+      @passenger.add_trip(trip_2)
+      
+      expect(@passenger.total_time_spent).must_equal 20
     end
   end
 end
