@@ -13,8 +13,10 @@ module RideShare
                    rating:)
       super(id)
 
-      if start_time > end_time
-        raise ArgumentError.new("Start time after end time")
+      if end_time != nil
+        if start_time > end_time
+          raise ArgumentError.new("Start time after end time")
+        end
       end
       if passenger
         @passenger = passenger
@@ -31,8 +33,10 @@ module RideShare
       @cost = cost
       @rating = rating
       @duration = duration
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      if @rating != nil
+        if @rating > 5 || @rating < 1
+          raise ArgumentError.new("Invalid rating #{@rating}")
+        end
       end
     end
 

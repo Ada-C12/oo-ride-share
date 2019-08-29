@@ -127,18 +127,16 @@ describe "TripDispatcher class" do
   describe "request_trip" do
     describe "intialize new_trip" do
       before do
-        @trip_data = {
-          id: 8,
-          passenger: RideShare::Passenger.new(id: 1,
-                                              name: "Ada",
-                                              phone_number: "412-432-7640"),
+        @dispatcher = build_test_dispatcher
+        @available_driver = ()
+        @dispatcher.drivers.each do |driver|
+          if driver.status == :AVAILABLE
+            @available_driver = driver
+            break
+          end
+        end
 
-          start_time: Time.now,
-          end_time: nil,
-          cost: nil,
-          rating: nil,
-        }
-        @new_trip = RideShare::Trip.new(@trip_data)
+        @new_trip = @dispatcher.request_trip(8)
       end
 
       # 6. creates a new instance of Trip
@@ -147,15 +145,27 @@ describe "TripDispatcher class" do
       end
     end
     describe "driver assignment" do
-      # write in a before do
-      # 2. assigns a driver to the drive
+      before do
+        @dispatcher = build_test_dispatcher
+        @available_driver = ()
+        @dispatcher.drivers.each do |driver|
+          if driver.status == :AVAILABLE
+            @available_driver = driver
+            break
+          end
+        end
+        @new_trip = @dispatcher.request_trip(8)
+      end
       it "assigns a driver to the drive" do
-        expect(@driver).must_be_kind_of RideShare::Driver
+        expect(@available_driver).must_be_kind_of RideShare::Driver
       end
       # 3. only chooses a driver with an available status
-      it "only chooses driver with status :AVAILABLE" do
-        expect(@status).must_equal :AVAILABLE
+      it "changes selected driver's status to :UNAVAILABLE" do
+        expect(@available_driver.status).must_equal :UNAVAILABLE
       end
+
+      # Add the new trip to the collection of trips for that driver
+
       # 4. start time is current time
       # it "sets start time as the current time" do
       #   #write test
@@ -169,11 +179,7 @@ describe "TripDispatcher class" do
       #  # 7. adds trip to driver's trip collection
       #  it "adds the new trip to the driver's trip collection" do
       #  end
-      #  # 8. sets driver status to unavailable
-      #  it "sets driver status as unavailable" do
-      #    expect(@status).must_equal :UNAVAILABLE
-      #  end
-      #  # 9. adds trip to passenger's list of all trips
+      # 9. adds trip to passenger's list of all trips
       #  it "new trip is added to passenger's list of all trips" do
       #  end
       #  # 10. adds trip to TripDispatchers list of all the Trips

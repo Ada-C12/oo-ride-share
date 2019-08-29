@@ -6,7 +6,7 @@ require_relative "trip"
 
 module RideShare
   class TripDispatcher
-    attr_reader :drivers, :passengers, :trips
+    attr_reader :drivers, :passengers, :trips, :assigned_driver
 
     def initialize(directory: "./support")
       @passengers = Passenger.load_all(directory: directory)
@@ -31,6 +31,29 @@ module RideShare
       #{trips.count} trips, \
       #{drivers.count} drivers, \
       #{passengers.count} passengers>"
+    end
+
+    def request_trip(passenger_id)
+      assigned_driver = nil
+      @drivers.each do |driver|
+        if driver.status == :AVAILABLE
+          assigned_driver = driver
+          driver.status = :UNAVAILABLE
+          break
+        end
+      end
+      passenger = find_passenger(passenger_id)
+      new_trip_id = @trips.count + 1
+      trip_data = {
+        id: new_trip_id,
+        passenger: passenger,
+        driver: assigned_driver,
+        start_time: Time.now,
+        end_time: nil,
+        cost: nil,
+        rating: nil,
+      }
+      new_trip = RideShare::Trip.new(trip_data)
     end
 
     private
@@ -67,14 +90,5 @@ module RideShare
     #     Add the new trip to the collection of all Trips in TripDispatcher
     #     Return the newly created trip
 
-    def request_trip(passenger_id)
-      @new_trip = RideShare::Trip.new(@trip_data)
-      @trip_data.each do |driver, status|
-        if driver(status) == AVAILABLE
-          assigned_driver = driver
-          break
-        end
-      end
-    end
   end
 end
