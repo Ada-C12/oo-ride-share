@@ -122,4 +122,20 @@ describe "TripDispatcher class" do
       end
     end
   end
+  describe "request trip" do
+    
+    it "find first available driver" do
+      dispatcher = build_test_dispatcher
+      result = dispatcher.request_trip(2)
+      expect(result.name).must_equal "Driver 2"
+      
+      
+    end
+    
+    
+  end
 end
+
+
+
+
