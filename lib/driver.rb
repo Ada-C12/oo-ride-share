@@ -18,6 +18,10 @@ module RideShare
       end
     end
 
+
+    def add_trip(trip)
+      @trips << trip
+    end
     # Since `Driver` inherits from `CsvRecord`, you'll need to implement the `from_csv` template method. Once you do, `Driver.load_all` should work (test this in pry).
     private 
     
