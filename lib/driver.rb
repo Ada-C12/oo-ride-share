@@ -26,6 +26,7 @@ module RideShare
     def average_rating
       return 0 if @trips == []
       
+      # Excludes trips with end time nil
       completed_trips = @trips.select {|trip| trip.end_time != nil}
       
       total_rating = completed_trips.map {|trip| trip.rating}.sum.to_f
@@ -38,6 +39,7 @@ module RideShare
       
       total_revenue = 0.0
       
+      # Excludes trips with end time nil
       completed_trips = @trips.select {|trip| trip.end_time != nil}
       
       # If trips are less than $1.65, no fee is applied for trip.

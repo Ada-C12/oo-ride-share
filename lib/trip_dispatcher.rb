@@ -40,7 +40,15 @@ module RideShare
       # Assume new trip ID is next consecutive trip ID
       id = @trips.length + 1
       
-      current_trip = Trip.new(id: id, passenger: find_passenger(passenger_id), passenger_id: passenger_id, start_time: Time::now, end_time: nil, rating: nil, driver: current_driver)
+      current_trip = Trip.new(
+        id: id, 
+        passenger: find_passenger(passenger_id), 
+        passenger_id: passenger_id, 
+        start_time: Time::now, 
+        end_time: nil, 
+        rating: nil, 
+        driver: current_driver
+      )
       
       current_driver.add_trip(current_trip)
       current_driver.change_status_to_unavailable
@@ -63,9 +71,10 @@ module RideShare
       # Finds first available driver who has never driven 
       requested_driver = available_drivers.find { |driver| driver.trips.length == 0 }
       
-      # If all drivers have drivens finds longest idle driver
+      # If all drivers have driven finds longest idle driver
       if requested_driver == nil
         requested_driver = available_drivers.min_by do |driver| 
+          # Find the individual driver's most recent trip 
           driver.trips.max_by { |ride| ride.end_time }.end_time
         end
       end

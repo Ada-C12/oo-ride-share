@@ -175,7 +175,7 @@ describe "TripDispatcher class" do
     end
     
     it "will not return drivers with a status of available and trip end time of nil" do 
-      # Confirms that all six available drivers are connected with a trip
+      # Connects all six available drivers with a trip
       6.times do 
         @dispatcher.request_trip(2)
       end
