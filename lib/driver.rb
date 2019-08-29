@@ -5,7 +5,8 @@ require 'pry'
 module RideShare
   # inherits from CsvRecord (similar to Trip & Passenger)
   class Driver < CsvRecord
-    attr_reader :id, :name, :vin, :status, :trips
+    attr_reader :id, :name, :vin, :trips
+    attr_accessor :status
     
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       # Pass to the superclass constructor (CsvRecord) similar to Passenger
@@ -17,7 +18,7 @@ module RideShare
       else
         @vin = vin
       end
-            
+      
       valid_status = %i[AVAILABLE UNAVAILABLE]
       if valid_status.include?(status)
         @status = status
@@ -31,7 +32,7 @@ module RideShare
     def add_trip(trip)
       @trips << trip
     end
-
+    
     def average_rating
       if @trips.length == 0
         return 0
@@ -40,12 +41,12 @@ module RideShare
         @trips.each do |trip|
           avg_rating += trip.rating
         end
-
+        
         avg_rating = (avg_rating/@trips.length).to_f.round(2)
         return avg_rating
       end
     end
-
+    
     def total_revenue
       total_rev = 0
       @trips.each do |trip|
@@ -56,6 +57,15 @@ module RideShare
         end
       end
       return total_rev
+    end
+    
+    
+    def change_status
+      @trips.each do |trip|
+        if trip.end_time == nil
+          self.status = :UNAVAILABLE
+        end
+      end
     end
     
     private

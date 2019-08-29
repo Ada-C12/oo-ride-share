@@ -122,4 +122,46 @@ describe "TripDispatcher class" do
       end
     end
   end
+  
+  describe "request trip" do
+    
+    it "corretly assigns the passenger id to the new instance of Trip" do
+      dispatcher = build_test_dispatcher
+      
+      dispatcher.request_trip(8)
+      
+      expect(dispatcher.trips[-1].passenger_id).must_equal 8
+      
+    end
+    
+    it "Will automatically assign the first available driver to the trip" do
+      
+    end
+    
+    it "Will raise an ArgumentError if no drivers are available" do
+      
+    end
+    
+    it "Will assign the current time as start time" do
+      #must be close to
+    end
+    
+    it "Will have a nil value for end time, cost, and rating" do
+      
+    end
+    
+    
+    it "will add the in progress trip to both passenger and driver trips" do
+      
+    end
+    
+    it "Will add the new trip to the csv file of trips" do
+      
+    end
+    
+    
+  end
+  
 end
+
+
