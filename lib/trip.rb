@@ -29,16 +29,19 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
       
-      if end_time < start_time 
-        raise ArgumentError.new("#{end_time} is the same time as #{start_time}")
-      end
-      @start_time = start_time
-      @end_time = end_time
-      
+      if start_time != nil && end_time != nil
+        if end_time < start_time 
+          raise ArgumentError.new("#{end_time} is the same time as #{start_time}")
+        end
+
+        @start_time = start_time
+        @end_time = end_time
+      end 
       
       @cost = cost
       @rating = rating
       
+      # fix the condition modeled on the start_time / end_time
       if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end

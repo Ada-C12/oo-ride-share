@@ -126,29 +126,23 @@ describe "TripDispatcher class" do
     before do
       # add test data
       # MIMIC A IN-PROGRESS TRIP
-      @dispatcher = RideShare::TripDispatcher.new #build_test_dispacher
-      
-      @trip = RideShare::Trip.new (id: 10,
-      driver: nil,
-      passenger: nil,
-      start_time: Time.now,
-      end_time: nil,
-      cost: nil,
-      rating: nil)
-      
+      @dispatcher = RideShare::TripDispatcher.new(directory: TEST_DATA_DIRECTORY)     
     end
     
-    it "Will create a new instance of Trip" do
-      # make a new instance of Trip 
-      # Arrange
-      
+    it "Will create a new instance of Trip" do   
       # Act
-      # call the .request_trip method here 
+      trip = @dispatcher.request_trip(3333)
+
       # Assert
-      # expect(that .request_trip returns an instance of trip)
-      
-    end 
+      expect(trip).must_be_kind_of RideShare::Trip
+    end
     
+    it "Will assign a driver to the Trip" do
+      trip = @dispatcher.request_trip(3333)
+      expect(trip.driver).must_be_kind_of RideShare::Driver
+      expect(trip.driver.id).must_equal 2
+    end
+  
     it "Will change the Driver's status to unavailable" do 
       # add test
     end 
@@ -166,25 +160,25 @@ describe "TripDispatcher class" do
       # @drivers.push(driver3)
       
       # loop through drivers.status pick first instance of :AVAILABLE
-      @drivers.each do |driver|
+      # @drivers.each do |driver|
         
         
-        # then add that driver to trip
-      end 
+      #   # then add that driver to trip
+      # end 
       
-      it "Will add the new trip to the Driver's list of trips" do
-        # add test
-      end
+      # it "Will add the new trip to the Driver's list of trips" do
+      #   # add test
+      # end
       
       
-      it "Will add the new trip to the Passenger's list of trips" do
-        # add test
-        # passenger: RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640")
-      end 
+      # it "Will add the new trip to the Passenger's list of trips" do
+      #   # add test
+      #   # passenger: RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640")
+      # end 
       
-      it "Will add the newly created trip to the collection of all Trips in TripDispatcher" do
-        # add test
-      end 
+      # it "Will add the newly created trip to the collection of all Trips in TripDispatcher" do
+      #   # add test
+      # end 
       
     end
     
@@ -192,4 +186,4 @@ describe "TripDispatcher class" do
     
     
   end
-  
+end 
