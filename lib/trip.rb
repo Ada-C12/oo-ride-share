@@ -14,8 +14,8 @@ module RideShare
 
       @passenger = passenger
       @passenger_id = passenger_id
-      @start_time = start_time
-      @end_time = end_time
+      @start_time = Time.parse(start_time.to_s)
+      @end_time = Time.parse(end_time.to_s)
       @cost = cost
       @rating = rating
       @driver_id = driver_id
@@ -73,10 +73,8 @@ module RideShare
     end
 
     def duration
-      a = Time.parse(@end_time.to_s)
-      b = Time.parse(@start_time.to_s)
-      c = (a - b)
-      return c
+      d = @end_time - @start_time
+      return d
     end
 
     private
@@ -86,8 +84,8 @@ module RideShare
         id: record[:id],
         passenger: record[:passenger],
         passenger_id: record[:passenger_id],
-        start_time: Time.parse("#{record[:start_time]}"),
-        end_time: Time.parse("#{record[:end_time]}"),
+        start_time: record[:start_time],
+        end_time: record[:end_time],
         cost: record[:cost],
         rating: record[:rating],
         driver_id: record[:driver_id],

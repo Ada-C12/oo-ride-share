@@ -121,4 +121,53 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  describe "request_trip" do
+    before do
+      @td = build_test_dispatcher
+    end
+
+    it "created a trip properly" do
+      trip = @td.request_trip(1)
+      expect(trip).must_be_kind_of RideShare::Trip
+    end
+
+    it "updated the driver trip list properly" do
+      driver_trip = (@td.drivers.find { |d| d.id == 1}).trips
+      previous = driver_trip.length
+      
+      trip = @td.request_trip(1)
+      
+      expect(driver_trip).must_include trip
+      expect(driver_trip.length).must_equal previous + 1 
+    end
+
+    it "updated the passenger trip list properly" do
+      passenger_trip = (@td.passengers.find { |p| p.id == 1}).trips
+      previous = passenger_trip.length
+      
+      trip = @td.request_trip(1)
+      
+      expect(passenger_trip).must_include trip
+      expect(passenger_trip.length).must_equal previous + 1 
+    end 
+
+    it "correctly checks driver status" do
+      trip = @td.request_trip(1)
+      driver = @td.drivers.find { |d| d.id == 1}
+      expect (driver.status).must_equal :AVAILABLE
+    end
+
+    # it "returns a message when there are no available drivers" do
+    #   @td.drivers.each do |d|
+    #     d.status == :UNAVAILABLE
+    #   end
+    #   trip = @td.request_trip(1)
+    #   expect (@td).must_raise ArgumentError
+    # end
+
+
+  end
+
+
 end

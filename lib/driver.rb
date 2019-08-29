@@ -36,10 +36,6 @@ module RideShare
     #   end
     # end
 
-    def add_trip_dispatcher(trip)
-      @trip << TripDispatcher.trip
-    end
-
     def average_rating
       if trips.length == 0
         return 0

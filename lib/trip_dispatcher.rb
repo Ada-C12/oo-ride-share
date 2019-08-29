@@ -38,28 +38,31 @@ module RideShare
     def request_trip(passenger_id)
       # passenger = find_passenger(passenger_id)
       @drivers.each do |d|
-        status = driver.instance_variable_get(:@status)
-        # add below code here? if driver.status == :AVAILABLE and remove ^ line
+        status = d.instance_variable_get(:@status)
         if status == :AVAILABLE 
-          driver = d
-          return driver
+          @trip_data = {
+            id: @trips[-1].instance_variable_get(:@id) + 1, 
+            passenger_id: passenger_id,
+            start_time: DateTime.now,
+            end_time: nil, 
+            rating: nil, 
+            cost: nil, 
+            driver: d
+          }
+          trip = RideShare::Trip.new(@trip_data)
+          d.instance_variable_get(:@trips) << trip
+          status == :UNAVAILABLE
+          p = @passengers.find { |p| p.id == passenger_id }
+          p.instance_variable_get(:@trips) << trip
+          @trips << trip
+          
+          return trip
+
+        # else 
+        #   raise ArgumentError, "There are no available drivers."
         end
       end
-      id = @trips[-1].id + 1 #remove this to hash
-      start_time = DateTime.now,
-      end_time = nil,
-      rating = nil, 
-      cost = nil
-      @trip_data = { # call this new_trip = RideShare::Trip.new ()
-        id: id,  #@trips.length + 1
-        passenger_id: passenger_id,
-        start_time: start_time,
-        end_time: end_time, #nil
-        rating: rating, #nil 
-        cost: cost, #nil
-        driver: driver #remove?
-      }
-      @trip = RideShare::Trip.new(@trip_data)
+   
       # add passenger instance
       #passenger.add_trip(new_trip)
       # driver.change_status(new_trip)
