@@ -38,28 +38,17 @@ module RideShare
     def request_trip(passenger_id)
       cur_driver = nil
       #binding.pry
-<<<<<<< HEAD
       
       # same behavior:
       # cur_driver = drivers.find { |driver| driver.status == :AVAILABLE }
       
-=======
-
-      # same behavior:
-      # cur_driver = drivers.find { |driver| driver.status == :AVAILABLE }
-  
->>>>>>> 6b2b4b69a2d14928c7ccf8e3b350aaeb3ad3dcb8
       drivers.each do |driver|
         if driver.status == :AVAILABLE
           cur_driver = driver
           break
         end
       end
-<<<<<<< HEAD
       
-=======
-
->>>>>>> 6b2b4b69a2d14928c7ccf8e3b350aaeb3ad3dcb8
       return Trip.new(id: 1, driver: cur_driver, passenger_id: passenger_id, start_time: Time.now, end_time: nil, rating: 2)
       # trip id needs to be updated
       # fix rating look at trip test
@@ -69,11 +58,7 @@ module RideShare
       # STARTING REQUIREMENTS
       # passenger_id will be supplied
       # pick the first driver who is :AVAILABLE
-<<<<<<< HEAD
       
-=======
-    
->>>>>>> 6b2b4b69a2d14928c7ccf8e3b350aaeb3ad3dcb8
       # current time = start_time
       # end_date: nil
       # cost: nil
