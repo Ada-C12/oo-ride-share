@@ -35,22 +35,16 @@ module RideShare
     end
     
     def select_driver_by_history(available_driver_list)
-      selected_driver = available_driver_list[0]
-      
-      available_driver_list.each do |one_driver|
-        # first select the driver who has never driven before
-        if one_driver.trips.length == 0
-          selected_driver = one_driver
-          return selected_driver
-        end
+      # first select the driver who has never driven before
+      selected_driver = available_driver_list.find do |one_driver|
+        one_driver.trips.length == 0
       end
+      return selected_driver if !(selected_driver.nil?)
       
       # then select the driver whose most recent trip ended the longest time ago
-      current_time = Time.new
       selected_driver = available_driver_list.max_by do |individual_driver|
-        (current_time - individual_driver.trips.last.end_time)
+        (Time.new - individual_driver.trips.last.end_time)
       end
-      
       return selected_driver
     end
     
@@ -68,7 +62,6 @@ module RideShare
         selected_driver = select_driver_by_history(all_available_drivers)
       end
       return selected_driver
-      # return all_available_drivers[0]
     end
     
     def start_trip(driver:, passenger:)

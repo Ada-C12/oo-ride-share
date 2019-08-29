@@ -164,10 +164,8 @@ describe "TripDispatcher class" do
       before do
         @dispatcher = build_test_dispatcher
       end
-      # From the Drivers that remain, select the one who has never driven or whose most recent trip ended the longest time ago
       
       it "selects first the driver with no previous trips, then the driver with the least recent most-recent trip" do
-        
         # first: select the driver with no previous trips
         first_driver_found = @dispatcher.find_available_driver()
         first_driver_found.set_status_to_unavailable()
