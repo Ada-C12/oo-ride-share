@@ -85,6 +85,11 @@ describe "Driver class" do
   
   describe "average_rating method" do
     before do
+      @pass = RideShare::Passenger.new(
+        id: 1,
+        name: "Test Passenger",
+        phone_number: "412-432-7640"
+      )
       @driver = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
@@ -99,6 +104,22 @@ describe "Driver class" do
         rating: 5
       )
       @driver.add_trip(trip)
+
+      AVERAGE_RATING = @driver.average_rating
+    end
+
+    it "returns average rating for only completed trips" do
+      in_progress_trip = RideShare::Trip.new(
+        id: 15,
+        passenger: @pass,
+        driver: @driver,
+        start_time: Time.now,
+        end_time: nil,
+        cost: nil,
+        rating: nil
+      )
+      @driver.add_trip(in_progress_trip)
+      expect(@driver.average_rating).must_equal AVERAGE_RATING
     end
     
     it "returns a float" do
@@ -177,6 +198,20 @@ describe "Driver class" do
       TOTAL_REVENUE = ( (trip1.cost - TRIP_FEE) + (trip2.cost - TRIP_FEE) ) * PERCENTAGE_PAY
       
       
+    end
+    
+    it "returns total revenue for only completed trips" do
+      in_progress_trip = RideShare::Trip.new(
+        id: 15,
+        passenger: @pass,
+        driver: @driver,
+        start_time: Time.now,
+        end_time: nil,
+        cost: nil,
+        rating: nil
+      )
+      @driver.add_trip(in_progress_trip)
+      expect(@driver.total_revenue).must_equal TOTAL_REVENUE.round(2)
     end
     
     it "returns a float with two decimal places" do

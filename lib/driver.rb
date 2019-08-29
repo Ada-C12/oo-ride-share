@@ -35,7 +35,8 @@ module RideShare
     end
     
     def total_revenue
-      revenue_minus_trip_fee = @trips.sum do |trip|
+      completed_trips = @trips.select { |trip| trip.end_time != nil }
+      revenue_minus_trip_fee = completed_trips.sum do |trip|
         trip.cost <= TRIP_FEE ? trip.cost : trip.cost - TRIP_FEE
       end
       total_revenue = revenue_minus_trip_fee * PERCENTAGE_PAY
@@ -43,8 +44,10 @@ module RideShare
     end
     
     def average_rating
-      total_rating = @trips.sum { |trip| trip.rating }
-      number_of_trips = @trips.length
+      completed_trips = @trips.select { |trip| trip.end_time != nil }
+      total_rating = completed_trips.sum{ |trip| trip.rating }
+
+      number_of_trips = completed_trips.length
       average_rating = (number_of_trips == 0) ? 0 : total_rating/number_of_trips.to_f
       return average_rating.round(1)
     end
