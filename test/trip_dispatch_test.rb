@@ -154,8 +154,13 @@ describe "TripDispatcher class" do
         expect(after_trips).must_equal(before_trips + 1)
       end
       
-      # it "adds trip to passenger's list" do 
-      # end
+      it "adds in progress trip to TripDispatcher's trips" do
+        dispatcher = build_test_dispatcher
+        before_trips = dispatcher.trips.length
+        in_progress_trip = dispatcher.request_trip(1)
+        after_trips = dispatcher.trips.length
+        expect(after_trips).must_equal(before_trips + 1)
+      end
       
       # it "adds the trip to the dispatchers trip list"
       # end
