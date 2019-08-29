@@ -27,6 +27,14 @@ module RideShare
       @trips << trip
     end
 
+    def total_revenue
+      revenue_per_trip = []
+      @trips.each do |trip|
+        revenue_per_trip << (trip.cost - 1.65)*0.8
+      end  
+      total_revenue = revenue_per_trip.sum
+    end 
+
     private
 
     def self.from_csv(record)

@@ -130,7 +130,40 @@ describe "Driver class" do
     end
   end
 
-  xdescribe "total_revenue" do
+  describe "total_revenue" do
     # You add tests for the total_revenue method
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      @driver = RideShare::Driver.new(
+        id: 9,
+        name: "Merl Glover III",
+        vin: "16026202330x37232",
+        )
+      trip = RideShare::Trip.new(
+        id: 8,
+        passenger_id: 4,
+        driver: @driver,
+        start_time: Time.parse('2015-05-20T6:45:00+00:00'),
+        end_time: Time.parse('2015-05-20T7:03:00+00:00'),
+        cost: 9,
+        rating: 5
+        )
+      @driver.add_trip(trip)
+
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 7,
+        start_time: Time.parse('2015-05-20T11:14:00+00:00'),
+        end_time: Time.parse('2015-05-20T11:20:00+00:00'),
+        cost: 6,
+        rating: 5
+        )
+      @driver.add_trip(trip)
+    end
+
+    it "returns total revenue of driver" do 
+      expect(@driver.total_revenue).must_equal 9.36
+    end 
   end
 end
