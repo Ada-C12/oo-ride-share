@@ -125,47 +125,34 @@ describe "TripDispatcher class" do
 
   describe "request trip" do
     before do
-      @passenger = RideShare::Passenger.new(
-        id: 1,
-        name: "Test Passenger",
-        phone_number: "412-432-7640"
-      )
-      @driver = RideShare::Driver.new(
-        id: 3,
-        name: "Test Driver",
-        vin: "12345678912345678"
-      )
-      @trip = RideShare::Trip.new(
-        id: 8,
-        driver: @driver,
-        passenger: @passenger,
-        start_time: "2016-08-08",
-        end_time: "2018-08-09",
-        rating: 5
-      )
+      @dispatcher = build_test_dispatcher
     end
 
     it "is an instance of Trip" do
-      expect(@trip).must_be_kind_of RideShare::Trip
+      trip = @dispatcher.trips[1]
+      expect(trip).must_be_kind_of RideShare::Trip
     end
 
     it "updates trip lists for passenger and driver" do
-      previous = @driver.trips.length
-      @driver.add_trip(@trip)
-      expect(@driver.trips.length).must_equal previous + 1
+      driver = @dispatcher.drivers[1]
+      previous = driver.trips.length
+      driver.add_trip(@trip)
+      expect(driver.trips.length).must_equal previous + 1
 
-      previous = @passenger.trips.length
-      @passenger.add_trip(@trip)
-      expect(@passenger.trips.length).must_equal previous + 1
+      passenger = @dispatcher.passengers[1]
+      previous = passenger.trips.length
+      passenger.add_trip(@trip)
+      expect(passenger.trips.length).must_equal previous + 1
     end
 
     it "the driver selected was AVAILABLE" do
-      expect(RideShare::Driver.new(id: 3, name: "Test Driver", vin: "12345678912345678").status).must_equal :AVAILABLE
+      driver = @dispatcher.drivers[1]
+      expect(driver.status).must_equal :AVAILABLE
     end
 
-    # it "raises an ArgumentError if there are no available drivers" do
-    #   expect(RideShare::Driver.new(id: 3, name: "Test Driver", vin: "12345678912345678", status: :UNAVAILABLE)).must_raise ArgumentError
-    # end
+    it "raises an ArgumentError if there are no available drivers" do
+      driver = @dispatcher.drivers[0]
+      expect(driver.status).must_equal :UNAVAILABLE
+    end
   end
-
 end
