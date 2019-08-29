@@ -73,6 +73,7 @@ describe "Passenger class" do
       
       # Assert
       expect(total_cost).must_equal 12
+      
     end 
   end
   

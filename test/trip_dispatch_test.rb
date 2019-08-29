@@ -123,39 +123,73 @@ describe "TripDispatcher class" do
   end
   
   describe "Create a new trip with request_trip" do 
-    it "The request_trip method will have the correct attributes" do
-      # should contain a driver, passenger, start_time
-      # end_date, cost, rating will be nil
-    end 
+    before do
+      # add test data
+      # MIMIC A IN-PROGRESS TRIP
+      @dispatcher = RideShare::TripDispatcher.new #build_test_dispacher
+      
+      @trip = RideShare::Trip.new (id: 10,
+      driver: nil,
+      passenger: nil,
+      start_time: Time.now,
+      end_time: nil,
+      cost: nil,
+      rating: nil)
+      
+    end
     
     it "Will create a new instance of Trip" do
       # make a new instance of Trip 
-      # return the newly created trip
+      # Arrange
+      
+      # Act
+      # call the .request_trip method here 
+      # Assert
+      # expect(that .request_trip returns an instance of trip)
+      
     end 
-    
-    it "Will choose the first driver who's status is available" do
-      # add test
-    end 
-    
-    it "Will add the new trip to the Driver's list of trips" do
-      # add test
-    end
     
     it "Will change the Driver's status to unavailable" do 
       # add test
     end 
     
-    it "Will add the new trip to the Passenger's list of trips" do
+    # ADD IT RETURN NIL IF THERE"S NO AVAILABLE DRIVERS 
+    it "Will choose the first driver who's status is available" do
       # add test
-    end 
+      
+      # @drivers = []
+      # driver1 = RideShare::Driver.new(id: 54, name: "Bob", vin: "12345678901234567", status: :AVAILABLE)
+      # driver2 = RideShare::Driver.new(id: 55, name: "Jenny", vin: "12345678901234570", status: :AVAILABLE)
+      # driver3 = RideShare::Driver.new(id: 56, name: "Timmy", vin: "12345678901234577", status: :UNAVAILABLE)
+      # @drivers.push(driver1)
+      # @drivers.push(driver2)
+      # @drivers.push(driver3)
+      
+      # loop through drivers.status pick first instance of :AVAILABLE
+      @drivers.each do |driver|
+        
+        
+        # then add that driver to trip
+      end 
+      
+      it "Will add the new trip to the Driver's list of trips" do
+        # add test
+      end
+      
+      
+      it "Will add the new trip to the Passenger's list of trips" do
+        # add test
+        # passenger: RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640")
+      end 
+      
+      it "Will add the newly created trip to the collection of all Trips in TripDispatcher" do
+        # add test
+      end 
+      
+    end
     
-    it "Will add the newly created trip to the collection of all Trips in TripDispatcher" do
-      # add test
-    end 
+    
+    
     
   end
   
-  
-  
-  
-end

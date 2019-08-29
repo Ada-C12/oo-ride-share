@@ -6,8 +6,7 @@ describe "Trip class" do
     before do
       
       start_time = Time.parse('2015-05-20T12:14:00+00:00')
-      end_time = start_time + 25 * 60 # 25 minutes
-      # binding.pry
+      end_time = start_time + 25 * 60
       @trip_data = {
       id: 8,
       driver: RideShare::Driver.new(id: 54, name: "Test Driver", vin: "12345678901234567", status: :AVAILABLE),
