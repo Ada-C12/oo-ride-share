@@ -30,7 +30,9 @@ module RideShare
     def average_rating
       ratings = []
       @trips.each do |trip|
-        ratings << trip.rating
+        if trip.rating != nil
+          ratings << trip.rating
+        end
       end
       if ratings.length > 0
         ratings_total = ratings.sum
@@ -43,7 +45,9 @@ module RideShare
     def total_revenue
       revenue_per_trip = []
       @trips.each do |trip|
+        if trip.cost != nil
         revenue_per_trip << (trip.cost - 1.65)*0.8
+        end
       end  
 
       if revenue_per_trip.length > 0

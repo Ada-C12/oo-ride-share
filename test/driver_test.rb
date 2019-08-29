@@ -128,6 +128,21 @@ describe "Driver class" do
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
+
+    it "should return average of trips with in-progress trips" do
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new.to_s,
+        end_time: nil,
+        rating: nil
+      )
+      @driver.add_trip(trip3)
+
+      expect(@driver.average_rating).must_be_close_to (5.0) / 1.0, 5.0
+    end 
+
   end
 
   describe "total_revenue" do
@@ -139,7 +154,7 @@ describe "Driver class" do
         name: "Merl Glover III",
         vin: "16026202330x37232",
         )
-      trip = RideShare::Trip.new(
+      trip1 = RideShare::Trip.new(
         id: 8,
         passenger_id: 4,
         driver: @driver,
@@ -148,9 +163,9 @@ describe "Driver class" do
         cost: 9,
         rating: 5
         )
-      @driver.add_trip(trip)
+      @driver.add_trip(trip1)
 
-      trip = RideShare::Trip.new(
+      trip2 = RideShare::Trip.new(
         id: 8,
         driver: @driver,
         passenger_id: 7,
@@ -159,10 +174,24 @@ describe "Driver class" do
         cost: 6,
         rating: 5
         )
-      @driver.add_trip(trip)
+      @driver.add_trip(trip2)
     end
 
     it "returns total revenue of driver" do 
+      expect(@driver.total_revenue).must_equal 9.36
+    end 
+
+    it "should return average of trips with in-progress trips" do
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new.to_s,
+        end_time: nil,
+        rating: nil
+      )
+      @driver.add_trip(trip3)
+
       expect(@driver.total_revenue).must_equal 9.36
     end 
   end
