@@ -158,12 +158,21 @@ describe "TripDispatcher class" do
           dispatcher.request_trip(1)
         }.must_raise ArgumentError
       end
-      
-      it "first selects the driver who has never driven before" do
-        expect(@driver_found.name).must_equal "Driver 3 (no trips)"
+    end
+    
+    describe "find find available driver intelligent assignment" do
+      before do
+        @dispatcher = build_test_dispatcher
       end
-      
       # From the Drivers that remain, select the one who has never driven or whose most recent trip ended the longest time ago
+      
+      it "selects first the driver with no previous trips, then the driver with the least recent most-recent trip" do
+        first_driver_found = @dispatcher.find_available_driver()
+        expect(first_driver_found.name).must_equal "Driver 3 (no trips)"
+        
+        # second_driver_found = @dispatcher.find_available_driver()
+        # expect(second_driver_found.name).must_equal "Driver 2"
+      end
       
     end
     
