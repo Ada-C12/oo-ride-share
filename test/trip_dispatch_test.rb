@@ -108,8 +108,8 @@ describe "TripDispatcher class" do
         expect(first_driver.name).must_equal "Driver 1 (unavailable)"
         expect(first_driver.id).must_equal 1
         expect(first_driver.status).must_equal :UNAVAILABLE
-        expect(last_driver.name).must_equal "Driver 3 (no trips)"
-        expect(last_driver.id).must_equal 3
+        expect(last_driver.name).must_equal "Driver 4"
+        expect(last_driver.id).must_equal 4
         expect(last_driver.status).must_equal :AVAILABLE
       end
       
@@ -174,7 +174,17 @@ describe "TripDispatcher class" do
         # second: select the driver whose most recent trip was longest ago
         second_driver_found = @dispatcher.find_available_driver()
         second_driver_found.set_status_to_unavailable()
-        expect(second_driver_found.name).must_equal "Driver 2"
+        expect(second_driver_found.name).must_equal "Driver 4"
+        
+        # third: select the driver whose most recent trip was second-longest ago
+        third_driver_found = @dispatcher.find_available_driver()
+        third_driver_found.set_status_to_unavailable()
+        expect(third_driver_found.name).must_equal "Driver 2"
+        
+        # third: if no drivers are available, the request should thrown an error
+        expect {
+          @dispatcher.request_trip(1)
+        }.must_raise ArgumentError
       end
       
     end
@@ -190,7 +200,7 @@ describe "TripDispatcher class" do
         dispatcher = build_nil_end_time_test_dispatcher
         passenger = dispatcher.find_passenger(1)
         driver = dispatcher.find_driver(3)
-        in_progress_trip = RideShare::Trip.new(id: 6, passenger: passenger, driver: driver, start_time: Time.new)
+        in_progress_trip = RideShare::Trip.new(id: (dispatcher.trips.length + 1), passenger: passenger, driver: driver, start_time: Time.new)
         driver.add_trip(in_progress_trip)
         expect {
           dispatcher.request_trip(2)
