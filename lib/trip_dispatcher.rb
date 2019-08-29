@@ -52,29 +52,74 @@ module RideShare
       latest_trip_id = @trips[-1].id
       new_trip_id = latest_trip_id + 1
       
-      # Driver seletion: choose 1st driver whose statu is :AVAILABLE, then flip their status
-      chosen_driver = nil
-      stop_driver_search = false
-      while stop_driver_search == false
-        @drivers.each do |driver|
-          if driver.status == :AVAILABLE
-            chosen_driver = driver
-            chosen_driver.switch_status
-            stop_driver_search = true
+      # Driver selection priority: driver_with_zero_trips > driver_driest_spell 
+      # Req'ts: 1. must be :AVAILABLE, = 2. Must not have any ongoing trips (end_time = nil) 
+      # WRITE TEST CODES!!!
+      
+      driver_with_zero_trips = nil
+      driver_driest_spell = nil
+      longest_dry_spell = 0
+      now = Time.now
+      
+      # determine each driver's place per priority scale
+      @drivers.each do |driver|
+        if driver.status == :AVAILABLE
+          if driver.trips == []
+            driver_with_zero_trips = driver
             break
+          else 
+            # evaluate dry spell, assuming drivers.trips in random chrono order
+            most_recent_trip = driver.trips.min_by do |trip| 
+              now - trip.end_time
+            end
+            dry_spell = now - most_recent_trip.end_time
+            
+            if dry_spell > longest_dry_spell
+              longest_dry_spell = dry_spell
+              driver_driest_spell = driver
+            end
           end
         end
-        stop_driver_search = true
       end
       
-      # If no drivers available, can't make new Trip, return nil
-      if chosen_driver == nil
+      # choose the driver based on priority
+      if driver_with_zero_trips
+        chosen_driver = driver_with_zero_trips
+      elsif driver_driest_spell
+        chosen_driver = driver_driest_spell
+      else
+        # no one is :AVAILABLE, can't make new Trip instance anyway
         return nil
       end
       
+      # update driver status
+      chosen_driver.switch_status
+      
+      #######################
+      # PREVIOUS VERSION of Driver seletion: choose 1st driver whose statu is :AVAILABLE, then flip their status
+      # chosen_driver = nil
+      # stop_driver_search = false
+      # while stop_driver_search == false
+      #   @drivers.each do |driver|
+      #     if driver.status == :AVAILABLE
+      #       chosen_driver = driver
+      #       chosen_driver.switch_status
+      #       stop_driver_search = true
+      #       break
+      #     end
+      #   end
+      #   stop_driver_search = true
+      # end
+      
+      # If no drivers available, can't make new Trip, return nil
+      # if chosen_driver == nil
+      #   return nil
+      # end
+      #########################
+
       # Make new Trip instance, all arguments are acceptable
       new_trip = RideShare::Trip.new(id:new_trip_id, passenger: passenger, passenger_id: passenger_id, start_time: start_time, end_time: end_time, cost: nil, rating: nil, driver_id: chosen_driver.id, driver: chosen_driver)
-
+      
       # Add this Trip to 1. driver's @trips, 2. passenger's @trips, 3. TripDispatcher instance's @Trips
       chosen_driver.add_trip(new_trip)
       passenger.add_trip(new_trip)
