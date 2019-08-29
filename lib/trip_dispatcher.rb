@@ -36,6 +36,10 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
+    def request_trip(passenger_id)
+      #create a new instance of trip
+    end
+
     private
 
     def connect_trips
