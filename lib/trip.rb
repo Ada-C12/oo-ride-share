@@ -25,6 +25,7 @@ module RideShare
         raise ArgumentError, "Passenger or passenger_id is required"
       end
       @driver = driver
+      @driver_id = driver_id
       @start_time = start_time
       @end_time = end_time
       @cost = cost
@@ -48,6 +49,11 @@ module RideShare
       passenger.add_trip(self)
     end
 
+    def connect_driver(driver)
+      @driver = driver
+      driver.add_trip(self)
+    end
+
     def duration_in_seconds(start_time, end_time)
       set_end = ()
       set_start = ()
@@ -61,8 +67,9 @@ module RideShare
 
     def self.from_csv(record)
       return self.new(
-               id: record[:id],
-               passenger_id: record[:passenger_id],
+               id: record[:id].to_i,
+               driver_id: record[:driver_id].to_i,
+               passenger_id: record[:passenger_id].to_i,
                start_time: Time.parse(record[:start_time]),
                end_time: Time.parse(record[:end_time]),
                cost: record[:cost],
