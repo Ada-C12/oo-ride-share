@@ -28,10 +28,9 @@ module RideShare
     def average_rating 
       if @trips.length > 0
         ratings = @trips.map do |trip|
-          if trip.rating != nil
-            trip.rating
-          end
+          trip.rating
         end
+        ratings.compact!
         (ratings.sum / ratings.length).to_f
       elsif @trips.length == 0
         raise ArgumentError, "Driver has no ratings."
@@ -43,8 +42,11 @@ module RideShare
         revenue = @trips.map do |trip|
           if trip.cost != nil
             (trip.cost - 1.65) * 0.8 
+          else
+            nil
           end
         end 
+        revenue.compact!
         revenue.sum
       elsif @trips.length == 0 
         raise ArgumentError, "Driver has no trips."

@@ -20,7 +20,11 @@ module RideShare
     def net_expenditures
       if @trips.length > 0 
         total_trips = @trips.map do |trip|
-          trip.cost
+          if trip.cost != nil 
+            trip.cost
+          else
+            0
+          end 
         end
         total_trips.sum
       else 
@@ -31,7 +35,11 @@ module RideShare
     def total_time_spent 
       if @trips.length > 0
         total_time = @trips.map do |trip|
-          trip.calculate_duration
+          if trip.end_time != nil 
+            trip.calculate_duration
+          else
+            0
+          end 
         end 
         total_time.sum 
       else

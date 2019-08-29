@@ -84,12 +84,20 @@ describe "Passenger class" do
       expect(passenger.net_expenditures).must_equal 15
       
     end
+    
     it "raises ArgumentError if passenger hasn't spent any money" do
-      
       td = RideShare::TripDispatcher.new
       passenger = td.passengers[1]
       
       expect {passenger.net_expenditures}.must_raise ArgumentError
+    end
+    
+    it "omits in-progress trips from the calculations" do
+      td = RideShare::TripDispatcher.new 
+      passenger = td.passengers[0]
+      td.request_trip(passenger.id)
+      
+      expect(passenger.net_expenditures).must_be_kind_of Integer
     end
     
   end
@@ -103,11 +111,18 @@ describe "Passenger class" do
     end 
     
     it "raises ArgumentError if passenger has not been on any trips" do
-      
       td = RideShare::TripDispatcher.new
       passenger = td.passengers[1]
       
       expect {passenger.total_time_spent}.must_raise ArgumentError
+    end
+    
+    it "omits in-progress trips from the calculations" do
+      td = RideShare::TripDispatcher.new 
+      passenger = td.passengers[0]
+      td.request_trip(passenger.id)
+      
+      expect(passenger.total_time_spent).must_be_kind_of Integer
     end
     
   end 
