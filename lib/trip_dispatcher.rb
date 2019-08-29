@@ -32,12 +32,14 @@ module RideShare
       #{drivers.count} drivers, \
       #{passengers.count} passengers>"
     end
+    
     def find_first_available_driver
       @trips.each do |trip|
         if trip.driver.status == :AVAILABLE
           return trip.driver
-        end
+        end 
       end
+      raise ArgumentError.new "No available drivers"
     end
     
     def request_trip(passenger_id)
@@ -61,6 +63,7 @@ module RideShare
       driver.status  = :UNAVAILABLE
       passenger.add_trip(passenger)
       @trips << new_trip
+      driver.trips << new_trip
       return new_trip
     end
     

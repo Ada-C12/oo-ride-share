@@ -125,8 +125,6 @@ describe "TripDispatcher class" do
   
   describe " Request trip" do
     it "Checks to see if returns instance of trip " do
-      
-      
       dispatcher = build_test_dispatcher
       result = dispatcher.request_trip(1)
       expect(result).must_be_instance_of RideShare::Trip
@@ -147,14 +145,57 @@ describe "TripDispatcher class" do
       expect(result.driver_id).must_be_instance_of Integer
       expect(result.driver).must_be_instance_of RideShare::Driver
     end 
-    
     it "Drivers status should be available until added to a trip " do
       dispatcher = build_test_dispatcher
       result = dispatcher.request_trip(1)
       expect(result.driver.status).must_equal :UNAVAILABLE
     end
+    it "Error should be raised if no available drivers" do
+      dispatcher= build_test_dispatcher
+      dispatcher.drivers.each do |driver|
+        driver.status = :UNAVAILABLE
+      end
+      expect{dispatcher.request_trip(1)}.must_raise ArgumentError
+
+    end
+    
+    it " Were the trip added to the total list of trips" do
+      dispatcher = build_test_dispatcher
+      num_trips = dispatcher.trips.length
+      
+      result = dispatcher.request_trip(1)
+      
+      new_num_trips = num_trips + 1
+      
+      result = dispatcher.trips.length
+      
+      expect(result).must_equal new_num_trips
+    end
+
+    it " Were the trip lists for the driver updated" do
+      dispatcher = build_test_dispatcher
+      driver = dispatcher.find_first_available_driver
+      num_trips = driver.trips.length
+      result = dispatcher.request_trip(1)
+      
+      new_num_trips = num_trips + 1
+      
+      final_result = result.driver.trips.length
+      expect(final_result).must_equal new_num_trips
+      
+    end
+    it " Were the trip lists for passenger updated" do
+      dispatcher = build_test_dispatcher
+      passenger = dispatcher.find_passenger(1)
+      num_trips = passenger.trips.length
+      result = dispatcher.request_trip(1)
+      
+      new_num_trips = num_trips + 1
+      
+      updated_trips = result.passenger.trips.length
+      expect(updated_trips).must_equal new_num_trips
+    end
   end 
-  
   describe "Find first available driver" do
     it "Checks to see if find_first_available_driver method actually returns available driver" do
       dispatcher = build_test_dispatcher
@@ -162,5 +203,5 @@ describe "TripDispatcher class" do
       expect(result).must_be_instance_of RideShare::Driver
       expect(result.status).must_equal :AVAILABLE
     end
-  end  
+  end
 end
