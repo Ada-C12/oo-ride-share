@@ -54,8 +54,8 @@ module RideShare
       # CHECK set the driver status to :UNAVAILABLE
       # Generate new trip id for each new trip
       # Prevent new trip from being generate if no available drivers
-      # add the new trip to the passenger's list of trips 
-      # add the new trip to the collection of all trips in TripDispatcher
+      # CHECK add the new trip to the passenger's list of trips 
+      # CHECK add the new trip to the collection of all trips in TripDispatcher
       # CHECK return the newly created trip
       
       current_driver = nil
@@ -72,19 +72,25 @@ module RideShare
       #   return nil
       # end 
       
+      # validate that the passenger exists before instantiating a new trip
+      passenger = self.find_passenger(passenger_id)
+      if passenger.nil?
+        raise ArgumentError.new("Invalid passenger id #{passenger_id}")
+      end
+      
       # create a new instance of trip
-      new_trip = Trip.new(id: 1, driver: current_driver, passenger_id: passenger_id, start_time: Time.now, end_time: nil, rating: nil)
+      new_trip = Trip.new(id: 1, driver: current_driver, passenger: passenger, start_time: Time.now, end_time: nil, rating: nil)
+      
       # Add the new trip to driver's list of trips
       new_trip.driver.add_trip(new_trip)
       # Change the driver status to unavailable
       new_trip.driver.status = :UNAVAILABLE
       
       # # Add the new trip to passenger's list of trips
-      # new_trip.passenger.add_trip(new_trip)
+      passenger.add_trip(new_trip)
       
       # Add the new trip to the TripDispatcher's trips
       self.add_trip(new_trip)
-      
       
       return new_trip 
       

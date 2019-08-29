@@ -125,55 +125,62 @@ describe "TripDispatcher class" do
   describe "Create a new trip with request_trip" do 
     before do
       # MIMICING A IN-PROGRESS TRIP
-      @dispatcher = RideShare::TripDispatcher.new(directory: TEST_DATA_DIRECTORY)     
+      @dispatcher = RideShare::TripDispatcher.new(directory: TEST_DATA_DIRECTORY)   
+      passenger_id = @dispatcher.passengers.first.id  
     end
     
     it "Will create a new instance of Trip" do   
       # Act
-      trip = @dispatcher.request_trip(3333)
+      passenger_id = @dispatcher.passengers.first.id 
+      trip = @dispatcher.request_trip(passenger_id)
       
       # Assert
       expect(trip).must_be_kind_of RideShare::Trip
     end
     
     it "Will assign a driver to the Trip" do
-      trip = @dispatcher.request_trip(3333)
+      passenger_id = @dispatcher.passengers.first.id 
+      trip = @dispatcher.request_trip(passenger_id)
       expect(trip.driver).must_be_kind_of RideShare::Driver
     end
     
     it "Will choose the first driver who's status is available" do
-      trip = @dispatcher.request_trip(3333)
+      passenger_id = @dispatcher.passengers.first.id 
+      trip = @dispatcher.request_trip(passenger_id)
       expect(trip.driver.id).must_equal 2
     end
     
     # it "Will return nil if there's no available drivers" do
-    #   # trip = @dispatcher.request_trip(3333)
+    #   # trip = @dispatcher.request_trip(passenger_id)
     #   # expect()
     # end
     
     it "Will change the Driver's status to unavailable" do 
-      trip = @dispatcher.request_trip(3333)
+      passenger_id = @dispatcher.passengers.first.id 
+      trip = @dispatcher.request_trip(passenger_id)
       expect(trip.driver.status).must_equal :UNAVAILABLE
     end 
     
     it "Will add the new trip to the Driver's list of trips" do
-      trip = @dispatcher.request_trip(3333)
+      passenger_id = @dispatcher.passengers.first.id 
+      trip = @dispatcher.request_trip(passenger_id)
       expect(trip.driver.trips).must_include trip
     end
     
-    # it "Will add the new trip to the Passenger's list of trips" do
-    #   trip = @dispatcher.request_trip(3333)
-    #   trip.connect(@driver, @passenger)
-    
-    #   p "KRISTINA"
-    #   p trip.passenger
-    #   p "MOSKALETS"
-    #   updated_trip_list = trip.passenger.add_trip(trip)
-    #   # expect(trip.passenger.trips).must_include trip
-    # end 
+    it "Will add the new trip to the Passenger's list of trips" do
+      passenger_id = @dispatcher.passengers.first.id 
+      trip = @dispatcher.request_trip(passenger_id)
+      
+      p "KRISTINA"
+      p trip.passenger
+      p "MOSKALETS"
+      updated_trip_list = trip.passenger.add_trip(trip)
+      expect(updated_trip_list).must_include trip
+    end 
     
     it "Will add the newly created trip to the collection of all Trips in TripDispatcher" do
-      trip = @dispatcher.request_trip(3333)
+      passenger_id = @dispatcher.passengers.first.id 
+      trip = @dispatcher.request_trip(passenger_id)
       expect(@dispatcher.trips).must_include trip
     end 
     
