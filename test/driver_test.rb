@@ -25,6 +25,14 @@ describe "Driver class" do
       expect { RideShare::Driver.new(id: 100, name: "George", vin: "33133313331333133extranums") }.must_raise ArgumentError
     end
 
+    it "raises an argument error with a bad status value" do
+      expect { RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567", status: "") }.must_raise ArgumentError
+      expect { RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567", status: 56789) }.must_raise ArgumentError
+      expect { RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567", status: "AVAILABLE") }.must_raise ArgumentError
+      expect { RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567", status: nil) }.must_raise ArgumentError
+      expect { RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567", status: :CRITICAL) }.must_raise ArgumentError
+    end
+
     it "has a default status of :AVAILABLE" do
       expect(RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567", status: :AVAILABLE, trips: []).status).must_equal :AVAILABLE
     end
@@ -43,6 +51,7 @@ describe "Driver class" do
       expect(@driver.name).must_be_kind_of String
       expect(@driver.vin).must_be_kind_of String
       expect(@driver.status).must_be_kind_of Symbol
+      expect(@driver.trips).must_be_kind_of Array
     end
   end
 
