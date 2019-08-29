@@ -38,7 +38,7 @@ module RideShare
         ratings.push(trip.rating) if trip.rating
       end
       
-      return 0 if ratings.length == 0
+      return nil if ratings.length == 0
       
       average_rating = ratings.sum / ratings.length.to_f
       return average_rating
@@ -63,10 +63,10 @@ module RideShare
     
     def self.from_csv(record)
       return new(
-        id: record[:id],
-        name: record[:name],
-        vin: record[:vin],
-        status: record[:status].to_sym
+      id: record[:id],
+      name: record[:name],
+      vin: record[:vin],
+      status: record[:status].to_sym
       )
     end
   end
