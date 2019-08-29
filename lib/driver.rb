@@ -7,7 +7,6 @@ module RideShare
     
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       super(id)
-      @id = id 
       @name = name 
       @trips = trips || []
       @status = status 
@@ -32,7 +31,7 @@ module RideShare
         end
         (ratings.sum / ratings.length).to_f
       elsif @trips.length == 0
-        return 0
+        raise ArgumentError, "Driver has no ratings."
       end
     end 
     
@@ -47,6 +46,10 @@ module RideShare
       end 
     end 
     
+    def make_driver_unavailable
+      @status = :UNAVAILABLE
+
+    end 
     
     private
     

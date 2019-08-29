@@ -23,7 +23,7 @@ describe "TripDispatcher class" do
       
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
     
     it "loads the development data by default" do
@@ -121,5 +121,65 @@ describe "TripDispatcher class" do
         end
       end
     end
+  end
+  
+  describe "request_trip" do
+    it "returns an instance of a trip" do
+      td = RideShare::TripDispatcher.new 
+      expect(td.request_trip(6)).must_be_instance_of RideShare::Trip 
+      
+      
+    end 
+    # it "returns accurate information" do 
+    #   td = RideShare::TripDispatcher.new 
+    #   # expect(td.request_trip(6)).
+    
+    # end 
+    
+    it "updates the driver's trips with this trip" do 
+      td = RideShare::TripDispatcher.new
+      new_trip = td.request_trip(6)
+      driver = td.drivers.each do |driver|
+        if driver.id == new_trip.driver_id
+          return driver
+        end
+      end
+      
+      expect(driver.trips).must_include new_trip
+    end
+    
+    it "updates the passenger's trips with this trip" do 
+      td = RideShare::TripDispatcher.new
+      new_trip = td.request_trip(6)
+      passenger = td.passengers.each do |passenger|
+        if passenger.id == new_trip.passenger_id
+          return passenger
+        end
+      end
+      
+      expect(passenger.trips).must_include new_trip
+    end
+    
+    it "checking if driver becomes unavailable" do 
+      td = build_test_dispatcher
+      available_driver = td.drivers[1]
+      expect(available_driver.status).must_equal :AVAILABLE      
+      
+      new_trip = td.request_trip(6)
+      
+      new_trip_driver = nil 
+      
+      td.drivers.each do |driver|
+        if driver.id == new_trip.driver_id
+          new_trip_driver = driver
+        end
+      end
+      
+      expect(available_driver.id).must_equal new_trip_driver.id
+      
+      expect(new_trip_driver.status).must_equal :UNAVAILABLE
+      
+    end 
+    
   end
 end
