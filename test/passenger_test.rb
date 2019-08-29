@@ -56,7 +56,7 @@ describe "Passenger class" do
       
       # trip 2
       start_time_2 = Time.parse('2015-05-20T12:14:00+00:00')
-      end_time_2 = start_time_2 + 30 * 60 # 25 minutes
+      end_time_2 = start_time_2 + 30 * 60 # 30 minutes
       @trip_2_data = {
         id: 8,
         passenger: @passenger,
@@ -84,7 +84,6 @@ describe "Passenger class" do
     end 
     
     it "Returns zero for no trips taken." do
-      # Arrange
       gerald = RideShare::Passenger.new(id: 1, name: "Gerald", phone_number: "353-533-7678")
       expect(gerald.net_expenditures).must_equal 0
     end
@@ -196,7 +195,6 @@ describe "Passenger class" do
     end 
     
     it "Returns zero for no trips taken." do
-      #  Arrange
       gerald = RideShare::Passenger.new(id: 1, name: "Gerald", phone_number: "353-533-7678")
       expect(gerald.total_time_spent).must_equal 0
     end
@@ -206,7 +204,6 @@ describe "Passenger class" do
   
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",

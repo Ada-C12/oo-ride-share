@@ -58,7 +58,6 @@ module RideShare
       if all_available_drivers.length == 0
         raise ArgumentError, "No Available Drivers at this Time."
       else
-        # call helper method to determine which of all_available_drivers to pick
         selected_driver = select_driver_by_history(all_available_drivers)
       end
       return selected_driver

@@ -43,7 +43,6 @@ describe "Trip class" do
   describe "duration" do
     
     it "must be a positive number" do
-      # Arrange
       start_time = Time.parse('2015-05-20T12:14:00+00:00')
       end_time = start_time + 25 * 60 # 25 minutes
       @trip_data = {
@@ -56,14 +55,13 @@ describe "Trip class" do
         rating: 3
       }
       @trip = RideShare::Trip.new(@trip_data)
-      # Act
+      
       difference_in_time = @trip.duration
-      # Assert
+      
       expect(difference_in_time).must_be :>, 0
     end
     
     it "must raise error if zero" do
-      # Arrange
       start_time = Time.parse('2015-05-20T12:14:00+00:00')
       end_time = Time.parse('2015-05-20T12:14:00+00:00')
       @new_trip_data = {
@@ -76,14 +74,13 @@ describe "Trip class" do
         rating: 3
       }
       @new_trip = RideShare::Trip.new(@new_trip_data)
-      # Act && Assert
+      
       expect do
         @new_trip.duration
       end.must_raise ArgumentError
     end
     
     it "must raise error if negative number" do
-      # Arrange
       start_time = Time.parse('2015-05-20T12:14:00+00:00')
       end_time = start_time - 25 * 60 # -25 minutes
       @new_trip_data = {
@@ -96,14 +93,13 @@ describe "Trip class" do
         rating: 3
       }
       @new_trip = RideShare::Trip.new(@new_trip_data)
-      # Act & Assert
+      
       expect do
         @new_trip.duration
       end.must_raise ArgumentError
     end
     
     it "must raise error if start/end time is nil" do
-      # Arrange
       start_time = nil
       end_time = nil
       @new_trip_data = {
@@ -116,14 +112,13 @@ describe "Trip class" do
         rating: 3
       }
       @new_trip = RideShare::Trip.new(@new_trip_data)
-      # Act & Assert
+      
       expect do
         @new_trip.duration
       end.must_raise ArgumentError
     end
     
     it "must calculate seconds" do
-      # Arrange
       start_time = Time.parse('2015-05-20T12:14:00+00:00')
       end_time = start_time + 25 * 60 # 25 minutes
       @new_trip_data = {
@@ -136,7 +131,7 @@ describe "Trip class" do
         rating: 3
       }
       @new_trip = RideShare::Trip.new(@new_trip_data)
-      # Act & Assert
+      
       expect(@new_trip.duration).must_equal 1500
     end
   end
