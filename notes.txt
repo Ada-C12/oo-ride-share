@@ -165,7 +165,7 @@ When a Trip is constructed, either driver_id or driver must be provided.
 
 Note: You have changed the method signature of the constructor for Trip. 
 Some of your tests may now be failing. Go fix them!
-  done!
+  done!  for reals this time
 
 Loading Drivers
 Update the TripDispatcher class as follows:
@@ -199,14 +199,79 @@ All the new methods above should have tests
   total_revenue -> done! self-written
 
 
+###############################################################
+Wave 3: Requesting a Trip
+Our program needs a way to make new trips and appropriately assign a driver and passenger.
+
+This logic will be handled by our TripDispatcher in a new instance method: TripDispatcher#request_trip(passenger_id). When we create a new trip with this method, the following will be true:
+
+The passenger ID will be supplied (this is the person requesting a trip)
+Your code should automatically assign a driver to the trip
+For this initial version, choose the first driver whose status is :AVAILABLE
+Your code should use the current time for the start time
+The end date, cost and rating will all be nil
+The trip hasn't finished yet!
+
+You should use this information to:
+Create a new instance of Trip
+Modify this selected driver using a new helper method in Driver:
+Add the new trip to the collection of trips for that Driver
+  done!
+Set the driver's status to :UNAVAILABLE
+  done!
+Add the Trip to the Passenger's list of Trips
+  done!
+Add the new trip to the collection of all Trips in TripDispatcher
+  done!
+Return the newly created trip
+  done!
+
+All of this code must have tests. Things to pay attention to:
+Was the trip created properly?
+  done!
+Were the trip lists for the driver and passenger updated?
+  done!
+Was the driver who was selected AVAILABLE? also made sure they turned UNAVAILABLE
+  done!
+What happens if you try to request a trip when there are no AVAILABLE drivers? 
+  done! return nil as new "trip"
+
+Interaction with Waves 1 & 2
+One thing you may notice is that this change breaks your code from previous waves, possibly in subtle ways. We've added a new kind of trip, an in-progress trip, that is missing some of the values you need to compute those numbers.
+
+Your code from waves 1 & 2 should ignore any in-progress trips. That is to say, any trip where the end time is nil should not be included in your totals.
+
+You should also add explicit tests for this new situation. For example, what happens if you attempt to calculate the total money spent for a Passenger with an in-progress trip, or the average rating of a Driver with an in-progress trip?
+  done!  in both driver.rb and passenger.rb, as well as driver_test.rb and passenger_test.rb
 
 
 
 
 
 
-### LAST THING BEFORE BEING TOTALLY DONE WITH WAVE 2 ###
-###JULIA & CAROLINE###  HOLD UP!  Weird bug in trip_test.rb, awaiting resolution
 
-  
 
+###############################################################
+Optional Wave 4: Intelligent Dispatching
+This wave is optional! Don't even look at it until you're sure your code from the previous waves meets every requirement!
+
+We want to evolve TripDispatcher so it assigns drivers in more intelligent ways. Every time we make a new trip, we want to pick drivers who haven't completed a trip in a long time, or who have never been assigned a trip.
+
+In other words, we should assign the driver to the available driver who has never driven or lacking a new driver one whose most recent trip ending is the oldest compared to today.
+
+Modify TripDispatcher#request_trip to use the following rules to select a Driver:
+
+The Driver must have a status of AVAILABLE
+The Driver must not have any in-progress trips (end time of nil)
+From the Drivers that remain, select the one who has never driven or whose most recent trip ended the longest time ago
+For example, if we have three drivers, each with two trips:
+
+Driver Name	Status	Trip 1 end time	Trip 2 end time
+Ada	AVAILABLE	Jan 3, 2018	Jan 9, 2018
+Katherine	AVAILABLE	Jan 1, 2018	Jan 12, 2018
+Grace	UNAVAILABLE	Jan 5, 2018	nil 
+Grace is excluded because they are not AVAILABLE, and because they have one in-progress trip.
+
+Of Ada and Katherine, we prefer Ada, because their most recent trip is older.
+
+All of this code must have tests.

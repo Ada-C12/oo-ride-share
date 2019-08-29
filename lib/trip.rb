@@ -8,7 +8,7 @@ module RideShare
     
     def initialize(id:,
       passenger: nil, passenger_id: nil,
-      start_time:, end_time:, cost: nil, rating:, driver_id: nil, driver: nil)
+      start_time:, end_time: nil, cost: nil, rating:, driver_id: nil, driver: nil)
       super(id)
       
       if passenger
@@ -20,9 +20,12 @@ module RideShare
         raise ArgumentError, 'Passenger instance or passenger_id is required'
       end
       
-      ###JULIA### WHOLE BLOCK CHANGED, Wave 1.1.3
-      # Evaluate Time obj args from .from_csv     
-      if end_time >= start_time
+      ###JULIA### WHOLE BLOCK CHANGED, Wave 1.1.3, amended in Wave 3
+      # Evaluate Time obj args from .from_csv  
+      if end_time == nil
+        # trip has not ended yet, still valid as nil
+        @start_time = start_time
+      elsif end_time >= start_time
         @start_time = start_time
         @end_time = end_time
       else
@@ -30,10 +33,13 @@ module RideShare
       end
       
       @cost = cost
-      @rating = rating
       
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      # @rating may be nil for ongoing trips
+      @rating = rating
+      if @rating    ###JULIA### amended block for Wave 3
+        if @rating > 5 || @rating < 1
+          raise ArgumentError.new("Invalid rating #{@rating}")
+        end
       end
       
       ###JULIA### ADDED BLOCK, Wave 2: "Either driver_id or Driver instance is needed"
@@ -84,8 +90,13 @@ module RideShare
       
       ###JULIA### ADDED BLOCK for Wave 1.1.2
       # change the time Strings into Time objects             
-      start_time_parsed = Time::parse(record[:start_time])    
-      end_time_parsed = Time::parse(record[:end_time])        
+      start_time_parsed = Time::parse(record[:start_time])  
+      if record[:end_time]
+        end_time_parsed = Time::parse(record[:end_time])        
+      else  ###JULIA### added this else block for Wave 3
+        # currently active trips will have end_time = nil 
+        end_time_parsed = nil
+      end
       
       return self.new(
         id: record[:id],
