@@ -124,29 +124,26 @@ describe "TripDispatcher class" do
     end
     
     describe "Find available Driver" do
+      before do
+        @dispatcher = build_test_dispatcher
+        @driver_found = @dispatcher.find_available_driver()
+      end
+      
       it "finds an available driver" do
-        dispatcher = build_test_dispatcher
-        driver_found = dispatcher.find_available_driver()
-        expect(driver_found.name).must_equal "Driver 2"
+        expect(@driver_found.name).must_equal "Driver 2"
       end
       
       it "finds the first available driver" do 
-        dispatcher = build_test_dispatcher
-        driver_found = dispatcher.find_available_driver()
-        expect(driver_found.name).wont_equal "Driver 3 (no trips)"
+        expect(@driver_found.name).wont_equal "Driver 3 (no trips)"
       end
       
       it "The first available driver has the status :AVAILABLE" do
-        dispatcher = build_test_dispatcher
-        driver_found = dispatcher.find_available_driver()
-        expect(driver_found.status).must_equal :AVAILABLE
+        expect(@driver_found.status).must_equal :AVAILABLE
       end
       
       it "Reassigns status when driver is chosen" do
-        dispatcher = build_test_dispatcher
-        driver_found = dispatcher.find_available_driver()
-        dispatcher.request_trip(1)
-        expect(driver_found.status).must_equal :UNAVAILABLE
+        @dispatcher.request_trip(1)
+        expect(@driver_found.status).must_equal :UNAVAILABLE
       end
       
       it "Raises ArgumentError if no available drivers" do
