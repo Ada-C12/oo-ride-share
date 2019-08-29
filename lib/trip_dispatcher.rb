@@ -33,6 +33,31 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
+    def request_trip(passenger_id)
+      passenger_for_ride = find_passenger(passenger_id)
+      available_driver = drivers.find { |driver| driver.status == :AVAILABLE }
+
+      if available_driver == nil
+        raise ArgumentError.new("No available drivers")
+      end
+
+      new_trip= RideShare::Trip.new(
+        driver_id: available_driver.id,
+        id: 1,
+        passenger: passenger_for_ride,
+        start_time: Time.now.to_s,
+        end_time: nil,
+        cost: nil,
+        rating: nil,
+      )
+
+      passenger_for_ride.add_trip(new_trip)
+      available_driver.add_new_trip(new_trip)
+      @trips << new_trip
+      
+      return new_trip
+    end
+
     private
 
     def connect_trips

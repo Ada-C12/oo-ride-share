@@ -48,6 +48,12 @@ module RideShare
       total_revenue = revenue_per_trip.sum
     end
 
+    #adds new trip and changes the driver status from available to unavailable
+    def add_new_trip(trip)
+      driver.status = :UNAVAILABLE
+      add_trip(trip)
+    end
+
     private
 
     def self.from_csv(record)

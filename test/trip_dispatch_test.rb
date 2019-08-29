@@ -122,4 +122,23 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  # describe "request trip" do
+  #   before do
+  #     ###????????????
+  #   end
+
+  #   it "is an instance of Trip" do
+  #     expect(@new_trip).must_be_kind_of RideShare::Trip
+  #   end
+
+  #   it "updates trip lists for passenger and driver" do
+  #   end
+
+  #   it "the driver selected was AVAILABLE" do
+  #   end
+
+  #   it "raises an ArgumentError if there are no available drivers" do
+  #   end
+
 end
