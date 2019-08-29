@@ -36,7 +36,24 @@ module RideShare
     end
     
     def request_trip(passenger_id)
-      cur_driver = nil
+      # STARTING REQUIREMENTS
+      # CHECK passenger_id will be supplied
+      # CHECK pick the first driver who is :AVAILABLE
+      # CHECK current time = start_time
+      # CHECK end_date: nil
+      # CHECK cost: nil
+      # CHECK rating: nil
+      
+      # WORK
+      # # TO DO: Generate new trip id for each new trip
+      # CHECK create a new instance of trip
+      # CHECK add the new trip to the collection of @trips for that driver
+      # CHECK set the driver status to :UNAVAILABLE
+      # add the new trip to the passenger's list of trips 
+      # add the new trip to the collection of all trips in TripDispatcher
+      # return the newly created trip
+      
+      current_driver = nil
       #binding.pry
       
       # same behavior:
@@ -44,34 +61,30 @@ module RideShare
       
       drivers.each do |driver|
         if driver.status == :AVAILABLE
-          cur_driver = driver
+          current_driver = driver
           break
         end
       end
       
-      return Trip.new(id: 1, driver: cur_driver, passenger_id: passenger_id, start_time: Time.now, end_time: nil, rating: 2)
-      # trip id needs to be updated
-      # fix rating look at trip test
       
       
       
-      # STARTING REQUIREMENTS
-      # passenger_id will be supplied
-      # pick the first driver who is :AVAILABLE
-      
-      # current time = start_time
-      # end_date: nil
-      # cost: nil
-      # rating: nil
-      
-      # WORK
       # create a new instance of trip
-      # create a new helper method in DRIVER.RB that will:
-      # - add the new trip to the collection of @trips for that driver
-      # - set the driver status to :UNAVAILABLE
-      # add the new trip to the passenger's list of trips 
-      # add the new trip to the collection of all trips in TripDispatcher
-      # return the newly created trip
+      new_trip = Trip.new(id: 1, driver: current_driver, passenger_id: passenger_id, start_time: Time.now, end_time: nil, rating: nil)
+      # Add the new trip to driver's list of trips
+      new_trip.driver.add_trip(new_trip)
+      # Change the driver status to unavailable
+      new_trip.driver.status = :UNAVAILABLE
+      
+      
+      
+      # Add the new trip to passenger's list of trips
+      # new_trip.passenger.add_trip(new_trip)
+      
+      return new_trip 
+      
+      
+      
     end
     
     
