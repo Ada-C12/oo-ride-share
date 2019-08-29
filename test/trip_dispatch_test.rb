@@ -167,13 +167,21 @@ describe "TripDispatcher class" do
       expect(trip.driver.trips).must_include trip
     end
     
+    it "Won't create a trip if the passenger_id doesn't match to any existing passenger" do 
+      trip = @dispatcher.request_trip(980999999999999)
+      expect do
+        trip
+      end.must_raise ArgumentError
+      
+      
+      
+      
+      
+    end
+    
     it "Will add the new trip to the Passenger's list of trips" do
       passenger_id = @dispatcher.passengers.first.id 
       trip = @dispatcher.request_trip(passenger_id)
-      
-      p "KRISTINA"
-      p trip.passenger
-      p "MOSKALETS"
       updated_trip_list = trip.passenger.add_trip(trip)
       expect(updated_trip_list).must_include trip
     end 

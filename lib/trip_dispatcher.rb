@@ -40,13 +40,6 @@ module RideShare
     end
     
     def request_trip(passenger_id)
-      # STARTING REQUIREMENTS
-      # CHECK passenger_id will be supplied
-      # CHECK pick the first driver who is :AVAILABLE
-      # CHECK current time = start_time
-      # CHECK end_date: nil
-      # CHECK cost: nil
-      # CHECK rating: nil
       
       # WORK
       # CHECK create a new instance of trip
@@ -58,6 +51,12 @@ module RideShare
       # CHECK add the new trip to the collection of all trips in TripDispatcher
       # CHECK return the newly created trip
       
+      # Generate new id for each new trip
+      # Write a est for this!!!
+      id = 0
+      last_trip_id = self.trips.last.id
+      id = last_trip_id + 1
+      
       current_driver = nil
       # assign the first available driver to the trip
       drivers.each do |driver|
@@ -67,19 +66,19 @@ module RideShare
         end
       end
       
-      # if no drivers are available return nil
-      # if !drivers.include?(:AVAILABLE)
-      #   return nil
-      # end 
-      
       # validate that the passenger exists before instantiating a new trip
       passenger = self.find_passenger(passenger_id)
       if passenger.nil?
         raise ArgumentError.new("Invalid passenger id #{passenger_id}")
       end
       
+      # if no drivers are available return nil
+      # if !drivers.include?(:AVAILABLE)
+      #   raise ArgumentError.new("No drivers available.")
+      # end 
+      
       # create a new instance of trip
-      new_trip = Trip.new(id: 1, driver: current_driver, passenger: passenger, start_time: Time.now, end_time: nil, rating: nil)
+      new_trip = Trip.new(id: id, driver: current_driver, passenger: passenger, start_time: Time.now, end_time: nil, rating: nil)
       
       # Add the new trip to driver's list of trips
       new_trip.driver.add_trip(new_trip)
