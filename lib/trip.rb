@@ -52,8 +52,6 @@ module RideShare
     end
     
     def inspect
-      # Prevent infinite loop when puts-ing a Trip
-      # trip contains a passenger contains a trip contains a passenger...
       "#<#{self.class.name}:0x#{self.object_id.to_s(16)} " +
       "ID=#{id.inspect} " +
       "PassengerID=#{passenger&.id.inspect}>"
@@ -64,6 +62,11 @@ module RideShare
       @driver = driver
       passenger.add_trip(self)
       driver.add_trip(self)
+    end
+    
+    def duration
+      duration_in_sec = @end_time - @start_time
+      return duration_in_sec
     end
     
     private
@@ -79,8 +82,5 @@ module RideShare
         rating: record[:rating]
       )
     end
-    
-    
-    
   end
 end
