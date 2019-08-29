@@ -24,6 +24,22 @@ module RideShare
       @trips = trips || []
     end
     
+    def set_status_available
+      if @status == :AVAILABLE
+        raise ArgumentError.new("This driver is already available.")
+      else 
+        @status = :AVAILABLE 
+      end
+    end
+    
+    def set_status_unavailable
+      if @status == :UNAVAILABLE
+        raise ArgumentError.new("This driver is already unavailable.")
+      else 
+        @status = :UNAVAILABLE
+      end
+    end
+    
     def add_trip(trip)
       @trips << trip
     end
@@ -57,6 +73,13 @@ module RideShare
       
       return total_revenue.round(2)
     end
+    
+    # def requested_trip_update(trip)
+    #   trip.driver.trips << trip
+    #   # TripDispatcher.connect_trips
+    
+    #   trip.driver.status == :UNAVAILABLE
+    # end
     
     private
     

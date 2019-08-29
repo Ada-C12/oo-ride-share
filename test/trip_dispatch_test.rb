@@ -126,7 +126,7 @@ describe "TripDispatcher class" do
   describe "request_trip method" do
     before do
       @dispatcher = build_test_dispatcher
-      @requested_trip = @dispatcher.request_trip(1234)
+      @requested_trip = @dispatcher.request_trip(1)
     end
     
     it "Creates a new instance of Trip" do
@@ -138,15 +138,38 @@ describe "TripDispatcher class" do
     end
     
     it "Assigned the correct passenger ID number" do
-      expect(@requested_trip.passenger_id).must_equal 1234
+      expect(@requested_trip.passenger_id).must_equal 1
     end
     
     it "Assigned the correct driver ID number" do
-      expect(@requested_trip.driver_id).must_equal 2
+      expect(@requested_trip.driver.id).must_equal 2
     end
     
     it "Start time is an instance of Time" do
       expect(@requested_trip.start_time).must_be_kind_of Time
     end
-  end
-end
+    
+    it "Raises an argument error if no drivers are available" do
+      @dispatcher.drivers
+    end
+    
+    describe "Can update driver/passenger info after requested trip" do
+      before do
+        @dispatcher = build_test_dispatcher
+        @requested_trip = @dispatcher.request_trip(1)
+      end
+      
+      it "Can add trip to the driver's trip array" do
+        expect(@requested_trip.driver.trips.length).must_equal 4
+      end
+      
+      it "Can add trip to the passenger's trip array" do
+        expect(@requested_trip.passenger.trips.length).must_equal 2
+      end
+      
+      it "Can change driver's status to :UNAVAILABLE" do
+        expect(@requested_trip.driver.status).must_equal :UNAVAILABLE
+      end
+    end
+  end 
+  
