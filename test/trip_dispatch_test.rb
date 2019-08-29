@@ -5,7 +5,7 @@ TEST_DATA_DIRECTORY = 'test/test_data'
 describe "TripDispatcher class" do
   def build_test_dispatcher
     return RideShare::TripDispatcher.new(
-    directory: TEST_DATA_DIRECTORY
+      directory: TEST_DATA_DIRECTORY
     )
   end
   
@@ -123,15 +123,41 @@ describe "TripDispatcher class" do
     end
   end
   describe "request trip" do
+    it "is an instance of Trip" do
+      dispatcher = build_test_dispatcher
+      result = dispatcher.request_trip(2)
+      expect(result).must_be_kind_of RideShare::Trip
+    end
+    
     
     it "find first available driver" do
       dispatcher = build_test_dispatcher
       result = dispatcher.request_trip(2)
       expect(result.driver.name).must_equal "Driver 2"
-      
+    end
+    
+    it "is the driver status :UNAVAILABLE when new trip is requested from a previously available driver" do
+      dispatcher = build_test_dispatcher
+      result = dispatcher.request_trip(2)
+      expect(result.driver.status).must_equal :UNAVAILABLE
+    end
+    
+    it "did trip list update when a new trip is added" do
+      dispatcher = build_test_dispatcher
+      result = dispatcher.request_trip(2)
+      expect(dispatcher.trips.length).must_equal 6
       
     end
     
+    it "if no drivers are available, print no availablility statment to user" do
+      dispatcher = build_test_dispatcher      
+      2.times do
+        dispatcher.request_trip(2)
+      end
+      
+      expect(dispatcher.request_trip(2)).must_equal "No available drivers at this time. Please try again later."
+      
+    end
     
   end
 end
