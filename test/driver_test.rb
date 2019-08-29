@@ -104,14 +104,46 @@ describe "Driver class" do
       expect(average).must_be :>=, 1.0
       expect(average).must_be :<=, 5.0
     end
-    
+
+    ###JULIA### added this IT block for Wave 3
     it "returns zero if no driven trips" do
-      driver = RideShare::Driver.new(
+      driver_sad = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
         vin: "1C9EVBRM0YBC564DZ"
       )
-      expect(driver.average_rating).must_equal 0
+      expect(driver_sad.average_rating).must_equal 0
+    end
+
+    ###JULIA### added this IT block for Wave 3
+    it "returns zero if 1 ongoing trip only, and no other trips" do
+      ongoing_trip = RideShare::Trip.new(id:100, passenger: nil, passenger_id: 100,
+        start_time:Time.now, end_time: nil, cost: nil, rating:nil, driver_id: 54, driver: nil)
+      driver_newb = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        trips: [ongoing_trip]
+      )
+      expect(driver_newb.average_rating).must_equal 0
+    end
+
+    ###JULIA### added this IT block for Wave 3
+    it "returns correct rating if 1 ongoing trip among other trips" do
+      ongoing_trip = RideShare::Trip.new(id:100, passenger: nil, passenger_id: 100,
+        start_time:Time.now, end_time: nil, cost: nil, rating:nil, driver_id: 54, driver: nil)
+      old_trip1 = RideShare::Trip.new(id:99, passenger: nil, passenger_id: 100,
+        start_time:Time.now, end_time: nil, cost: 10.00, rating:5, driver_id: 54, driver: nil)
+      old_trip2 = RideShare::Trip.new(id:98, passenger: nil, passenger_id: 100,
+        start_time:Time.now, end_time: nil, cost: 20.00, rating:3, driver_id: 54, driver: nil)
+      driver_rookie = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        trips: [ongoing_trip, old_trip1, old_trip2]
+      )
+      # expecting rating 5 + rating 3 + rating nil/ongoing = 4.0 average rating
+      expect(driver_rookie.average_rating).must_equal 4.0
     end
     
     it "correctly calculates the average rating" do
@@ -170,8 +202,38 @@ describe "Driver class" do
       )
       expect(driver.total_revenue).must_equal 0
     end
+
+    it "Returns 0 if only 1 ongoing trip" do
+      ongoing_trip = RideShare::Trip.new(id:100, passenger: nil, passenger_id: 100,
+        start_time:Time.now, end_time: nil, cost: nil, rating:nil, driver_id: 54, driver: nil)
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        trips: [ongoing_trip]
+      )
+      expect(driver.total_revenue).must_equal 0
+    end
+
+    it "Returns correct amount if 1 ongoing trip among other finished trips" do
+      ongoing_trip = RideShare::Trip.new(id:100, passenger: nil, passenger_id: 100,
+        start_time:Time.now, end_time: nil, cost: nil, rating:nil, driver_id: 54, driver: nil)
+      old_trip1 = RideShare::Trip.new(id:99, passenger: nil, passenger_id: 100,
+        start_time:Time.now, end_time: nil, cost: 11.65, rating:5, driver_id: 54, driver: nil)
+      old_trip2 = RideShare::Trip.new(id:98, passenger: nil, passenger_id: 100,
+        start_time:Time.now, end_time: nil, cost: 21.65, rating:3, driver_id: 54, driver: nil)
+      driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        trips: [ongoing_trip, old_trip1, old_trip2]
+      )
+      manual_calc = ((21.65-1.65) + (11.65-1.65))*0.8
+
+      expect(driver.total_revenue).must_equal manual_calc
+    end
     
-    it "Returns 0 if only trip(s) taken were $1.65, therefore net_income = $0 after fees" do
+    it "Returns 0 if only trip(s) taken were <= $1.65, and I chose not to penalize the driver w/ the fee" do
       @driver = RideShare::Driver.new(
         id: 99,
         name: "Some Guy",
@@ -184,7 +246,7 @@ describe "Driver class" do
         start_time: "2016-08-08",
         end_time: "2016-08-08",
         rating: 5,
-        cost: 1.65
+        cost: 0.25
       )
       trip2 = RideShare::Trip.new(
         id: 2,
