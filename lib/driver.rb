@@ -33,7 +33,7 @@ module RideShare
         ratings << trip.rating
       end
       if ratings.length > 0
-        ratings_total = ratings.inject(:+)
+        ratings_total = ratings.sum
         avg_rating = ((ratings_total + 0.0) / ratings.length)
       else
         return 0
@@ -45,7 +45,12 @@ module RideShare
       @trips.each do |trip|
         revenue_per_trip << (trip.cost - 1.65)*0.8
       end  
-      total_revenue = revenue_per_trip.sum
+
+      if revenue_per_trip.length > 0
+        total_revenue = revenue_per_trip.sum
+      else
+        return 0
+      end
     end
 
     #adds new trip and changes the driver status from available to unavailable
