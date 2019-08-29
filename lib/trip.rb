@@ -1,37 +1,52 @@
 require 'csv'
+require 'time'
 
 require_relative 'csv_record'
 
 module RideShare
   class Trip < CsvRecord
-    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
-
+    attr_reader :id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating, :driver, :driver_id
+    
     def initialize(id:,
-      passenger: nil, passenger_id: nil,
-      start_time:, end_time:, cost: nil, rating:)
+      passenger: nil, passenger_id: nil, driver: nil, driver_id: nil,
+      start_time: nil, end_time: nil, cost: nil, rating: nil)
       super(id)
-
+      
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id
-
+        
       elsif passenger_id
         @passenger_id = passenger_id
-
+        
       else
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
-
+      
+      if driver
+        @driver = driver
+        @driver_id = driver.id
+        
+      elsif driver_id
+        @driver_id = driver_id
+        
+      else
+        raise ArgumentError, 'Driver or driver_id is required'
+      end
+      
       @start_time = start_time
       @end_time = end_time
       @cost = cost
       @rating = rating
-
-      if @rating > 5 || @rating < 1
+      
+      if @rating.nil?
+        @rating = rating 
+      elsif  @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
     end
-
+    
+    
     def inspect
       # Prevent infinite loop when puts-ing a Trip
       # trip contains a passenger contains a trip contains a passenger...
@@ -39,23 +54,43 @@ module RideShare
       "ID=#{id.inspect} " +
       "PassengerID=#{passenger&.id.inspect}>"
     end
-
+    
     def connect(passenger)
       @passenger = passenger
       passenger.add_trip(self)
     end
-
+    
+    def connect_driver(driver)
+      @driver = driver
+      driver.add_trip(self)
+    end
+    
+    def duration
+      if end_time.nil? || start_time.nil?
+        raise ArgumentError.new("Time (start or end) cannot be nil")
+      end
+      difference = end_time.tv_sec - start_time.tv_sec
+      if difference <= 0
+        raise ArgumentError.new("Duration cannot be zero")
+      end
+      return difference
+    end
+    
     private
     
     def self.from_csv(record)
+      start_time = Time.parse(record[:start_time])
+      end_time = Time.parse(record[:end_time])
+      
       return self.new(
         id: record[:id],
         passenger_id: record[:passenger_id],
-        start_time: record[:start_time],
-        end_time: record[:end_time],
+        driver_id: record[:driver_id],
+        start_time: start_time,
+        end_time: end_time,
         cost: record[:cost],
         rating: record[:rating]
-        )
+      )
     end
   end
 end
