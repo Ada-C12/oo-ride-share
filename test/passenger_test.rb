@@ -72,12 +72,26 @@ describe "Passenger class" do
   describe "testing net_expenditures" do
     # Passenger objects MUST be instantiated separately b/c IT blocks are assessed in RANDOM order w/in each DESCRIBE block
     
-    it "if no trips, check net_expenditures should return 0" do
+    it "if no trips, net_expenditures should return 0" do
       bart = RideShare::Passenger.new(
         id: 1,
         name: "Bart Simpson",
         phone_number: "1-800-123-1234",
         trips: []
+      )
+      bart_total_money_spent = bart.net_expenditures
+      expect(bart_total_money_spent).must_equal 0.0
+    end
+
+    ###JULIA### added this IT block for Wave 3
+    it "for a single ongoing trip, net_expenditures should return 0" do
+      ongoing_trip = RideShare::Trip.new(id: 99, passenger: nil, passenger_id: 1,
+        start_time: Time.now, end_time: nil, cost: nil, rating: nil, driver_id: 88, driver: nil)
+      bart = RideShare::Passenger.new(
+        id: 1,
+        name: "Bart Simpson",
+        phone_number: "1-800-123-1234",
+        trips: [ongoing_trip]
       )
       bart_total_money_spent = bart.net_expenditures
       expect(bart_total_money_spent).must_equal 0.0
@@ -128,6 +142,38 @@ describe "Passenger class" do
         trips: []
       )
       expect(bart.total_time_spent).must_equal 0
+    end
+
+    ###JULIA### added this IT block for Wave 3
+    it "for a single ongoing trip, check total_time_spent returns 0" do
+      # I decided to count time spent as 0 (instead of nil... why? see next IT block) until trip officially finishes
+      ongoing_trip = RideShare::Trip.new(id: 99, passenger: nil, passenger_id: 1,
+        start_time: Time.now, end_time: nil, cost: nil, rating: nil, driver_id: 88, driver: nil)
+      bart = RideShare::Passenger.new(
+        id: 1,
+        name: "Bart Simpson",
+        phone_number: "1-800-123-1234",
+        trips: [ongoing_trip]
+      )
+      expect(bart.total_time_spent).must_equal 0
+    end
+
+    ###JULIA### added this IT block for Wave 3
+    it "for a single ongoing trip among finished trips, check total_time_spent returns correct number and ignores the ongoing trip" do
+      # I decided to count time spent as 0 (instead of nil) until trip officially finishes
+      ongoing_trip = RideShare::Trip.new(id: 99, passenger: nil, passenger_id: 1,
+        start_time: Time.now, end_time: nil, cost: nil, rating: nil, driver_id: 88, driver: nil)
+      old_trip1 = RideShare::Trip.new(id: 98, passenger: nil, passenger_id: 1,
+        start_time: Time.now, end_time: Time.now + 1000, cost: nil, rating: nil, driver_id: 88, driver: nil)
+      old_trip2 = RideShare::Trip.new(id: 97, passenger: nil, passenger_id: 1,
+        start_time: Time.now, end_time: Time.now + 2000, cost: nil, rating: nil, driver_id: 88, driver: nil)
+      bart = RideShare::Passenger.new(
+        id: 1,
+        name: "Bart Simpson",
+        phone_number: "1-800-123-1234",
+        trips: [ongoing_trip, old_trip1, old_trip2]
+      )
+      expect(bart.total_time_spent).must_equal 3000
     end
     
     it "check if total_time_spent returns correct number of seconds" do
