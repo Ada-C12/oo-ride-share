@@ -186,9 +186,12 @@ describe "Driver class" do
         rating: 1, 
         cost: 3
       )
+      
       @driver.add_trip(trip2)
       
-      expect(@driver.total_revenue).must_be_close_to ((10.0 + 3.0) - (1.65 * 2)) * 0.80
+      expected_total_revenue = ((10.0 + 3.0) - (1.65 * 2)) * 0.80
+      
+      expect(@driver.total_revenue).must_be_close_to expected_total_revenue
     end
     
     it "correctly calculates the total revenue if trip cost is less than 1.65" do
@@ -203,7 +206,9 @@ describe "Driver class" do
       )
       @driver.add_trip(trip2)
       
-      expect(@driver.total_revenue).must_be_close_to ((10.0 + 1) - (1.65)) * 0.80
+      expected_total_revenue = ((10.0 + 1) - (1.65)) * 0.80
+      
+      expect(@driver.total_revenue).must_be_close_to expected_total_revenue
     end
     
     it "correctly calculates the total revenue if trip cost is equal to 1.65" do
@@ -218,7 +223,9 @@ describe "Driver class" do
       )
       @driver.add_trip(trip2)
       
-      expect(@driver.total_revenue).must_be_close_to ((10.0 + 1.65) - (1.65 * 2)) * 0.80
+      expected_total_revenue = ((10.0 + 1.65) - (1.65 * 2)) * 0.80
+      
+      expect(@driver.total_revenue).must_be_close_to expected_total_revenue
     end
     
     it "excludes any trips that are in progress" do
@@ -233,7 +240,9 @@ describe "Driver class" do
       )
       @driver.add_trip(trip2)
       
-      expect(@driver.total_revenue).must_be_close_to ((10.0) - (1.65)) * 0.80
+      expected_total_revenue = ((10.0) - (1.65)) * 0.80
+      
+      expect(@driver.total_revenue).must_be_close_to expected_total_revenue
     end
   end
 end

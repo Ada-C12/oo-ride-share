@@ -20,7 +20,7 @@ describe "Trip class" do
           id: 123,
           name: "Muppet",
           vin: "A2345678901234567",
-          status: ("AVAILABLE".to_sym)
+          status: :AVAILABLE
         )
       }
       @trip = RideShare::Trip.new(@trip_data)
@@ -47,8 +47,10 @@ describe "Trip class" do
       end
     end
     
-    it "returns an instance of Time for start time" do
+    it "returns an instance of Time for start and end time" do
       expect(@trip.start_time).must_be_instance_of Time
+      
+      expect(@trip.end_time).must_be_instance_of Time
     end
     
     it "raises an error if end time is before start time" do
@@ -68,27 +70,10 @@ describe "Trip class" do
         )
       }.must_raise ArgumentError
     end
-    
   end
   
   describe "duration method" do
     it "returns the correct duration for a trip in seconds" do
-      dur_test = RideShare::Trip.new(
-        id: 3, 
-        passenger: RideShare::Passenger.new(
-          id: 1, 
-          name: "Ada", 
-          phone_number: "412-432-7640"
-        ), 
-        start_time: Time.parse('2015-05-20T12:14:00+00:00'), 
-        end_time: Time.parse('2015-05-20T12:14:01+00:00'), 
-        cost: 3.00, 
-        rating: 3,
-        driver_id: 123
-      )
-      
-      expect(dur_test.duration).must_equal 1
-      
       dur_test = RideShare::Trip.new(
         id: 3, 
         passenger: RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640"), 

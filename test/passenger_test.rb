@@ -37,7 +37,6 @@ describe "Passenger class" do
   
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -86,7 +85,6 @@ describe "Passenger class" do
         rating: 5,
         driver_id: 123
       )
-      
       trip_2 = RideShare::Trip.new(
         id: 9,
         passenger: @passenger,
@@ -139,7 +137,6 @@ describe "Passenger class" do
         rating: 5,
         driver_id: 123
       )
-      
       trip_2 = RideShare::Trip.new(
         id: 9,
         passenger: @passenger,

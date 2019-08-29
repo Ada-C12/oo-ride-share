@@ -17,7 +17,7 @@ describe "TripDispatcher class" do
     
     it "establishes the base data structures when instantiated" do
       dispatcher = build_test_dispatcher
-      [:trips, :passengers].each do |prop|
+      [:trips, :passengers, :drivers].each do |prop|
         expect(dispatcher).must_respond_to prop
       end
       
@@ -131,26 +131,37 @@ describe "TripDispatcher class" do
     end
     
     it "finds first available driver with no trips" do    
+      # Confirms that test driver is available and doesn't have trips
       expect(@dispatcher.find_driver(3).trips).must_equal []
       expect(@dispatcher.find_driver(3).status).must_equal :AVAILABLE
+      
+      # Runs request_trip method
       expect(@dispatcher.request_trip(6).driver_id).must_equal 3
+      
+      # Confirms that test driver is now unavailable and trip has been added to trips array
       expect(@dispatcher.find_driver(3).status).must_equal :UNAVAILABLE
       expect(@dispatcher.find_driver(3).trips.first).must_be_kind_of RideShare::Trip
+      expect(@dispatcher.find_driver(3).trips.length).must_equal 1
     end
     
     it "finds longest idle driver when all available drivers have at least one trip" do
-      @dispatcher.request_trip(5)
-      @dispatcher.request_trip(2)
+      2.times do
+        @dispatcher.request_trip(5)
+      end
       
-      expect(@dispatcher.request_trip(1).driver_id).must_equal 6, "#{@dispatcher.drivers}"
+      expect(@dispatcher.request_trip(1).driver_id).must_equal 6
     end
     
     it "updates driver trip list" do
+      expect(@dispatcher.find_driver(3).trips.length).must_equal 0
+      
       @dispatcher.request_trip(3)
       expect(@dispatcher.find_driver(3).trips.length).must_equal 1
     end
     
     it "updates passenger trip list" do
+      expect(@dispatcher.find_passenger(1).trips.length).must_equal 1
+      
       @dispatcher.request_trip(1)
       expect(@dispatcher.find_passenger(1).trips.length).must_equal 2
     end
@@ -163,13 +174,13 @@ describe "TripDispatcher class" do
       expect{ @dispatcher.request_trip(3) }.must_raise ArgumentError
     end
     
-    it "does not include drivers with a status of available and trip end time of nil" do 
+    it "will not return drivers with a status of available and trip end time of nil" do 
+      # Confirms that all six available drivers are connected with a trip
       6.times do 
         @dispatcher.request_trip(2)
       end
       
-      expect{ @dispatcher.request_trip(3) }.must_raise ArgumentError
-      
+      # Adds new driver with in-progress trip but available status
       trip = RideShare::Trip.new(
         id: 123,
         driver_id: 11,
@@ -179,7 +190,6 @@ describe "TripDispatcher class" do
         cost: 8,
         rating: 1
       )
-      
       @dispatcher.drivers << RideShare::Driver.new(
         id: 11,
         name: "Driver 11",
