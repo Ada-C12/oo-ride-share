@@ -29,10 +29,17 @@ module RideShare
       @trips << trip
     end
 
+    #def change_status(new_trip)
+    #   if new_trip.driver_id == self.id
+    #     self.add_trip(new_trip)
+    #     @status = :UNAVAILABLE
+    #   end
+    # end
+
     def add_trip_dispatcher(trip)
       @trip << TripDispatcher.trip
     end
-    
+
     def average_rating
       if trips.length == 0
         return 0

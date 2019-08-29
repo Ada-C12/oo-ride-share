@@ -36,30 +36,37 @@ module RideShare
     end
 
     def request_trip(passenger_id)
+      # passenger = find_passenger(passenger_id)
       @drivers.each do |d|
         status = driver.instance_variable_get(:@status)
+        # add below code here? if driver.status == :AVAILABLE and remove ^ line
         if status == :AVAILABLE 
           driver = d
           return driver
         end
       end
-      id = @trips[-1].id + 1
+      id = @trips[-1].id + 1 #remove this to hash
       start_time = DateTime.now,
       end_time = nil,
       rating = nil, 
       cost = nil
-      @trip_data = {
-        id: id,
+      @trip_data = { # call this new_trip = RideShare::Trip.new ()
+        id: id,  #@trips.length + 1
         passenger_id: passenger_id,
         start_time: start_time,
-        end_time: end_time,
-        rating: rating,
-        cost: cost,
-        driver: driver
+        end_time: end_time, #nil
+        rating: rating, #nil 
+        cost: cost, #nil
+        driver: driver #remove?
       }
       @trip = RideShare::Trip.new(@trip_data)
+      # add passenger instance
+      #passenger.add_trip(new_trip)
+      # driver.change_status(new_trip)
+      # @trips << new_trip
+      # return new_trip
     end
-    
+
 
 
     private
