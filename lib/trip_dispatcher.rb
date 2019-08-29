@@ -37,7 +37,25 @@ module RideShare
     end
 
     def request_trip(passenger_id)
-      #create a new instance of trip
+      #find driver by available 
+      # automatically assign driver to this new instance of trip
+
+      all_available = @drivers.find_all { |driver| driver.status == :AVAILABLE }
+      driver = all_available.first 
+
+      start_time = Time.now
+
+      #an array of trips - find the last one and add one every time
+      #id to equal the length of the trips array +1
+      trip = RideShare::Trip.new(
+        id: @trips.length + 1,
+        driver: driver,
+        passenger: find_passenger(passenger_id),
+        start_time: start_time,
+        end_time: nil,
+        cost: nil,
+        rating: nil
+      )
     end
 
     private

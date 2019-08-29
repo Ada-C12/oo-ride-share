@@ -8,7 +8,7 @@ module RideShare
 
     def initialize(id:,
       passenger: nil, passenger_id: nil,
-      start_time:, end_time:, cost: nil, rating:, driver: nil, driver_id: nil)
+      start_time:, end_time: nil, cost: nil, rating:, driver: nil, driver_id: nil)
       super(id)
 
       if passenger
@@ -40,12 +40,16 @@ module RideShare
       @cost = cost
       @rating = rating
 
-      if @end_time < @start_time
-        raise ArgumentError, 'Start time must be before end time!'
+      if end_time != nil
+        if @end_time < @start_time
+          raise ArgumentError, 'Start time must be before end time!'
+        end
       end
 
-      if @rating > 5 || @rating < 1
+      if rating != nil
+        if @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
+        end
       end
     end
 
