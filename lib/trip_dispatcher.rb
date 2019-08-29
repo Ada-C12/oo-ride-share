@@ -35,15 +35,19 @@ module RideShare
     end
     
     def find_available_driver
+      all_available_drivers = []
       drivers.each do |driver|
-        
         if driver.status == :AVAILABLE && driver.find_ongoing_trips.length == 0
-          return driver   
+          all_available_drivers << driver   
         end
       end
-      raise ArgumentError, "No Available Drivers at this Time."
+      if all_available_drivers.length == 0
+        raise ArgumentError, "No Available Drivers at this Time."
+      else
+        # From the Drivers that remain, select the one who has never driven or whose most recent trip ended the longest time ago
+      end
+      return all_available_drivers[0]
     end
-    # find_available_driver needs to return an array of drivers
     
     def start_trip(driver:, passenger:)
       current_time = Time.new
@@ -52,12 +56,15 @@ module RideShare
     end
     
     def request_trip(passenger_id)  
-      driver = self.find_available_driver
+      available_driver = self.find_available_driver
       passenger = self.find_passenger(passenger_id)
-      new_trip = self.start_trip(driver: driver, passenger: passenger)
-      driver.assign_new_trip(new_trip)
+      
+      new_trip = self.start_trip(driver: available_driver, passenger: passenger)
+      
+      available_driver.assign_new_trip(new_trip)
       passenger.add_trip(new_trip)
       trips.push(new_trip)
+      
       return new_trip
     end
     

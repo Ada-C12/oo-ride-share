@@ -127,13 +127,13 @@ describe "TripDispatcher class" do
       it "finds an available driver" do
         dispatcher = build_test_dispatcher
         driver_found = dispatcher.find_available_driver()
-        expect(driver_found.name).must_equal "Driver 2" # => this and the following one should break when we change find_available_driver to return an array of available drivers
+        expect(driver_found.name).must_equal "Driver 2"
       end
       
       it "finds the first available driver" do 
         dispatcher = build_test_dispatcher
         driver_found = dispatcher.find_available_driver()
-        expect(driver_found.name).wont_equal "Driver 3 (no trips)" # => this and the following one should break when we change find_available_driver to return an array of available drivers
+        expect(driver_found.name).wont_equal "Driver 3 (no trips)"
       end
       
       it "The first available driver has the status :AVAILABLE" do
@@ -159,8 +159,10 @@ describe "TripDispatcher class" do
         expect {
           dispatcher.request_trip(1)
         }.must_raise ArgumentError
-        
       end
+      
+      # From the Drivers that remain, select the one who has never driven or whose most recent trip ended the longest time ago
+      
     end
     
     describe "find available driver, nil end_time" do
@@ -185,9 +187,9 @@ describe "TripDispatcher class" do
     describe "Build a trip" do
       before do
         @dispatcher = build_test_dispatcher
-        @driver_found = @dispatcher.find_available_driver()
+        @drivers_found = @dispatcher.find_available_driver()
         @passenger = @dispatcher.find_passenger(1)
-        @trip = @dispatcher.start_trip(driver: @driver_found, passenger: @passenger)
+        @trip = @dispatcher.start_trip(driver: @drivers_found, passenger: @passenger)
       end
       
       it "returns an instance of trip" do
