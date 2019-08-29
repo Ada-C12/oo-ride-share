@@ -27,13 +27,26 @@ module RideShare
       @trips << trip
     end
 
+    def average_rating
+      ratings = []
+      @trips.each do |trip|
+        ratings << trip.rating
+      end
+      if ratings.length > 0
+        ratings_total = ratings.inject(:+)
+        avg_rating = ((ratings_total + 0.0) / ratings.length)
+      else
+        return 0
+      end
+    end
+
     def total_revenue
       revenue_per_trip = []
       @trips.each do |trip|
         revenue_per_trip << (trip.cost - 1.65)*0.8
       end  
       total_revenue = revenue_per_trip.sum
-    end 
+    end
 
     private
 
