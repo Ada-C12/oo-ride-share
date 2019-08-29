@@ -136,9 +136,9 @@ describe "TripDispatcher class" do
       it "correctly updates the driver" do
         new_trip = @dispatcher.request_trip(7)
         
-        expect(new_trip.driver_id).must_equal 2
+        expect(new_trip.driver_id).must_equal 3
         expect(new_trip.driver.status).must_equal :UNAVAILABLE
-        expect(new_trip.driver.trips.length).must_equal 4
+        expect(new_trip.driver.trips.length).must_equal 1
       end
       
       it "correctly updates the passenger" do
@@ -149,10 +149,46 @@ describe "TripDispatcher class" do
       end
       
       it "raises an Argument Error if there are no available drivers" do
-        new_trip1 = @dispatcher.request_trip(1)
-        new_trip2 = @dispatcher.request_trip(2)
+        @dispatcher.request_trip(1)
+        @dispatcher.request_trip(2)
         
         expect { @dispatcher.request_trip(3) }.must_raise ArgumentError
+      end
+    end
+    
+    describe "select_driver method" do
+      before do
+        @dispatcher = build_test_dispatcher
+        driver4 = RideShare::Driver.new(id: 4, name: "Driver 4", vin: "12345678901234567", status: :AVAILABLE)
+        new_trip = RideShare::Trip.new(
+          id: 6, 
+          driver: driver4, 
+          passenger_id: 5, 
+          start_time: Time.parse("August 6, 2018"), 
+          end_time: Time.parse("August 6, 2018"),
+          cost: 5,
+          rating: 5
+        )
+        @dispatcher.drivers << driver4
+        @dispatcher.trips << new_trip
+      end
+      
+      it "selects new drivers, then drivers with oldest last trip, then error if nobody is available" do
+        trip_a = @dispatcher.request_trip(1)
+        trip_b = @dispatcher.request_trip(2)
+        trip_c = @dispatcher.request_trip(3)
+        
+        # Driver 3 has no trips
+        expect(trip_a.driver_id).must_equal 3
+        
+        # Driver 4's last trip was 8/6/18
+        expect(trip_b.driver_id).must_equal 4
+        
+        # Driver 2's last trip was 8/12/18
+        expect(trip_c.driver_id).must_equal 2
+        
+        # The only driver left is Driver 1, but they are unavailable, so it should throw an error
+        expect{ @dispatcher.request_trip(4) }.must_raise ArgumentError
       end
     end
   end

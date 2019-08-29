@@ -41,14 +41,12 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
       )
-      
       @driver = RideShare::Driver.new(
         id: 54,
         name: "Test Driver",
         vin: "12345678901234567",
         status: :AVAILABLE
       )
-      
       trip1 = RideShare::Trip.new(
         id: 8,
         driver: @driver, 
@@ -58,7 +56,6 @@ describe "Passenger class" do
         cost: 5,
         rating: 5
       )
-      
       trip2 = RideShare::Trip.new(
         id: 6,
         driver: @driver, 
@@ -68,7 +65,6 @@ describe "Passenger class" do
         cost: 10,
         rating: 5
       )
-      
       @passenger.add_trip(trip1) 
       @passenger.add_trip(trip2)
     end
@@ -94,14 +90,12 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
       )
-      
       @driver = RideShare::Driver.new(
         id: 54,
         name: "Test Driver",
         vin: "12345678901234567",
         status: :AVAILABLE
       )
-      
       trip1 = RideShare::Trip.new(
         id: 8,
         driver: @driver, 
@@ -111,7 +105,6 @@ describe "Passenger class" do
         cost: 5,
         rating: 5
       )
-      
       trip2 = RideShare::Trip.new(
         id: 6,
         driver: @driver, 
@@ -121,7 +114,6 @@ describe "Passenger class" do
         cost: 10,
         rating: 5
       )
-      
       @passenger.add_trip(trip1) 
       @passenger.add_trip(trip2)
     end
@@ -148,7 +140,6 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
       )
-      
       trip3 = RideShare::Trip.new(
         id: 6,
         driver: @driver, 
@@ -158,7 +149,6 @@ describe "Passenger class" do
         cost: nil,
         rating: nil
       )
-      
       @passenger.add_trip(trip3)
       
       expect(@passenger.net_expenditures).must_equal 0
@@ -174,13 +164,13 @@ describe "Passenger class" do
         cost: nil,
         rating: nil
       )
-      
       @passenger.add_trip(trip3)
+      
       expect(@passenger.net_expenditures).must_equal 15
     end
     
     it "should return duration of all trips" do 
-      expect(@passenger.total_time_spent).must_equal 480
+      expect(@passenger.total_time_spent).must_equal 480.0
     end
     
     it "should return 0 duration if passenger has no trips" do
@@ -201,7 +191,6 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
       )
-      
       trip3 = RideShare::Trip.new(
         id: 6,
         driver: @driver, 
@@ -211,7 +200,6 @@ describe "Passenger class" do
         cost: nil,
         rating: nil
       )
-      
       @passenger.add_trip(trip3)
       
       expect(@passenger.total_time_spent).must_equal 0
@@ -227,10 +215,9 @@ describe "Passenger class" do
         cost: nil,
         rating: nil
       )
-      
       @passenger.add_trip(trip3)
       
-      expect(@passenger.total_time_spent).must_equal 480
+      expect(@passenger.total_time_spent).must_equal 480.0
     end
   end
 end

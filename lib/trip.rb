@@ -35,12 +35,11 @@ module RideShare
       @start_time = start_time
       @end_time = end_time
       @cost = cost
+      @rating = rating
       
       if rating && (rating > 5 || rating < 1)
-        raise ArgumentError.new("Invalid rating #{@rating}")
+        raise ArgumentError.new("Invalid rating: #{@rating}")
       end
-      
-      @rating = rating
     end
     
     def duration

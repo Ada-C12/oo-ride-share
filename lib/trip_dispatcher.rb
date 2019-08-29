@@ -26,18 +26,29 @@ module RideShare
       return @drivers.find { |driver| driver.id == id }
     end
     
-    def first_available_driver
-      driver = @drivers.find do |driver|
+    def select_driver
+      available_drivers = @drivers.select do |driver|
         driver.status == :AVAILABLE
       end
-      return driver
+      
+      new_driver = available_drivers.find do |driver|
+        driver.trips.empty?
+      end
+      return new_driver if new_driver
+      
+      oldest_trip_driver = available_drivers.min_by do |driver|
+        driver.trips.max_by do |trip|
+          trip.end_time
+        end
+      end
+      return oldest_trip_driver
     end
     
     def request_trip(passenger_id)
       id = @trips.count + 1
-      driver = first_available_driver
+      driver = select_driver
       
-      if driver == 0
+      if !driver
         raise ArgumentError.new("There are no available drivers.")
       end
       

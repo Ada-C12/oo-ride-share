@@ -36,7 +36,7 @@ module RideShare
     
     def self.build_path(directory, file_name)
       unless directory
-        raise ArgumentError, "Either full_path or directory is required"
+        raise ArgumentError, "Either full_path or directory is required."
       end
       
       unless file_name

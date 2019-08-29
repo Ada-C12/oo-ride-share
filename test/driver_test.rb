@@ -1,7 +1,6 @@
 require_relative 'test_helper'
 
 describe "Driver class" do
-  
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -66,13 +65,11 @@ describe "Driver class" do
         name: "Test Passenger",
         phone_number: "412-432-7640"
       )
-      
       @driver = RideShare::Driver.new(
         id: 3,
         name: "Test Driver",
         vin: "12345678912345678"
       )
-      
       @trip = RideShare::Trip.new(
         id: 8,
         driver: @driver,
@@ -128,6 +125,7 @@ describe "Driver class" do
         name: "Rogers Bartell IV",
         vin: "1C9EVBRM0YBC564DZ"
       )
+      
       expect(driver.average_rating).must_equal 0
     end
     
@@ -165,7 +163,6 @@ describe "Driver class" do
         name: "Rogers Bartell IV",
         vin: "1C9EVBRM0YBC564DZ"
       )
-      
       trip3 = RideShare::Trip.new(
         id: 10,
         driver: @driver,
@@ -174,7 +171,6 @@ describe "Driver class" do
         end_time: nil,
         rating: nil
       )
-      
       driver.add_trip(trip3)
       
       expect(driver.average_rating).must_equal 0
@@ -189,7 +185,6 @@ describe "Driver class" do
         end_time: Time.parse("2016-08-09"),
         rating: 2
       )
-      
       @driver.add_trip(trip4)
       
       expect(@driver.average_rating).must_equal 3.5
@@ -203,13 +198,11 @@ describe "Driver class" do
         name: "Test Passenger",
         phone_number: "412-432-7640"
       )
-      
       @driver = RideShare::Driver.new(
         id: 3,
         name: "Test Driver",
         vin: "12345678912345678"
       )
-      
       @trip1 = RideShare::Trip.new(
         id: 8,
         driver: @driver,
@@ -219,7 +212,6 @@ describe "Driver class" do
         cost: 10,
         rating: 5
       )
-      
       @trip2 = RideShare::Trip.new(
         id: 8,
         driver: @driver,
@@ -229,7 +221,6 @@ describe "Driver class" do
         cost: 10,
         rating: 5
       )
-      
       @trip3 = RideShare::Trip.new(
         id: 8,
         driver: @driver,
@@ -239,7 +230,6 @@ describe "Driver class" do
         cost: 1.50,
         rating: 5
       )
-      
       @trip4 = RideShare::Trip.new(
         id: 8,
         driver: @driver,
@@ -270,6 +260,7 @@ describe "Driver class" do
     
     it "returns 0 if there is only an in progress trip" do
       @driver.add_trip(@trip4)
+      
       expect(@driver.total_revenue).must_equal 0
     end
     
