@@ -38,7 +38,29 @@ module RideShare
     
     
     def request_trip(passenger_id)
-      driver = @drivers.find { |driver| driver.status == :AVAILABLE }
+      
+      
+      
+      # chosen_driver = ""
+      
+      # @drivers.find  |driver| do
+      #   if driver.status == :AVAILABLE && driver.trips[-1].end_time != nil
+      #     max_time = 0 
+      #     if driver.trips.length == 0
+      #       chosen_driver = driver
+      #     else 
+      #       driver.trips.each do |trip|
+      #         time_apart = Time.now - trip.end_time
+      #         if time_apart > max_time
+      #           max_time = time_apart
+      #           chosen_driver = trip.driver
+      #         end
+      #       end
+      #     end
+      
+      #   end
+      # end
+      
       
       passenger = self.find_passenger(passenger_id)
       
