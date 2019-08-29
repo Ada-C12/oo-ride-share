@@ -1,4 +1,5 @@
 require_relative 'test_helper'
+require 'time'
 
 describe "Passenger class" do
   
@@ -47,8 +48,9 @@ describe "Passenger class" do
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
-        start_time: "2016-08-08",
-        end_time: "2016-08-09",
+        driver_id: 9,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
         rating: 5
       )
       
@@ -89,6 +91,17 @@ describe "Passenger class" do
       passenger = RideShare::Passenger.new(id: 3, name: "Melvin Gerlach DDS", phone_number: "562-716-1794", trips: trips_by_passenger)
       
       expect(passenger.net_expenditures).must_equal cost_by_passenger
+      
+      # passenger = RideShare::TripDispatcher.new.find_passenger(3)
+      
+      # trips = passenger.trips
+      
+      # cost_by_passenger = 0
+      # trips.each do |trip|
+      #   cost_by_passenger += trip.cost
+      # end
+      
+      # expect(passenger.net_expenditures).must_equal cost_by_passenger
       
     end
   end

@@ -79,7 +79,7 @@ describe "TripDispatcher class" do
   end
   
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -114,6 +114,7 @@ describe "TripDispatcher class" do
       
       it "connects trips and drivers" do
         dispatcher = build_test_dispatcher
+        
         dispatcher.trips.each do |trip|
           expect(trip.driver).wont_be_nil
           expect(trip.driver.id).must_equal trip.driver_id
