@@ -178,7 +178,7 @@ We will do this by creating a `Driver` class which inherits from `CsvRecord`, si
 
 Since `Driver` inherits from `CsvRecord`, you'll need to implement the `from_csv` template method. Once you do, `Driver.load_all` should work (test this in pry).
 
-**Use the provided tests** to ensure that a `Driver` instance can be created successfully and that an `ArgumentError` is raised for an invalid status.
+**Use the provided tests** to ensure that a `Driver` instance can be created successfully and that an `ArgumentError` is raised for an invalid status. Before the driver tests can work, you'll want to uncomment line 15 in `test_helper.rb` that looks like `require_relative '../lib/driver'` so that the tests can access the new class.
 
 #### Updating Trip
 
@@ -197,7 +197,7 @@ When a `Trip` is constructed, either `driver_id` or `driver` must be provided.
 Update the `TripDispatcher` class as follows:
 
 - In the constructor, call `Driver.load_all` and save the result in an instance variable
-- Update the `connect_trips` method to connect the driver as well as the passenger
+- Update the `Trip#connect` method to connect the driver as well as the passenger (you'll want to create add trip on driver first - see below)
 - Add a `find_driver` method that looks up a driver by ID
 
 #### Driver methods
