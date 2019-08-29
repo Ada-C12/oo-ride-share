@@ -20,18 +20,14 @@ describe "TripDispatcher class" do
       [:trips, :passengers].each do |prop|
         expect(dispatcher).must_respond_to prop
       end
-      
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
       expect(dispatcher.drivers).must_be_kind_of Array
     end
     
     it "loads the development data by default" do
-      # Count lines in the file, subtract 1 for headers
       trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
-      
       dispatcher = RideShare::TripDispatcher.new
-      
       expect(dispatcher.trips.length).must_equal trip_count
     end
   end
@@ -78,7 +74,6 @@ describe "TripDispatcher class" do
     end
   end
   
-  # TODO: un-skip for Wave 2
   describe "drivers" do
     describe "find_driver method" do
       before do
@@ -150,7 +145,8 @@ describe "TripDispatcher class" do
     end
     
     it "Raises an argument error if no drivers are available" do
-      @dispatcher.drivers
+      @requested_trip2 = @dispatcher.request_trip(2)
+      expect{@dispatcher.request_trip(3)}.must_raise ArgumentError
     end
     
     describe "Can update driver/passenger info after requested trip" do
@@ -172,4 +168,4 @@ describe "TripDispatcher class" do
       end
     end
   end 
-  
+end

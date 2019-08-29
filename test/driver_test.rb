@@ -125,7 +125,29 @@ describe "Driver class" do
         rating: 1
       )
       @driver.add_trip(trip2)
-      
+      expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
+    end
+    
+    it "correctly calculates avg rating while driver is in in-progress trip" do
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        rating: 1
+      )
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: nil,
+        rating: nil,
+        cost: nil,
+      )
+      @driver.add_trip(trip2)
+      @driver.add_trip(trip3)
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
   end
@@ -173,7 +195,6 @@ describe "Driver class" do
         cost: 7
       )
       @driver.add_trip(trip2)
-      
       expect(@driver.total_revenue).must_be_close_to ((3 - 1.65) + (7 - 1.65)) * 0.8, 0.01
     end
     
@@ -196,10 +217,42 @@ describe "Driver class" do
         rating: 1,
         cost: 1.5
       )
-      
       @driver.add_trip(trip2)
       @driver.add_trip(trip3)
-      
+      expect(@driver.total_revenue).must_be_close_to ((3 - 1.65) + (7 - 1.65)) * 0.8, 0.01
+    end
+    
+    it "correctly calculates total revenue while driver is in in-progress trip" do
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        rating: 1,
+        cost: 7
+      )
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: Time.parse("2016-08-09"),
+        rating: 1,
+        cost: 1.5
+      )
+      trip4 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: nil,
+        rating: nil,
+        cost: nil,
+      )
+      @driver.add_trip(trip2)
+      @driver.add_trip(trip3)
+      @driver.add_trip(trip4)
       expect(@driver.total_revenue).must_be_close_to ((3 - 1.65) + (7 - 1.65)) * 0.8, 0.01
     end
   end  

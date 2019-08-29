@@ -42,9 +42,11 @@ module RideShare
         if driver.status == :AVAILABLE  
           requested_trip_driver = driver
           break
-        else 
-          raise ArgumentError.new("There are no drivers avaiable.")
         end
+      end
+      
+      if requested_trip_driver == nil 
+        raise ArgumentError.new("There are no drivers available.")
       end
       
       passenger = find_passenger(passenger_id)
@@ -60,10 +62,8 @@ module RideShare
       )
       
       requested_trip_driver.add_trip(trip)
-      # binding.pry
       requested_trip_driver.set_status_unavailable
       passenger.add_trip(trip)
-      # binding.pry
       
       return trip
     end
@@ -79,6 +79,5 @@ module RideShare
       end
       return trips
     end
-    
   end
 end

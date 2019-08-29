@@ -34,10 +34,8 @@ describe "Passenger class" do
     end
   end
   
-  
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -58,9 +56,7 @@ describe "Passenger class" do
         rating: 5,
         driver: @driver
       )
-      
       @passenger.add_trip(trip)
-      # @driver.add_trip(trip)
     end
     
     it "each item in array is a Trip instance" do
@@ -100,7 +96,6 @@ describe "Passenger class" do
         rating: 5,
         driver: @driver
       )
-      
       trip2 = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
@@ -110,7 +105,6 @@ describe "Passenger class" do
         rating: 5,
         driver: @driver
       )
-      
       @passenger.add_trip(trip)
       @passenger.add_trip(trip2)
     end
@@ -121,6 +115,34 @@ describe "Passenger class" do
     
     it "returns the total amount of money spent on trips" do
       expect(@passenger.net_expenditures).must_equal 8
+    end
+    
+    it "correctly calculates expenditure if passenger is in in-progress trip" do
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: nil,
+        rating: nil,
+        cost: nil,
+      )
+      @passenger.add_trip(trip3)
+      expect(@passenger.net_expenditures).must_equal 8
+    end
+    
+    it "correctly calculates time spent if passenger is in in-progress trip" do
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: nil,
+        rating: nil,
+        cost: nil,
+      )
+      @passenger.add_trip(trip3)
+      expect(@passenger.total_time_spent).must_equal 3600
     end
   end
   

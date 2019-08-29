@@ -24,6 +24,10 @@ module RideShare
       @trips = trips || []
     end
     
+    def add_trip(trip)
+      @trips << trip
+    end
+    
     def set_status_available
       if @status == :AVAILABLE
         raise ArgumentError.new("This driver is already available.")
@@ -40,23 +44,23 @@ module RideShare
       end
     end
     
-    def add_trip(trip)
-      @trips << trip
-    end
-    
     def average_rating
       total_rating = 0
+      total_trips = trips.length
       
       if trips.length == 0
         return 0
       else
         trips.each do |trip|
-          total_rating += trip.rating
+          if trip.rating == nil
+            total_trips -= 1
+          else
+            total_rating += trip.rating
+          end
         end
         
-        avg_rating = total_rating.to_f / trips.length
+        avg_rating = total_rating.to_f / total_trips
         return avg_rating.round(1)
-        
       end
     end
     
@@ -64,7 +68,7 @@ module RideShare
       total_revenue = 0
       
       trips.each do |trip|
-        if trip.cost < 1.65
+        if trip.cost == nil || trip.cost < 1.65 
           total_revenue += 0
         else
           total_revenue += (trip.cost - 1.65) * 0.8
@@ -73,13 +77,6 @@ module RideShare
       
       return total_revenue.round(2)
     end
-    
-    # def requested_trip_update(trip)
-    #   trip.driver.trips << trip
-    #   # TripDispatcher.connect_trips
-    
-    #   trip.driver.status == :UNAVAILABLE
-    # end
     
     private
     

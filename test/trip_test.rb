@@ -47,12 +47,10 @@ describe "Trip class" do
               cost: 23.45,
               rating: 3
             }
-            
             expect{RideShare::Trip.new(@trip_data2)}.must_raise ArgumentError
           end
           
           it "stores an instance of driver" do
-            # skip # Unskip after wave 2
             expect(@trip.driver).must_be_kind_of RideShare::Driver
           end
           
