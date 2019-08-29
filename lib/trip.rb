@@ -33,7 +33,11 @@ module RideShare
         if end_time < start_time 
           raise ArgumentError.new("#{end_time} is the same time as #{start_time}")
         end
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 6b2b4b69a2d14928c7ccf8e3b350aaeb3ad3dcb8
         @start_time = start_time
         @end_time = end_time
       end 

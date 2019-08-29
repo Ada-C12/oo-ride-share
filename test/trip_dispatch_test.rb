@@ -132,6 +132,7 @@ describe "TripDispatcher class" do
     it "Will create a new instance of Trip" do   
       # Act
       trip = @dispatcher.request_trip(3333)
+<<<<<<< HEAD
       
       # Assert
       expect(trip).must_be_kind_of RideShare::Trip
@@ -142,7 +143,19 @@ describe "TripDispatcher class" do
       expect(trip.driver).must_be_kind_of RideShare::Driver
       expect(trip.driver.id).must_equal 2
     end
+=======
+
+      # Assert
+      expect(trip).must_be_kind_of RideShare::Trip
+    end
+>>>>>>> 6b2b4b69a2d14928c7ccf8e3b350aaeb3ad3dcb8
     
+    it "Will assign a driver to the Trip" do
+      trip = @dispatcher.request_trip(3333)
+      expect(trip.driver).must_be_kind_of RideShare::Driver
+      expect(trip.driver.id).must_equal 2
+    end
+  
     it "Will change the Driver's status to unavailable" do 
       # add test
     end 
@@ -161,11 +174,19 @@ describe "TripDispatcher class" do
       
       # loop through drivers.status pick first instance of :AVAILABLE
       # @drivers.each do |driver|
+<<<<<<< HEAD
       
       
       #   # then add that driver to trip
       # end 
       
+=======
+        
+        
+      #   # then add that driver to trip
+      # end 
+      
+>>>>>>> 6b2b4b69a2d14928c7ccf8e3b350aaeb3ad3dcb8
       # it "Will add the new trip to the Driver's list of trips" do
       #   # add test
       # end
@@ -186,4 +207,8 @@ describe "TripDispatcher class" do
     
     
   end
+<<<<<<< HEAD
 end 
+=======
+end 
+>>>>>>> 6b2b4b69a2d14928c7ccf8e3b350aaeb3ad3dcb8
