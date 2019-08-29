@@ -196,7 +196,13 @@ describe "TripDispatcher class" do
     end
 
     it "will add a trip in the trip dispatcher overall trips" do
-      
+      dispatcher = build_test_dispatcher
+
+      before_count = dispatcher.trips.length
+      trip = dispatcher.request_trip(8)
+      after_count = dispatcher.trips.length
+
+      expect(after_count - before_count).must_equal 1
     end
   end
   

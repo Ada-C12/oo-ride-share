@@ -59,21 +59,6 @@ module RideShare
       @trips << in_progress
       
       return in_progress
-      #create a new instance of Trip
-      #automatically assign first driver who is available
-      #start time = Time.now
-      #end time, cost, rating, will be nil because trip hasn't finished
-      #add this trip to driver's trip array
-      #change driver status to unavailable (attr_accessor)
-      #add this trip to the passenger's trip list
-      #add the trip to the trip collection in Trip Dispatcher 
-      #will have to write to CSV record
-      #return the newly created trip
-      
-      #driver will need to be edited for in-progress trips
-      #passenger will aslo need to be edited, total_time_spent
-      
-      
     end
     
     
