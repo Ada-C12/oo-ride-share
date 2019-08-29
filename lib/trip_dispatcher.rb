@@ -34,6 +34,21 @@ module RideShare
       #{passengers.count} passengers>"
     end
     
+    def select_driver_by_history(available_driver_list)
+      selected_driver = available_driver_list[0]
+      
+      available_driver_list.each do |one_driver|
+        # first select the driver who has never driven before
+        #   if a driver has never driven before, their trips.length should be 0
+        if one_driver.trips.length == 0
+          selected_driver = one_driver
+        end
+        # then select the driver whose most recent trip ended the longest time ago
+      end
+      
+      return selected_driver
+    end
+    
     def find_available_driver
       all_available_drivers = []
       drivers.each do |driver|
@@ -44,9 +59,11 @@ module RideShare
       if all_available_drivers.length == 0
         raise ArgumentError, "No Available Drivers at this Time."
       else
-        # From the Drivers that remain, select the one who has never driven or whose most recent trip ended the longest time ago
+        # call helper method to determine which of all_available_drivers to pick
+        selected_driver = select_driver_by_history(all_available_drivers)
       end
-      return all_available_drivers[0]
+      return selected_driver
+      # return all_available_drivers[0]
     end
     
     def start_trip(driver:, passenger:)
