@@ -45,5 +45,36 @@ module RideShare
 
       return trips
     end
+
+    # Our program needs a way to make new trips and appropriately assign a driver and passenger.
+
+    # This logic will be handled by our TripDispatcher in a new instance method: TripDispatcher#request_trip(passenger_id). When we create a new trip with this method, the following will be true:
+
+    #     The passenger ID will be supplied (this is the person requesting a trip)
+    #     Your code should automatically assign a driver to the trip
+    #         For this initial version, choose the first driver whose status is :AVAILABLE
+    #     Your code should use the current time for the start time
+    #     The end date, cost and rating will all be nil
+    #         The trip hasn't finished yet!
+
+    # You should use this information to:
+
+    #     Create a new instance of Trip
+    #     Modify this selected driver using a new helper method in Driver:
+    #         Add the new trip to the collection of trips for that Driver
+    #         Set the driver's status to :UNAVAILABLE
+    #     Add the Trip to the Passenger's list of Trips
+    #     Add the new trip to the collection of all Trips in TripDispatcher
+    #     Return the newly created trip
+
+    def request_trip(passenger_id)
+      @new_trip = RideShare::Trip.new(@trip_data)
+      @trip_data.each do |driver, status|
+        if driver(status) == AVAILABLE
+          assigned_driver = driver
+          break
+        end
+      end
+    end
   end
 end

@@ -121,4 +121,67 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+  # all of these codes must have tests
+  # 1. accepts/initializes new_trip
+  describe "request_trip" do
+    describe "intialize new_trip" do
+      before do
+        @trip_data = {
+          id: 8,
+          passenger: RideShare::Passenger.new(id: 1,
+                                              name: "Ada",
+                                              phone_number: "412-432-7640"),
+
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil,
+        }
+        @new_trip = RideShare::Trip.new(@trip_data)
+      end
+
+      # 6. creates a new instance of Trip
+      it "is a new instance of Trip" do
+        expect(@new_trip).must_be_kind_of RideShare::Trip
+      end
+    end
+    describe "driver assignment" do
+      # write in a before do
+      # 2. assigns a driver to the drive
+      it "assigns a driver to the drive" do
+        expect(@driver).must_be_kind_of RideShare::Driver
+      end
+      # 3. only chooses a driver with an available status
+      it "only chooses driver with status :AVAILABLE" do
+        expect(@status).must_equal :AVAILABLE
+      end
+      # 4. start time is current time
+      # it "sets start time as the current time" do
+      #   #write test
+      # end
+      # # 5. correct defaults are set (end cost is nil, date is nil, rating is nil)
+      # it "sets end cost, date, and rating as nil as default" do
+      #   expect(@cost).must_equal nil
+      #   expect(@date).must_equal nil
+      #   expect(@rating).must_equal nil
+      # end
+      #  # 7. adds trip to driver's trip collection
+      #  it "adds the new trip to the driver's trip collection" do
+      #  end
+      #  # 8. sets driver status to unavailable
+      #  it "sets driver status as unavailable" do
+      #    expect(@status).must_equal :UNAVAILABLE
+      #  end
+      #  # 9. adds trip to passenger's list of all trips
+      #  it "new trip is added to passenger's list of all trips" do
+      #  end
+      #  # 10. adds trip to TripDispatchers list of all the Trips
+      #  it "adds trip to TripDispatcher's list of all the Trips" do
+      #  end
+      #  # 11. returns the newly created trip
+      #  it "returns the new instance of @new_trip" do
+      #  end
+    end
+  end
 end
