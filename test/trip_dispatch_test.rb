@@ -120,5 +120,60 @@ describe "TripDispatcher class" do
         end
       end
     end
+    
+    # Bri testing "request trip method"
+    describe "request_trip method" do 
+      before do 
+        @dispatcher = build_test_dispatcher
+        @trip = @dispatcher.request_trip(8)
+      end
+      
+      #Was the trip created properly?
+      it "is an instance of Trip" do
+        expect(@trip).must_be_kind_of RideShare::Trip
+      end
+      
+      it "stores an instance of passenger" do
+        expect(@trip.passenger).must_be_kind_of RideShare::Passenger
+      end
+      
+      it "stores an instance of driver" do
+        expect(@trip.driver).must_be_kind_of RideShare::Driver
+      end
+      
+      it "stores a nil rating" do
+        expect(@trip.rating).must_equal nil
+      end
+      
+      it "stores a nil end time" do
+        expect(@trip.end_time).must_equal nil
+      end
+      
+      it "updates trip list for driver" do 
+        expect @trip.driver.trips.include?(@trip)
+      end 
+      
+      it "updates trip list for passenger" do
+        expect @trip.passenger.trips.include?(@trip)
+      end 
+      
+      #Were the trip lists for the driver and passenger updated?
+      # Was the driver who was selected AVAILABLE?
+      it "confirms that the driver selected was available" do
+        trip = @dispatcher.request_trip(1)
+        AVAILABLE_DRIVER_IDS = [1, 3, 6, 8, 9, 11, 12, 14, 15, 16, 17, 21, 23, 25, 26, 27, 28, 29, 30]
+        expect(AVAILABLE_DRIVER_IDS).must_include trip.driver_id
+      end
+      
+      #   What happens if you try to request a trip when there are no AVAILABLE drivers?
+      #change the array of drivers in @dispatcher so that all statuses are unavailable (check csv, change to unavailable)
+      it "returns an error when no drivers are available" do
+        @dispatcher.drivers.each do |driver|
+          driver.status = :UNAVAILABLE
+        end 
+        #run request_trip function, expect that this raises an error
+        expect { @dispatcher.request_trip(6) }.must_raise ArgumentError 
+      end
+    end
   end
 end

@@ -24,13 +24,13 @@ module RideShare
       
       @start_time = start_time
       @end_time = end_time
-      if end_time < start_time 
+      if end_time != nil && end_time < start_time 
         raise ArgumentError, "Trip ended before it started??! Are you OK?"
       end 
       @cost = cost
       @rating = rating
       
-      if @rating > 5 || @rating < 1
+      if @rating != nil && (rating > 5 || @rating < 1)
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
       

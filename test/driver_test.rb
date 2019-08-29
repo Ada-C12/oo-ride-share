@@ -128,6 +128,20 @@ describe "Driver class" do
       
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
+    
+    it "ignores trips with nil ratings" do 
+      trip3 = RideShare::Trip.new(
+        id: 9,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: nil,
+        rating: nil
+      )
+      @driver.add_trip(trip3)
+      
+      expect(@driver.average_rating).must_be_close_to (5.0 / 2.0), 0.01
+    end 
   end
   
   describe "total_revenue" do
