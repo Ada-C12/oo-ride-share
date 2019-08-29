@@ -30,10 +30,20 @@ module RideShare
       @trips << trip
     end
     
+    def find_ongoing_trips()
+      nil_trips = []
+      self.trips.each do |trip|
+        if trip.end_time.nil?
+          nil_trips << trip
+        end
+      end
+      return nil_trips
+    end
+    
     def average_rating
       total_ratings = 0
       trips.each do |one_trip|
-        if one_trip.rating.nil?
+        if one_trip.rating.nil? #=> if the only trip is a `nil` trip, should it return 0 or `nil`?
           total_ratings += 0  
         else 
           total_ratings += one_trip.rating

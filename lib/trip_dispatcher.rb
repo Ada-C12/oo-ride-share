@@ -34,26 +34,22 @@ module RideShare
       #{passengers.count} passengers>"
     end
     
-    
     def find_available_driver
       drivers.each do |driver|
         
-        nil_trips = []
-        driver.trips.each do |trip|
-          if trip.end_time.nil?
-            nil_trips << trip
-          end
-        end
-        
-        if driver.status == :AVAILABLE && nil_trips.length == 0
+        if driver.status == :AVAILABLE && driver.find_ongoing_trips.length == 0
           return driver   
         end
       end
       raise ArgumentError, "No Available Drivers at this Time."
     end
+    # find_available_driver needs to return an array of drivers
     
-    
-    
+    def start_trip(driver:, passenger:)
+      current_time = Time.new
+      new_id = (trips.last.id + 1)
+      return Trip.new(id: new_id, passenger: passenger, driver: driver, start_time: current_time)
+    end
     
     def request_trip(passenger_id)  
       driver = self.find_available_driver
@@ -64,16 +60,6 @@ module RideShare
       trips.push(new_trip)
       return new_trip
     end
-    
-    def start_trip(driver:, passenger:)
-      current_time = Time.new
-      new_id = (trips.last.id + 1)
-      return Trip.new(id: new_id, passenger: passenger, driver: driver, start_time: current_time)
-    end
-    
-    
-    # other things to test:
-    #   what happens when there are no available drivers?
     
     private
     

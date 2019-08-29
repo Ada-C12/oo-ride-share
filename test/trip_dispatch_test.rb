@@ -127,13 +127,13 @@ describe "TripDispatcher class" do
       it "finds an available driver" do
         dispatcher = build_test_dispatcher
         driver_found = dispatcher.find_available_driver()
-        expect(driver_found.name).must_equal "Driver 2"
+        expect(driver_found.name).must_equal "Driver 2" # => this and the following one should break when we change find_available_driver to return an array of available drivers
       end
       
       it "finds the first available driver" do 
         dispatcher = build_test_dispatcher
         driver_found = dispatcher.find_available_driver()
-        expect(driver_found.name).wont_equal "Driver 3 (no trips)"
+        expect(driver_found.name).wont_equal "Driver 3 (no trips)" # => this and the following one should break when we change find_available_driver to return an array of available drivers
       end
       
       it "The first available driver has the status :AVAILABLE" do
