@@ -79,7 +79,7 @@ describe "TripDispatcher class" do
   end
 
   # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -122,4 +122,39 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+describe " Request trip" do
+  it "Checks to see if returns instance of trip " do
+    dispatcher = build_test_dispatcher
+    result = dispatcher.request_trip(1)
+    expect(result).must_be_instance_of Trip
+    expect(result).wont_be_nil
+    expect(result.passenger_id).must_equal 1
+    #expect(result.driver.status).must_equal :UNAVAILABLE
+end
+xit "Checks to see if trip created properly" do
+end 
+
+
+
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 end

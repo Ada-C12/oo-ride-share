@@ -3,7 +3,8 @@ require 'pry'
 
 module RideShare
     class Driver < CsvRecord
-        attr_reader :name, :vin, :status, :trips
+        attr_reader :name, :vin, :trips
+        attr_accessor :status
         
         def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil )
             super(id)
