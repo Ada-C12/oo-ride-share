@@ -163,13 +163,14 @@ describe "Driver class" do
   
   ###JULIA### ENTIRE BLOCK for wave 2 
   describe "total_revenue" do
-    it "Returns correct Float value for trips taken" do
+    before do
       @driver = RideShare::Driver.new(
         id: 99,
         name: "Some Guy",
-        vin: "1C9EVBRM0YBC564DZ"
+        vin: "1C9EVBRM0YBC564DZ",
+        trips: []
       )
-      trip1 = RideShare::Trip.new(
+      @trip1 = RideShare::Trip.new(
         id: 1,
         driver: @driver,
         passenger_id: 11,
@@ -178,7 +179,7 @@ describe "Driver class" do
         rating: 5,
         cost: 11.65
       )
-      trip2 = RideShare::Trip.new(
+      @trip2 = RideShare::Trip.new(
         id: 2,
         driver: @driver,
         passenger_id: 22,
@@ -187,59 +188,44 @@ describe "Driver class" do
         rating: 1,
         cost: 101.65
       )
-      @driver.add_trip(trip1)
-      @driver.add_trip(trip2)
+      @ongoing_trip = RideShare::Trip.new(
+        id:100, 
+        passenger_id: 100,
+        start_time:Time.now, 
+        end_time: nil, 
+        cost: nil, 
+        rating:nil, 
+        driver: @driver)
+    end
+
+    it "Returns 0 if no trips given" do
+      expect(@driver.total_revenue).must_equal 0
+    end
+
+    it "Returns 0 if only 1 ongoing trip" do
+      @driver.add_trip(@ongoing_trip)
+      expect(@driver.total_revenue).must_equal 0
+    end
+
+    it "Returns correct Float value for trips taken" do
+      @driver.add_trip(@trip1)
+      @driver.add_trip(@trip2)
       correct_revenue = ((11.65-1.65) + (101.65-1.65))*0.8
       
       assert(@driver.total_revenue == correct_revenue)
     end
     
-    it "Returns 0 if no trips given" do
-      driver = RideShare::Driver.new(
-        id: 54,
-        name: "Rogers Bartell IV",
-        vin: "1C9EVBRM0YBC564DZ"
-      )
-      expect(driver.total_revenue).must_equal 0
-    end
-
-    it "Returns 0 if only 1 ongoing trip" do
-      ongoing_trip = RideShare::Trip.new(id:100, passenger: nil, passenger_id: 100,
-        start_time:Time.now, end_time: nil, cost: nil, rating:nil, driver_id: 54, driver: nil)
-      driver = RideShare::Driver.new(
-        id: 54,
-        name: "Rogers Bartell IV",
-        vin: "1C9EVBRM0YBC564DZ",
-        trips: [ongoing_trip]
-      )
-      expect(driver.total_revenue).must_equal 0
-    end
-
     it "Returns correct amount if 1 ongoing trip among other finished trips" do
-      ongoing_trip = RideShare::Trip.new(id:100, passenger: nil, passenger_id: 100,
-        start_time:Time.now, end_time: nil, cost: nil, rating:nil, driver_id: 54, driver: nil)
-      old_trip1 = RideShare::Trip.new(id:99, passenger: nil, passenger_id: 100,
-        start_time:Time.now, end_time: nil, cost: 11.65, rating:5, driver_id: 54, driver: nil)
-      old_trip2 = RideShare::Trip.new(id:98, passenger: nil, passenger_id: 100,
-        start_time:Time.now, end_time: nil, cost: 21.65, rating:3, driver_id: 54, driver: nil)
-      driver = RideShare::Driver.new(
-        id: 54,
-        name: "Rogers Bartell IV",
-        vin: "1C9EVBRM0YBC564DZ",
-        trips: [ongoing_trip, old_trip1, old_trip2]
-      )
-      manual_calc = ((21.65-1.65) + (11.65-1.65))*0.8
+      [@ongoing_trip, @trip1, @trip2].each do |trip|
+        @driver.add_trip(trip)
+      end
+      manual_calc = ((11.65-1.65) + (101.65-1.65))*0.8
 
-      expect(driver.total_revenue).must_equal manual_calc
+      expect(@driver.total_revenue).must_equal manual_calc
     end
     
     it "Returns 0 if only trip(s) taken were <= $1.65, and I chose not to penalize the driver w/ the fee" do
-      @driver = RideShare::Driver.new(
-        id: 99,
-        name: "Some Guy",
-        vin: "1C9EVBRM0YBC564DZ"
-      )
-      trip1 = RideShare::Trip.new(
+      trip_super_cheap = RideShare::Trip.new(
         id: 1,
         driver: @driver,
         passenger_id: 11,
@@ -248,7 +234,7 @@ describe "Driver class" do
         rating: 5,
         cost: 0.25
       )
-      trip2 = RideShare::Trip.new(
+      trip_cheap = RideShare::Trip.new(
         id: 2,
         driver: @driver,
         passenger_id: 22,
@@ -257,8 +243,8 @@ describe "Driver class" do
         rating: 1,
         cost: 1.65
       )
-      @driver.add_trip(trip1)
-      @driver.add_trip(trip2)
+      @driver.add_trip(trip_super_cheap)
+      @driver.add_trip(trip_cheap)
       
       assert(@driver.total_revenue == 0)
     end
