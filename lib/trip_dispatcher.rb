@@ -54,6 +54,8 @@ module RideShare
         rating: nil,
       }
       new_trip = RideShare::Trip.new(trip_data)
+      assigned_driver.add_trip(new_trip)
+      return new_trip
     end
 
     private
