@@ -90,7 +90,7 @@ describe "when end_time is nil" do
     rating: 3
   }
   trip = RideShare::Trip.new(trip_data)
-  expect(trip.calculate_duration).must_equal nil
+  expect(trip.calculate_duration).must_equal 0
 end 
 end
 end

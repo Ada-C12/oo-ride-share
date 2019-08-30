@@ -136,15 +136,19 @@ describe "Driver class" do
     
     it "calculate the total revenue a driver made from all their trips." do
       # Arrange
-      trip_costs = []
-      trip_costs << (@driver.trips[0].cost)
-      trip_costs << (@driver.trips[1].cost)
       
+      driver = RideShare::Driver.new(id: 54, name: "Rogers Bartell IV", vin: "1C9EVBRM0YBC564DZ")
+      trip1 = RideShare::Trip.new(id: 8, driver: driver, passenger_id: 3, start_time: Time.parse("2016-08-08"), end_time: Time.parse("2016-08-08"), cost: 7, rating: 5)
+      trip2 = RideShare::Trip.new(id: 2, driver: driver, passenger_id: 3, start_time: Time.parse("2016-08-08"), end_time: Time.parse("2016-08-09"), cost: 10, rating: 1)
+      trip3 = RideShare::Trip.new(id: 3, driver: driver, passenger_id: 3, start_time: Time.parse("2016-08-10"), end_time: nil, cost: nil, rating: nil)
+      driver.add_trip(trip1)
+      driver.add_trip(trip2)
+      driver.add_trip(trip3)
       # Act
-      total_revenue = @driver.calculate_total_revenue
+      # total_revenue = driver.calculate_total_revenue
       
       # Assert
-      expect(total_revenue).must_equal 10.96
+      expect(driver.calculate_total_revenue).must_equal 10.96
     end
     
   end
