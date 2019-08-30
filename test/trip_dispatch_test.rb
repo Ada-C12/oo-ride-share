@@ -23,7 +23,7 @@ describe "TripDispatcher class" do
       
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(dispatcher.drivers).must_be_kind_of Array
     end
     
     it "loads the development data by default" do
@@ -133,7 +133,7 @@ describe "TripDispatcher class" do
     end
 
     it "updated the driver trip list properly" do
-      driver_trip = (@td.drivers.find { |d| d.id == 1}).trips
+      driver_trip = (@td.drivers.find { |d| d.id == 2}).trips
       previous = driver_trip.length
       
       trip = @td.request_trip(1)
@@ -154,17 +154,16 @@ describe "TripDispatcher class" do
 
     it "correctly checks driver status" do
       trip = @td.request_trip(1)
-      driver = @td.drivers.find { |d| d.id == 1}
+      driver = @td.drivers.find { |d| d.id == 2}
       expect (driver.status).must_equal :AVAILABLE
     end
 
-    # it "returns a message when there are no available drivers" do
-    #   @td.drivers.each do |d|
-    #     d.status == :UNAVAILABLE
-    #   end
-    #   trip = @td.request_trip(1)
-    #   expect (@td).must_raise ArgumentError
-    # end
+    it "returns a message when there are no available drivers" do
+      @td.drivers.each do |d|
+        d.status = :UNAVAILABLE
+      end
+      expect {@td.request_trip(1)}.must_raise ArgumentError, "There are no available drivers."
+    end
 
 
   end

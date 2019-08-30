@@ -6,8 +6,9 @@ require_relative 'trip_dispatcher'
 
 module RideShare
   class Driver < CsvRecord
-    attr_reader :name, :vin, :status, :trips
-
+    attr_reader :name, :vin, :trips
+    attr_accessor :status
+  
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       super(id)
 
@@ -28,13 +29,6 @@ module RideShare
     def add_trip(trip)
       @trips << trip
     end
-
-    #def change_status(new_trip)
-    #   if new_trip.driver_id == self.id
-    #     self.add_trip(new_trip)
-    #     @status = :UNAVAILABLE
-    #   end
-    # end
 
     def average_rating
       if trips.length == 0

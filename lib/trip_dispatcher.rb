@@ -36,40 +36,33 @@ module RideShare
     end
 
     def request_trip(passenger_id)
-      # passenger = find_passenger(passenger_id)
-      @drivers.each do |d|
-        status = d.instance_variable_get(:@status)
-        if status == :AVAILABLE 
-          @trip_data = {
-            id: @trips[-1].instance_variable_get(:@id) + 1, 
-            passenger_id: passenger_id,
-            start_time: DateTime.now,
-            end_time: nil, 
-            rating: nil, 
-            cost: nil, 
-            driver: d
-          }
-          trip = RideShare::Trip.new(@trip_data)
-          d.instance_variable_get(:@trips) << trip
-          status == :UNAVAILABLE
-          p = @passengers.find { |p| p.id == passenger_id }
-          p.instance_variable_get(:@trips) << trip
-          @trips << trip
-          
-          return trip
-
-        # else 
-        #   raise ArgumentError, "There are no available drivers."
+      if @drivers.all? { |d| d.instance_variable_get(:@status) == :UNAVAILABLE } == true
+        raise ArgumentError, "There are no available drivers."
+      else 
+        @drivers.each do |d|
+          status = d.instance_variable_get(:@status)
+          if status == :AVAILABLE 
+            @trip_data = {
+              id: @trips[-1].instance_variable_get(:@id) + 1, 
+              passenger_id: passenger_id,
+              start_time: DateTime.now,
+              end_time: nil, 
+              rating: nil, 
+              cost: nil, 
+              driver: d
+            }
+            trip = RideShare::Trip.new(@trip_data)
+            d.instance_variable_get(:@trips) << trip
+            status == :UNAVAILABLE
+            p = @passengers.find { |p| p.id == passenger_id }
+            p.instance_variable_get(:@trips) << trip
+            @trips << trip
+            return trip
+          end
         end
       end
-   
-      # add passenger instance
-      #passenger.add_trip(new_trip)
-      # driver.change_status(new_trip)
-      # @trips << new_trip
-      # return new_trip
-    end
 
+    end
 
 
     private
