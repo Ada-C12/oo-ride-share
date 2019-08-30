@@ -122,25 +122,14 @@ describe "TripDispatcher class" do
     end
   end
 
-  # all of these codes must have tests
-  # 1. accepts/initializes new_trip
   describe "request_trip" do
-    describe "intialize new_trip" do
+    describe "request new trip" do
       before do
         @dispatcher = build_test_dispatcher
-        @available_driver = ()
-        @dispatcher.drivers.each do |driver|
-          if driver.status == :AVAILABLE
-            @available_driver = driver
-            break
-          end
-        end
-
         @new_trip = @dispatcher.request_trip(8)
       end
 
-      # 6. creates a new instance of Trip
-      it "is a new instance of Trip" do
+      it "creates a new instance of Trip" do
         expect(@new_trip).must_be_kind_of RideShare::Trip
       end
     end
@@ -148,6 +137,7 @@ describe "TripDispatcher class" do
       before do
         @dispatcher = build_test_dispatcher
         @available_driver = ()
+        @passenger = @dispatcher.find_passenger(8)
         @dispatcher.drivers.each do |driver|
           if driver.status == :AVAILABLE
             @available_driver = driver
@@ -159,33 +149,39 @@ describe "TripDispatcher class" do
       it "assigns a driver to the drive" do
         expect(@available_driver).must_be_kind_of RideShare::Driver
       end
-      # 3. only chooses a driver with an available status
+
       it "changes selected driver's status to :UNAVAILABLE" do
         expect(@available_driver.status).must_equal :UNAVAILABLE
       end
 
-      # Add the new trip to the collection of trips for that driver
+      it "sets start time as the current time" do
+        now = Time.now
+        now_in_seconds = now.hour * 3600 + now.min * 60
+        start_time_in_seconds = @new_trip.start_time.hour * 3600 + @new_trip.start_time.min * 60
+        expect(start_time_in_seconds).must_equal now_in_seconds
+      end
 
-      # 4. start time is current time
-      # it "sets start time as the current time" do
-      #   #write test
-      # end
-      # # 5. correct defaults are set (end cost is nil, date is nil, rating is nil)
-      # it "sets end cost, date, and rating as nil as default" do
-      #   expect(@cost).must_equal nil
-      #   expect(@date).must_equal nil
-      #   expect(@rating).must_equal nil
-      # end
-      #  # 7. adds trip to driver's trip collection
-      #  it "adds the new trip to the driver's trip collection" do
-      #  end
-      # 9. adds trip to passenger's list of all trips
-      #  it "new trip is added to passenger's list of all trips" do
-      #  end
-      #  # 10. adds trip to TripDispatchers list of all the Trips
-      #  it "adds trip to TripDispatcher's list of all the Trips" do
-      #  end
-      #  # 11. returns the newly created trip
+      it "sets end cost, date, and rating as nil as default" do
+        expect(@new_trip.cost).must_equal nil
+        expect(@new_trip.end_time).must_equal nil
+        expect(@new_trip.rating).must_equal nil
+      end
+
+      it "adds the new trip to the driver's trip collection" do
+        collection_contains_trip = @available_driver.trips.include?(@new_trip)
+        expect(collection_contains_trip).must_equal true
+      end
+
+      it "new trip is added to passenger's list of all trips" do
+        collection_contains_trip = @passenger.trips.include?(@new_trip)
+        expect(collection_contains_trip).must_equal true
+      end
+
+      it "adds trip to TripDispatcher's list of all the Trips" do
+        collection_contains_trip = @dispatcher.trips.include?(@new_trip)
+        expect(collection_contains_trip).must_equal true
+      end
+
       #  it "returns the new instance of @new_trip" do
       #  end
     end

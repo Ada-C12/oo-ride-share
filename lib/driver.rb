@@ -17,14 +17,10 @@ module RideShare
         raise ArgumentError.new("Invalid VIN Length")
       end
 
-      # (implement from_csv and Driver.load_all should work
-
       accepted_statuses = [:UNAVAILABLE, :AVAILABLE]
       if !accepted_statuses.include? @status
         raise ArgumentError.new("Invalid Status Input")
       end
-
-      # Tests are provided to make sure an instance can be created and ArgumentError
     end
 
     def add_trip(trip)
