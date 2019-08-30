@@ -1,5 +1,4 @@
 require_relative 'test_helper'
-require 'pry'
 
 TEST_DATA_DIRECTORY = 'test/test_data'
 
@@ -133,7 +132,6 @@ describe "TripDispatcher class" do
         expect(in_progress_trip.rating).must_be_nil
         expect(in_progress_trip.end_time).must_be_nil
         expect(in_progress_trip.cost).must_be_nil
-        # expect(in_progress_trip.driver).must_equal () #checks that driver is the first available driver
       end
       
       it "adds in progress trip to driver's list" do
@@ -161,10 +159,6 @@ describe "TripDispatcher class" do
         after_trips = dispatcher.trips.length
         expect(after_trips).must_equal(before_trips + 1)
       end
-      
-      # it "adds the trip to the dispatchers trip list"
-      # end
-      
     end
   end
 end

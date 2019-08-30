@@ -34,7 +34,6 @@ describe "Passenger class" do
     end
   end
   
-  
   describe "trips property" do
     before do
       # TODO: you'll need to add a driver at some point here.
@@ -52,7 +51,6 @@ describe "Passenger class" do
         rating: 5,
         driver_id: 1
       )
-      
       @passenger.add_trip(trip)
     end
     
@@ -69,9 +67,7 @@ describe "Passenger class" do
     end
   end
   
-  # psudeo code
   describe "net_expenditures" do
-    
     before do
       # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
@@ -96,11 +92,20 @@ describe "Passenger class" do
         end_time: Time.new(2016, 10, 10, 14, 45, 0),
         rating: 4,
         cost: 5,
+        driver_id: 1 
+      )
+      trip3 = RideShare::Trip.new(
+        id: 9,
+        passenger: @passenger,
+        start_time: Time.new(2016, 10, 10, 15, 30, 0),
+        end_time: nil,
+        rating: nil,
+        cost: nil,
         driver_id: 1
-        
       )
       @passenger.add_trip(trip)
       @passenger.add_trip(trip2) 
+      @passenger.add_trip(trip3)
     end
     
     it "returns a float" do
@@ -110,13 +115,13 @@ describe "Passenger class" do
     it "returns the correct amount" do
       expect(@passenger.net_expenditures).must_equal 11.00
     end
+    
+    it "returns correct amount with an in progress trip" do
+      expect(@passenger.net_expenditures).must_equal 11.00
+    end
   end
   
-  #psuedo code
   describe "total_time_spend" do 
-    # call duration_calculation on each trip
-    # convert to minutes
-    # += to get the total time
     before do
       # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
@@ -142,7 +147,6 @@ describe "Passenger class" do
         rating: 4,
         cost: 5,
         driver_id: 1
-        
       )
       @passenger.add_trip(trip)
       @passenger.add_trip(trip2) 
@@ -152,6 +156,4 @@ describe "Passenger class" do
       expect(@passenger.total_time_spent).must_equal 1800
     end
   end
-  
-  
 end

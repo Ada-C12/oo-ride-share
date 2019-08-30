@@ -13,10 +13,6 @@ module RideShare
         raise ArgumentError, "Invalid vin number."
       end
       
-      # unless status == "UNAVAILABLE" || status == "AVAILABLE"
-      #   raise ArgumentError, "Invalid availability."
-      # end
-      
       @name = name
       @vin = vin
       @status = status
@@ -41,7 +37,7 @@ module RideShare
         return average_rating
       else 
         average_rating = average_rating/ @trips.length
-        return average_rating.to_f
+        return average_rating.to_f.round(1)
       end
     end
     
