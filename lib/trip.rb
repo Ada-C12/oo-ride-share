@@ -13,8 +13,10 @@ module RideShare
       
       super(id)
       
-      if end_time < start_time
-        raise ArgumentError.new "Error! End time must be after start time!"
+      unless end_time == nil
+        if end_time < start_time
+          raise ArgumentError.new "Error! End time must be after start time!"
+        end
       end
       
       if passenger
@@ -46,8 +48,10 @@ module RideShare
       @driver = driver
       @driver_id = driver_id
       
-      if @rating > 5 || @rating < 1
-        raise ArgumentError.new("Invalid rating #{@rating}")
+      unless rating == nil
+        if @rating > 5 || @rating < 1
+          raise ArgumentError.new("Invalid rating #{@rating}")
+        end
       end
     end
     
@@ -67,17 +71,23 @@ module RideShare
     end
     
     def duration
-      return end_time - start_time
+      if end_time != nil
+        return end_time - start_time
+      else
+        return 0
+      end
+      
     end
     
     private
     
     def self.from_csv(record)
+      
       return self.new(
         id: record[:id],
         passenger_id: record[:passenger_id],
         start_time: Time.parse(record[:start_time]),
-        end_time: Time.parse(record[:end_time]),
+        end_time: (Time.parse(record[:end_time]) rescue nil),
         cost: record[:cost],
         rating: record[:rating],
         driver_id: record[:driver_id]
