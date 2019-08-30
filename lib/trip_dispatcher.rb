@@ -36,10 +36,17 @@ module RideShare
               #{passengers.count} passengers>"
     end
 
+    class NoDriverError < StandardError
+    end
+
     def request_trip(passenger_id)
 
       all_available = @drivers.find_all { |driver| driver.status == :AVAILABLE }
       driver = all_available.first 
+
+      if driver == nil
+        raise NoDriverError.new("No drivers availble.")
+      end
 
       start_time = Time.now
 
@@ -60,7 +67,7 @@ module RideShare
       trip.passenger.add_trip(trip)
       
       @trips << trip 
-      
+
       return trip 
 
     end

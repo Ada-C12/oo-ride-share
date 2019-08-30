@@ -3,8 +3,9 @@ require_relative 'csv_record'
 module RideShare
   class Driver < CsvRecord 
     
-    attr_reader :name, :vin, :status, :trips
-    
+    attr_reader :name, :vin, :trips
+    attr_accessor :status 
+
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       super(id)
       @name = name
@@ -17,7 +18,6 @@ module RideShare
         raise ArgumentError
       end
     end
-    
     
     def add_trip(trip)
       @trips << trip
@@ -62,7 +62,6 @@ module RideShare
       
       @status = :UNAVAILABLE 
     end
-
 
     # Since `Driver` inherits from `CsvRecord`, you'll need to implement the `from_csv` template method. Once you do, `Driver.load_all` should work (test this in pry).
     private 

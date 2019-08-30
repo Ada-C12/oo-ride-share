@@ -126,35 +126,34 @@ describe "TripDispatcher class" do
     describe "Request Trip method" do
       before do
         @dispatcher = build_test_dispatcher
+        @trip = @dispatcher.request_trip(6)
       end
       
       it "creates an instance of Trip" do
-        
-        valid_passenger_id = rand(1..8)
-
-        trip = @dispatcher.request_trip(valid_passenger_id)
-        expect(trip).must_be_kind_of RideShare::Trip
+        expect(@trip).must_be_kind_of RideShare::Trip
       end
-
-      it "updates Driver's trips with current trip"
-
-
-
-
+      
+      it "updates Driver's trips with current trip" do
+        expect(@trip.driver.trips).must_include @trip
       end
-
-      it "updates Passenger's trips with current trip"
+      
+      it "updates Passenger's trips with current trip" do
+        expect(@trip.passenger.trips).must_include @trip
       end
-
-      it "selects the first driver who was :AVAILABLE"
+      
+      
+      it "changes Driver's status to :UNAVAILABLE" do
+        expect(@trip.driver.status).must_equal :UNAVAILABLE
       end
-
-      it "changes Driver's status to :UNAVAILABLE"
+      
+      it "accounts for no available drivers" do
+        td = build_test_dispatcher
+        td.drivers.each do |driver|
+          driver.status = :UNAVAILABLE
+        end
+        expect { td.request_trip(6) }.must_raise RideShare::TripDispatcher::NoDriverError
       end
-
-      it "accounts for no available drivers"
-      end
-
+      
     end
   end
 end 
