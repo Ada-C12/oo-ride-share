@@ -22,7 +22,10 @@ module RideShare
         raise ArgumentError, 'Passenger or passenger_id is required'
       end
       
-      if end_time.to_f > start_time.to_f
+      if end_time.nil?
+        @start_time = start_time
+        @end_time = nil
+      elsif end_time.to_f > start_time.to_f
         @start_time = start_time
         @end_time = end_time
       else
@@ -32,7 +35,10 @@ module RideShare
       @cost = cost
       @rating = rating
       
-      if @rating > 5 || @rating < 1
+      if @rating.nil?
+        @rating = nil
+      elsif
+        @rating > 5 || @rating < 1
         raise ArgumentError.new("Invalid rating #{@rating}")
       end
       
@@ -55,7 +61,6 @@ module RideShare
       "PassengerID=#{passenger&.id.inspect}>"
     end
     
-    # I AM A BROKEN METHOD!!!!!
     def connect(passenger)
       @passenger = passenger
       passenger.add_trip(self)

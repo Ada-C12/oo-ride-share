@@ -2,7 +2,8 @@ require_relative 'csv_record'
 
 module RideShare
   class Driver < CsvRecord
-    attr_reader :id, :name, :vin, :status, :trips
+    attr_reader :id, :name, :vin, :trips
+    attr_accessor :status
     
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: nil)
       super(id)
@@ -24,12 +25,18 @@ module RideShare
     def average_rating
       total_rating = 0
       
+      return 0 if @trips.empty?
+      count = 0
       @trips.each do |trip|
-        total_rating += trip.rating
+        if trip.rating.nil?
+          count += 1
+          break
+        else
+          total_rating += trip.rating
+        end
       end
       
-      return 0 if @trips.empty?
-      ave_rating = total_rating.to_f/@trips.length
+      ave_rating = total_rating.to_f/(@trips.length - count)
       return ave_rating.round(1)
     end
     
@@ -38,11 +45,13 @@ module RideShare
       income_ratio = 0.8
       
       @trips.each do |trip|
-        trip_minus_fee = trip.cost - 1.65
-        if trip_minus_fee > 0
-          total_revenue += (trip_minus_fee * income_ratio).round(2)
-        else
-          trip_minus_fee += total_revenue
+        if trip.cost != nil 
+          trip_minus_fee = trip.cost - 1.65
+          if trip_minus_fee > 0
+            total_revenue += (trip_minus_fee * income_ratio).round(2)
+          else
+            trip_minus_fee += total_revenue
+          end
         end
       end
       return total_revenue

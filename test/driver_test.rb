@@ -86,7 +86,7 @@ describe "Driver class" do
         name: "Rogers Bartell IV",
         vin: "1C9EVBRM0YBC564DZ"
       )
-
+      
       trip = RideShare::Trip.new(
         id: 8,
         driver: @driver,
@@ -95,7 +95,7 @@ describe "Driver class" do
         end_time: Time.parse("2016-08-09"),
         rating: 5
       )
-
+      
       @driver.add_trip(trip)
       
     end
@@ -142,7 +142,7 @@ describe "Driver class" do
       total_revenue_by_driver = 0
       
       all_trips.each do |trip|
-        if trip.driver_id == 3
+        if trip.cost != nil && trip.driver_id == 3
           cost = trip.cost
           cost -= 1.65
           if cost > 0
@@ -154,7 +154,6 @@ describe "Driver class" do
         end 
       end
       
-      # driver = RideShare::Driver.new(id: 3, name: "Matisse", vin: "VF4UUGJT1CV5YWV7G", status: :AVAILABLE)
       dispatcher = RideShare::TripDispatcher.new
       driver = dispatcher.find_driver(3)
       expect(driver.total_revenue).must_equal total_revenue_by_driver

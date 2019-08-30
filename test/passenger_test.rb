@@ -82,7 +82,7 @@ describe "Passenger class" do
       trips_by_passenger = []
       
       all_trips.each do |trip|
-        if trip.passenger_id == 3
+        if trip.cost != nil && trip.passenger_id == 3
           cost_by_passenger += trip.cost
           trips_by_passenger.push(trip)
         end

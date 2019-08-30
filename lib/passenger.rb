@@ -19,7 +19,9 @@ module RideShare
     def net_expenditures
       total_money = 0
       @trips.each do |trip|
-        total_money += trip.cost
+        if trip.cost != nil
+          total_money += trip.cost
+        end
       end
       return total_money
     end

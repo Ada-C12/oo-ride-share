@@ -78,7 +78,6 @@ describe "TripDispatcher class" do
     end
   end
   
-  # TODO: un-skip for Wave 2
   describe "drivers" do
     describe "find_driver method" do
       before do
@@ -121,6 +120,69 @@ describe "TripDispatcher class" do
           expect(trip.driver.trips).must_include trip
         end
       end
+    end
+  end
+  
+  describe "ongoing trip" do
+    before do
+      @passenger_master_id = 2
+      @dispatcher = RideShare::TripDispatcher.new
+      @trip = @dispatcher.request_trip(@passenger_master_id)
+    end
+    
+    it "verifies that a newly request trip creates a new instance of trip" do
+      expect(@trip).must_be_kind_of RideShare::Trip
+    end
+    
+    it "verifies that the trip was added for the appropriate passenger, that the passed-in ID match the ID of the Trip instance" do
+      passenger = @dispatcher.find_passenger(@passenger_master_id)
+      expect(passenger.trips).must_include @trip
+    end
+    
+    it "verifies that the trip's ongoing nature is reflected in key measurements: end time, cost, rating should all be nil" do 
+      expect(@trip.end_time).must_be_nil
+      expect(@trip.cost).must_be_nil
+      expect(@trip.rating).must_be_nil
+    end
+    
+    it "verifies that the trip starts at Time.now" do
+      time_now = Time.now.to_i
+      expect(@trip.start_time.to_i).must_be_close_to time_now
+    end 
+  end
+  
+  describe "request_trip snapshot comparison" do
+    before do
+      @passenger_master_id = 2
+      @dispatcher = RideShare::TripDispatcher.new
+      @passenger = @dispatcher.passengers.find { |passenger| passenger.id == @passenger_master_id }
+      @driver = @dispatcher.drivers.find {|driver| driver.status == :AVAILABLE }
+      
+    end
+    
+    it "verifies the driver assignment" do
+      # uses conditions to measure change once request_trip has run   
+      new_driver_id = @dispatcher.request_trip(@passenger_master_id).driver_id
+      expect(@driver.id).must_equal new_driver_id
+    end 
+    
+    it "verifies that the driver assigned WAS available and IS NOW unavailable" do
+      # uses conditions to measure change once request_trip has run
+      expect(@driver.status).must_equal :AVAILABLE  
+      new_driver_id = @dispatcher.request_trip(@passenger_master_id).driver_id
+      new_driver = @dispatcher.find_driver(new_driver_id)
+      expect(new_driver.status).must_equal :UNAVAILABLE
+    end 
+    
+    it "veifies that the array of a passenger's trips has increased to reflect the new trip" do
+      # uses conditions to measure change once request_trip has run
+      dummy = @passenger.trips.dup
+      trips_before_new_trip = dummy
+      @dispatcher.request_trip(@passenger_master_id)
+      passenger = @dispatcher.passengers.find { |passenger| passenger.id == @passenger_master_id }
+      trips_after_new_trip = passenger.trips
+      new_trip_count = trips_before_new_trip.length + 1
+      expect(trips_after_new_trip.length).must_equal new_trip_count
     end
   end
 end
