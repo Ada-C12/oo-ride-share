@@ -27,6 +27,10 @@ describe "Driver class" do
     it "has a default status of :AVAILABLE" do
       expect(RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567").status).must_equal :AVAILABLE
     end
+
+    it "catches invalid status argument" do
+      expect { RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567", status: "GARBAGE") }.must_raise ArgumentError
+    end
     
     it "sets driven trips to an empty array if not provided" do
       expect(@driver.trips).must_be_kind_of Array
@@ -105,7 +109,6 @@ describe "Driver class" do
       expect(average).must_be :<=, 5.0
     end
 
-    ###JULIA### added this IT block for Wave 3
     it "returns zero if no driven trips" do
       driver_sad = RideShare::Driver.new(
         id: 54,
@@ -115,7 +118,6 @@ describe "Driver class" do
       expect(driver_sad.average_rating).must_equal 0
     end
 
-    ###JULIA### added this IT block for Wave 3
     it "returns zero if 1 ongoing trip only, and no other trips" do
       ongoing_trip = RideShare::Trip.new(id:100, passenger: nil, passenger_id: 100,
         start_time:Time.now, end_time: nil, cost: nil, rating:nil, driver_id: 54, driver: nil)
@@ -128,7 +130,6 @@ describe "Driver class" do
       expect(driver_newb.average_rating).must_equal 0
     end
 
-    ###JULIA### added this IT block for Wave 3
     it "returns correct rating if 1 ongoing trip among other trips" do
       ongoing_trip = RideShare::Trip.new(id:100, passenger: nil, passenger_id: 100,
         start_time:Time.now, end_time: nil, cost: nil, rating:nil, driver_id: 54, driver: nil)
@@ -161,7 +162,6 @@ describe "Driver class" do
     end
   end
   
-  ###JULIA### ENTIRE BLOCK for wave 2 
   describe "total_revenue" do
     before do
       @driver = RideShare::Driver.new(
@@ -212,6 +212,7 @@ describe "Driver class" do
       @driver.add_trip(@trip2)
       correct_revenue = ((11.65-1.65) + (101.65-1.65))*0.8
       
+      assert(@driver.total_revenue.class == Float)
       assert(@driver.total_revenue == correct_revenue)
     end
     

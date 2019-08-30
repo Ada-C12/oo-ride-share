@@ -49,7 +49,7 @@ describe "Passenger class" do
         start_time: "2016-08-08",
         end_time: "2016-08-09",
         rating: 5,
-        driver_id: 100    # TODO -> DONE! (you'll need to add a driver at some point here)
+        driver_id: 100   
       )
       
       @passenger.add_trip(trip)
@@ -68,7 +68,6 @@ describe "Passenger class" do
     end
   end
   
-  ###JULIA### ADDED BLOCK for wave 1.2.1  
   describe "testing net_expenditures" do
     before do
       @bart = RideShare::Passenger.new(
@@ -110,7 +109,6 @@ describe "Passenger class" do
       expect(@bart.net_expenditures).must_equal 0.0
     end
 
-    ###JULIA### added this IT block for Wave 3
     it "for a single ongoing trip, net_expenditures should return 0" do
       @bart.add_trip(@ongoing_trip)
       expect(@bart.net_expenditures).must_equal 0.0
@@ -124,7 +122,6 @@ describe "Passenger class" do
     end
   end
   
-  ###JULIA### ADDED BLOCK for wave 1.2.2
   describe "testing total_time_spent" do
     before do
       @bart = RideShare::Passenger.new(
@@ -166,13 +163,11 @@ describe "Passenger class" do
       expect(@bart.total_time_spent).must_equal 0
     end
 
-    ###JULIA### added this IT block for Wave 3
     it "for a single ongoing trip, check total_time_spent returns 0" do      
       @bart.add_trip(@ongoing_trip)
       expect(@bart.total_time_spent).must_equal 0
     end
 
-    ###JULIA### added this IT block for Wave 3
     it "for a single ongoing trip among finished trips, check total_time_spent returns correct number and ignores the ongoing trip" do
       # I decided to count time spent as 0 (instead of nil) until trip officially finishes
       [@ongoing_trip, @trip1, @trip2].each do |trip|
