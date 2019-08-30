@@ -36,7 +36,6 @@ describe "Passenger class" do
 
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -90,7 +89,7 @@ describe "Passenger class" do
     end
 
     it "returns total amount passenger has spent on trips" do
-      #grab first two trips from trips.csv
+      #grabs first two trips from trips.csv
       trip1, trip2 = RideShare::Trip.load_all(directory: './support')
 
       passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "8765309", trips: [trip1, trip2])
@@ -100,7 +99,7 @@ describe "Passenger class" do
         phone_number: "1-602-620-2330 x3723",
         trips: []
         )     
-      #load those trips into passenger for testing. id's may be incorrect
+      #loads those trips into passenger for testing. id's may be incorrect
       expect(passenger.net_expenditures).must_equal 28
       expect(passenger2.net_expenditures).must_equal 0
     end
@@ -118,6 +117,17 @@ describe "Passenger class" do
       @passenger.add_trip(trip2)
 
       expect(@passenger.net_expenditures).must_equal 5
+    end
+    
+    it "returns 0 if passenger has no trips" do
+      passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+      
+       expect(passenger.net_expenditures).must_equal 0
     end
   end
 
@@ -144,7 +154,7 @@ describe "Passenger class" do
     end
 
     it "returns total amount of time that a passenger has spent on trips" do
-      #grab first two trips from trips.csv
+      #grabs first two trips from trips.csv
       trip1, trip2 = RideShare::Trip.load_all(directory: './support')
 
       passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "8765309", trips: [trip1, trip2])
@@ -165,6 +175,16 @@ describe "Passenger class" do
       @passenger.add_trip(trip2)
 
       expect(@passenger.total_time_spent).must_equal 15
+    end
+    it "returns 0 if passenger has no trips" do
+      passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: []
+        )
+      
+       expect(passenger.total_time_spent).must_equal 0
     end
   end
 end

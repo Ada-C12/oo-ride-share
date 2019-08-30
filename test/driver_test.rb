@@ -169,7 +169,7 @@ describe "Driver class" do
 
       expect{driver2.total_revenue}.must_raise ArgumentError
     end
-
+    
     it "accurately calculates total_revenue" do
       trips = RideShare::Trip.load_all(directory: './test/test_data')
       
@@ -179,10 +179,21 @@ describe "Driver class" do
         vin: "1C9EVBRM0YBC564DZ",
         trips: trips
       )
-
+      
       expect(driver2.total_revenue).must_be_close_to 51.00, 0.01
     end
+    
+    it "returns 0 if driver has no trips" do
+      driver2 = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ",
+        trips: []
+      )
 
+      expect(driver2.total_revenue).must_equal 0
+    end
+    
     it "ignores in-progress trips when calculating total_revenue" do
       trips = RideShare::Trip.load_all(directory: './test/test_data')
       

@@ -79,11 +79,11 @@ describe "TripDispatcher class" do
   end
 
   describe "drivers" do
-    describe "find_driver method" do
-      before do
-        @dispatcher = build_test_dispatcher
-      end
+    before do
+      @dispatcher = build_test_dispatcher
+    end
 
+    describe "find_driver method" do
       it "throws an argument error for a bad ID" do
         expect { @dispatcher.find_driver(0) }.must_raise ArgumentError
       end
@@ -95,10 +95,6 @@ describe "TripDispatcher class" do
     end
 
     describe "Driver & Trip loader methods" do
-      before do
-        @dispatcher = build_test_dispatcher
-      end
-
       it "accurately loads driver information into drivers array" do
         first_driver = @dispatcher.drivers.first
         last_driver = @dispatcher.drivers.last
@@ -137,12 +133,20 @@ describe "TripDispatcher class" do
 
         expect(trip_ids.uniq.count).must_equal trip_ids.count
       end
-
-      it "should add the trip to the passenger's list of trips" do
+      
+      it "should add the trip to the passenger's and driver's list of trips" do
         dispatcher = build_test_dispatcher
         trip = dispatcher.request_trip(1)
 
         expect(trip.passenger.trips).must_include trip
+        expect(trip.driver.trips).must_include trip
+      end
+      
+      it "should add a driver who's status is available" do
+        dispatcher = build_test_dispatcher
+        trip = dispatcher.request_trip(1)
+
+        expect(trip.driver.id).wont_equal 1
       end
 
       it "should add the trip to @trips in TripDispatcher" do
@@ -163,7 +167,9 @@ describe "TripDispatcher class" do
 
       it "does something when no drivers are available" do
         dispatcher = build_test_dispatcher
+
         dispatcher.drivers.select! { |driver| driver.status == :UNAVAILABLE }
+
         expect { dispatcher.request_trip(1) }.must_raise RuntimeError
       end
     end

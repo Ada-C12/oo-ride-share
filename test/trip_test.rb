@@ -47,8 +47,8 @@ describe "Trip class" do
     end
 
     it "stores an instance of driver" do
-      # skip # Unskip after wave 2
-      # we modified this test
+      # we modified this test because the connect method needed to be called in TripDispatcher
+      # in order to make an instance of RideShare::Driver
       td = RideShare::TripDispatcher.new(directory: './support')
       driver = td.find_driver(@trip.driver_id)
       
@@ -67,6 +67,17 @@ describe "Trip class" do
     
     it "calculates the duration of the trip in seconds" do
       expect(@trip.duration).must_equal 1500.0
+    end
+  end
+
+  describe "from_csv" do
+    it "stores start_time and end_time as instances of Time" do
+      trips = RideShare::Trip.load_all(directory: "test/test_data")
+
+      trips.each do |trip|
+        expect(trip.start_time).must_be_instance_of Time
+        expect(trip.end_time).must_be_instance_of Time
+      end
     end
   end
 end
