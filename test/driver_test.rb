@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -68,6 +68,7 @@ xdescribe "Driver class" do
     end
 
     it "adds the trip" do
+
       expect(@driver.trips).wont_include @trip
       previous = @driver.trips.length
 
@@ -128,9 +129,52 @@ xdescribe "Driver class" do
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
+
+    it "ignores nil (from in-progress rides) when calculating average rating" do
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: "2016-08-08",
+        end_time: nil,
+        rating: nil
+      )
+      @driver.add_trip(trip)
+      expect(@driver.average_rating).must_equal 5
+    end
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    before do
+      @driver = RideShare::Driver.new(
+        id: 54,
+        name: "Rogers Bartell IV",
+        vin: "1C9EVBRM0YBC564DZ"
+      )
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: "2016-08-08",
+        end_time: "2016-08-08",
+        rating: 5,
+        cost: 10
+      )
+      @driver.add_trip(trip)
+      trip = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: "2016-08-08",
+        end_time: "2016-08-08",
+        rating: 5,
+        cost: 0.50
+      )
+      @driver.add_trip(trip)
+    end
+
+    it "can calculate the total revenue correctly" do
+      expect(@driver.total_revenue).must_equal 6.68
+    end
   end
 end

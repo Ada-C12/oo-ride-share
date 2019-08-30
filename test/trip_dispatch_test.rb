@@ -68,8 +68,7 @@ describe "TripDispatcher class" do
       end
 
       it "connects trips and passengers" do
-        dispatcher = build_test_dispatcher
-        dispatcher.trips.each do |trip|
+        @dispatcher.trips.each do |trip|
           expect(trip.passenger).wont_be_nil
           expect(trip.passenger.id).must_equal trip.passenger_id
           expect(trip.passenger.trips).must_include trip
@@ -78,8 +77,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -103,22 +101,110 @@ describe "TripDispatcher class" do
       it "accurately loads driver information into drivers array" do
         first_driver = @dispatcher.drivers.first
         last_driver = @dispatcher.drivers.last
-
-        expect(first_driver.name).must_equal "Driver2"
-        expect(first_driver.id).must_equal 2
+        expect(first_driver.name).must_equal "Driver 1 (unavailable)"
+        expect(first_driver.id).must_equal 1
         expect(first_driver.status).must_equal :UNAVAILABLE
-        expect(last_driver.name).must_equal "Driver8"
-        expect(last_driver.id).must_equal 8
+        expect(last_driver.name).must_equal "Driver 3 (no trips)"
+        expect(last_driver.id).must_equal 3
         expect(last_driver.status).must_equal :AVAILABLE
       end
 
       it "connects trips and drivers" do
-        dispatcher = build_test_dispatcher
-        dispatcher.trips.each do |trip|
+        @dispatcher.trips.each do |trip|
           expect(trip.driver).wont_be_nil
           expect(trip.driver.id).must_equal trip.driver_id
           expect(trip.driver.trips).must_include trip
         end
+      end
+    end
+
+    describe "request_trip" do
+      before do
+        @dispatcher = build_test_dispatcher
+        @trip = @dispatcher.request_trip(2)
+      end
+
+      it "selects an available driver for the trip" do
+        available_drivers = @dispatcher.drivers.select{|driver| driver.status == :AVAILABLE}
+        num_drivers = available_drivers.length
+        expect(num_drivers).must_equal 1
+      end
+
+      it "raises an ArgumentError if no drivers are available" do
+        @dispatcher.request_trip(2)
+        expect{@dispatcher.request_trip(2)}.must_raise ArgumentError
+      end
+
+      it "changes driver's status from 'available' to 'unavailable'" do
+        expect(@trip.driver.status).must_equal :UNAVAILABLE
+      end
+
+      it "adds the requested trip to the trip dispatcher's list of trips" do
+        expect(@dispatcher.trips).must_include @trip
+      end
+
+      it "adds the requested trip to the passenger's list of trips" do
+        cur_passenger = @dispatcher.find_passenger(2)
+        expect(cur_passenger.trips).must_include @trip
+      end
+
+      it "adds the requested trip to the driver's list of trips" do
+        cur_driver = @trip.driver
+        expect(cur_driver.trips).must_include @trip
+      end
+
+      it "returns the newly created trip" do
+        expect(@trip).must_be_kind_of RideShare::Trip
+      end
+    end
+
+    describe "intelligent dispatching" do
+      before do
+        @dispatcher = build_test_dispatcher
+
+        start_time = Time.parse('2015-05-20T12:14:00+00:00')
+        end_time = start_time + 25 * 60 # 25 minutes
+        trip_data = {
+          id: 8,
+          passenger: RideShare::Passenger.new(id: 1,
+            name: "Ada",
+            phone_number: "412-432-7640"),
+            start_time: start_time,
+            end_time: end_time,
+            cost: 23.45,
+            rating: 3
+          }
+
+        trip = RideShare::Trip.new(trip_data)
+
+        @dispatcher.drivers[1].trips << trip
+      end
+
+      it "chooses a driver with no ride history over drivers who have given rides" do
+        new_trip = @dispatcher.request_trip(2)
+        expect(new_trip.driver.name).must_equal "Driver 3 (no trips)"
+      end
+
+      it "chooses a driver whose most recent trip ended the longest ago only if there are no drivers available who haven't given rides" do
+        start_time = Time.now
+        end_time = start_time + 25 * 60 # 25 minutes
+        trip_data = {
+          id: 8,
+          passenger: RideShare::Passenger.new(id: 1,
+            name: "Ada",
+            phone_number: "412-432-7640"),
+            start_time: start_time,
+            end_time: end_time,
+            cost: 23.45,
+            rating: 3
+          }
+
+        trip = RideShare::Trip.new(trip_data)
+        @dispatcher.drivers[2].trips << trip
+
+        new_trip = @dispatcher.request_trip(2)
+
+        expect(new_trip.driver.name).must_equal "Driver 2"
       end
     end
   end
