@@ -88,7 +88,7 @@ describe RideShare::CsvRecord do
       it 'finds data given a full path' do
         path = 'test/test_data/testrecords.csv'
         records = TestRecord.load_all(full_path: path)
-
+        
         expect(records.length).must_equal record_count
       end
       

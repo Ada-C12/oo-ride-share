@@ -29,9 +29,7 @@ describe "TripDispatcher class" do
     it "loads the development data by default" do
       # Count lines in the file, subtract 1 for headers
       trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
-      
       dispatcher = RideShare::TripDispatcher.new
-      
       expect(dispatcher.trips.length).must_equal trip_count
     end
   end
@@ -92,6 +90,13 @@ describe "TripDispatcher class" do
         driver = @dispatcher.find_driver(2)
         expect(driver).must_be_kind_of RideShare::Driver
       end
+      
+      it "checks the accuracy by comapring the driver_id of the found driver" do 
+        driver_to_find = 2
+        driver = @dispatcher.find_driver(driver_to_find)
+        expect(driver.id).must_equal driver_to_find
+      end
+      
     end
     
     describe "Driver & Trip loader methods" do
@@ -149,6 +154,16 @@ describe "TripDispatcher class" do
       time_now = Time.now.to_i
       expect(@trip.start_time.to_i).must_be_close_to time_now
     end 
+    
+    it "raises an ArgumentError if there are no available drivers" do
+      ridiculus_number_of_trips = 100 # to use up all available drivers 
+      expect{
+        ridiculus_number_of_trips.times do |i|
+          @dispatcher.request_trip( i + 1 )
+        end
+      }.must_raise ArgumentError
+    end
+    
   end
   
   describe "request_trip snapshot comparison" do
@@ -163,6 +178,7 @@ describe "TripDispatcher class" do
     it "verifies the driver assignment" do
       # uses conditions to measure change once request_trip has run   
       new_driver_id = @dispatcher.request_trip(@passenger_master_id).driver_id
+      
       expect(@driver.id).must_equal new_driver_id
     end 
     
@@ -170,19 +186,39 @@ describe "TripDispatcher class" do
       # uses conditions to measure change once request_trip has run
       expect(@driver.status).must_equal :AVAILABLE  
       new_driver_id = @dispatcher.request_trip(@passenger_master_id).driver_id
+      
       new_driver = @dispatcher.find_driver(new_driver_id)
       expect(new_driver.status).must_equal :UNAVAILABLE
     end 
     
     it "veifies that the array of a passenger's trips has increased to reflect the new trip" do
       # uses conditions to measure change once request_trip has run
-      dummy = @passenger.trips.dup
-      trips_before_new_trip = dummy
+      dummy = @passenger.trips.dup # duplication is to prevent the instance-variable update to affect comparison
+      trips_before_new_trip = dummy 
       @dispatcher.request_trip(@passenger_master_id)
-      passenger = @dispatcher.passengers.find { |passenger| passenger.id == @passenger_master_id }
-      trips_after_new_trip = passenger.trips
+      trips_after_new_trip = @passenger.trips
       new_trip_count = trips_before_new_trip.length + 1
       expect(trips_after_new_trip.length).must_equal new_trip_count
     end
+    
+    it "veifies that the array of a driver's trips has increased to reflect the new trip" do
+      # uses conditions to measure change once request_trip has run
+      dummy = @driver.trips.dup # duplication is to prevent the instance-variable update to affect comparison
+      trips_before_new_trip = dummy
+      @dispatcher.request_trip(@passenger_master_id)
+      trips_after_new_trip = @driver.trips
+      new_trip_count = trips_before_new_trip.length + 1
+      expect(trips_after_new_trip.length).must_equal new_trip_count
+    end
+    
+    it "verifies that the total number of trips has increased in trip_dispatcher" do
+      dummy = @dispatcher.trips.dup
+      trips_before_new_trip = dummy
+      new_trip_count = trips_before_new_trip.length + 1
+      @dispatcher.request_trip(@passenger_master_id)
+      trips_after_new_trip = @dispatcher.trips
+      expect(trips_after_new_trip.length).must_equal new_trip_count
+    end
+    
   end
 end

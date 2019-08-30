@@ -92,17 +92,6 @@ describe "Passenger class" do
       
       expect(passenger.net_expenditures).must_equal cost_by_passenger
       
-      # passenger = RideShare::TripDispatcher.new.find_passenger(3)
-      
-      # trips = passenger.trips
-      
-      # cost_by_passenger = 0
-      # trips.each do |trip|
-      #   cost_by_passenger += trip.cost
-      # end
-      
-      # expect(passenger.net_expenditures).must_equal cost_by_passenger
-      
     end
   end
   
@@ -115,7 +104,6 @@ describe "Passenger class" do
       # pulls the cost of all trips taken by passenger 3
       total_time_by_passenger = 0
       trips_by_passenger = []
-      
       
       all_trips.each do |trip|
         if trip.passenger_id == 3
