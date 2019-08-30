@@ -1,5 +1,5 @@
 require_relative 'csv_record'
-require 'pry'
+
 
 module RideShare
     class Driver < CsvRecord
@@ -25,7 +25,6 @@ module RideShare
             @name = name
             @vin = vin
             @trips = trips || []
-            
         end
         
         def add_trip(trip)
@@ -33,27 +32,22 @@ module RideShare
         end
         
         def total_revenue
-            if @trips == nil || @trips == []
-                return 0
-            end
-            costs = @trips.map do |trip|
+            return 0 if @trips == nil || @trips == []
+            
+            costs = @trips.map { |trip|
                 trip.cost
-            end 
-            if costs.sum < 1.65
-                return 0
-            end
+            }         
+            return 0 if costs.sum < 1.65
+            
             revenue = (costs.sum- 1.65) * 0.80
             return revenue.to_f
         end
         
-        
         def average_rating
-            if @trips == nil || @trips == []
-                return 0
-            end
-            ratings = @trips.map do |trip|
+            return 0 if @trips == nil || @trips == []
+            ratings = @trips.map { |trip|
                 trip.rating
-            end 
+            } 
             return (ratings.sum/ratings.length).to_f
         end
         
@@ -68,10 +62,6 @@ module RideShare
             )
         end
     end
-    
-    
-    
-    
 end
 
 

@@ -35,20 +35,17 @@ module RideShare
     
     def find_first_available_driver
       @trips.each do |trip|
-        if trip.driver.status == :AVAILABLE
-          return trip.driver
-        end 
+        return trip.driver if trip.driver.status == :AVAILABLE 
       end
       raise ArgumentError.new "No available drivers"
     end
     
     def request_trip(passenger_id)
       raise ArgumentError.new "Passenger Id is invalid." if passenger_id == [] || passenger_id == nil || passenger_id.class == String 
-
+      
       driver = find_first_available_driver
       start_time = Time.now
       end_time = nil
-      
       passenger = find_passenger(passenger_id)
       trip_data = {
         id: 8,
@@ -81,7 +78,6 @@ module RideShare
         driver = find_driver(trip.driver_id)
         trip.connect_driver(driver)
       end
-      
       return trips
     end
   end

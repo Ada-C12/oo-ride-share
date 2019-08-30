@@ -34,7 +34,6 @@ module RideShare
       return time_spent
     end
     
-    
     private
     
     def self.from_csv(record)
