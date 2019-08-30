@@ -133,48 +133,46 @@ describe "TripDispatcher class" do
       
       new_trip = @dispatcher.request_trip(1)
       
-      expect(new_trip).must_be_instance_of Trip
+      expect(new_trip).must_be_instance_of RideShare::Trip
       
     end
     
     it "assigns a driver to the new trip" do
       # driver must be instance of Driver
-
+      
       new_trip = @dispatcher.request_trip(1)
       new_driver = new_trip.driver
-      expect(new_driver).must_be_instance_of Driver
-
+      expect(new_driver).must_be_instance_of RideShare::Driver
+      
     end 
     
     it "it assigns the correct driver" do
       # we tell it which one to expect from the test data
       new_trip = @dispatcher.request_trip(1)
       new_driver_name = new_trip.driver.name
-
+      
       expect(new_driver_name).must_equal "Driver 2"
     end
     
-    it "assigns a driver whose status is available" do
+    it "makes the assigned driver's status unavailable" do
       # driver status must be available
       new_trip = @dispatcher.request_trip(1)
       new_driver_status = new_trip.driver.status
-
-      expect(new_driver_status).must_equal :AVAILABLE
+      
+      expect(new_driver_status).must_equal :UNAVAILABLE
     end
     
     it "raises an ArgumentError if given an invalid passenger ID" do
       expect{@dispatcher.request_trip(26)}.must_raise ArgumentError
     end
     
-    it "makes start time equal to current time" do
-      # must be instance of time
-      # must be current time ?
-
+    it "makes start time the current time" do
+      
       new_trip = @dispatcher.request_trip(1)
       new_trip_time = new_trip.start_time
-
+      
       expect(new_trip_time).must_be_instance_of Time
-      expect(new_trip_time).must_equal Time.now
+      expect(new_trip_time).must_be_close_to Time.now, 0.01
     end
     
     it "makes end date, cost, and rating equal nil" do
@@ -182,7 +180,7 @@ describe "TripDispatcher class" do
       new_trip_end_time = new_trip.end_time
       new_trip_cost = new_trip.cost
       new_trip_rating = new_trip.rating
-
+      
       expect(new_trip_end_time).must_be_nil
       expect(new_trip_cost).must_be_nil
       expect(new_trip_rating).must_be_nil
@@ -190,28 +188,28 @@ describe "TripDispatcher class" do
     
     it "must add new trip to the passenger's list of trips" do
       new_trip = @dispatcher.request_trip(1)
-      passenger_trips = @passenger.trips
-
+      passenger_trips = new_trip.passenger.trips
+      
       expect(passenger_trips).must_include new_trip
     end
     
     it "must add new trip to the driver's list of trips" do
       new_trip = @dispatcher.request_trip(1)
-      driver_trips = @driver.trips
-
+      driver_trips = new_trip.driver.trips
+      
       expect(driver_trips).must_include new_trip
     end
     
     it "must add new trip to the trip dispatcher's list of trips" do
       new_trip = @dispatcher.request_trip(1)
-      dispatcher_trips = self.trips
-
+      dispatcher_trips = @dispatcher.trips
+      
       expect(dispatcher_trips).must_include new_trip
     end
     
     it "raises an ArgumentError if there are no drivers available" do
-      @drivers[1].status = :UNAVAILABLE
-      @drivers[2].status = :UNAVAILABLE
+      @dispatcher.drivers[1].status = :UNAVAILABLE
+      @dispatcher.drivers[2].status = :UNAVAILABLE
       
       expect{@dispatcher.request_trip(1)}.must_raise ArgumentError
     end
