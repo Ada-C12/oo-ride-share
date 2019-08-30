@@ -123,10 +123,23 @@ describe "Passenger class" do
       end.must_raise ArgumentError 
     end
     
+    it "ignores rides with cost nil" do 
+      trip_3 = RideShare::Trip.new(
+        id: 8,
+        driver_id: 6,
+        passenger: @passenger,
+        start_time: Time.parse("2016-08-08"),
+        end_time: nil,
+        rating: nil,
+        cost: nil
+      )
+      @passenger.add_trip(trip_3)
+      expect(@passenger.net_expenditures).must_be_close_to 16, 0.01
+    end
   end
+  
   describe "total_time_spent" do 
     before do 
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",

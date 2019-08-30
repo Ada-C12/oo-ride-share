@@ -48,18 +48,19 @@ module RideShare
         return 0 
       else
         @trips.each do |trip|
-          gross_profit = trip.cost
-          if gross_profit < 1.65
-            drivers_share = gross_profit * 0.8
-          else
-            drivers_share = (gross_profit - 1.65) * 0.8
-          end          
-          total_revenue += drivers_share
-        end
+          if trip.cost != nil 
+            gross_profit = trip.cost
+            if gross_profit < 1.65
+              drivers_share = gross_profit * 0.8
+            else
+              drivers_share = (gross_profit - 1.65) * 0.8
+            end          
+            total_revenue += drivers_share
+          end
+        end 
         return total_revenue.round(2)
-      end 
+      end
     end
-    
     
     # Modify this selected driver using a new helper method in Driver:
     # Add the new trip to the collection of trips for that Driver

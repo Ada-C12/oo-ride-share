@@ -213,8 +213,20 @@ describe "Driver class" do
       )
       driver_2.add_trip(trip_2)
       expect(driver_2.total_revenue).must_be_close_to 0.80, 0.01
-      
     end
     
+    it "ignores rides with cost nil" do 
+      trip_3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.parse("2016-08-08"),
+        end_time: nil,
+        rating: nil,
+        cost: nil
+      )
+      @driver.add_trip(trip_3)
+      expect(@driver.total_revenue).must_be_close_to 2.68, 0.01
+    end
   end
 end

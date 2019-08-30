@@ -24,34 +24,37 @@ module RideShare
         raise ArgumentError, "Passenger has 0 ride expenses, due to taking 0 rides."
       else
         @trips.each do |trip|
-          total_money_spent += trip.cost
+          if trip.cost != nil
+            total_money_spent += trip.cost
+          end
         end
         return total_money_spent
       end
     end
-    
-    #emily
-    #following bri's template :O
-    def total_time_spent 
-      total_time_spent = 0 
-      if trips.length == 0
-        raise ArgumentError, "No trips loaded for this passenger."
-      else 
-        @trips.each do |trip|
-          total_time_spent += trip.duration
+      
+      #emily
+      #following bri's template :O
+      def total_time_spent 
+        total_time_spent = 0 
+        if trips.length == 0
+          raise ArgumentError, "No trips loaded for this passenger."
+        else 
+          @trips.each do |trip|
+            total_time_spent += trip.duration
+          end 
         end 
+        return total_time_spent
       end 
-      return total_time_spent
-    end 
-    
-    private
-    
-    def self.from_csv(record)
-      return new(
-        id: record[:id],
-        name: record[:name],
-        phone_number: record[:phone_num]
-      )
+      
+      private
+      
+      def self.from_csv(record)
+        return new(
+          id: record[:id],
+          name: record[:name],
+          phone_number: record[:phone_num]
+        )
+      end
     end
   end
-end
+  
