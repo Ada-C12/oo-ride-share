@@ -35,25 +35,29 @@ module RideShare
       #{passengers.count} passengers>"
     end
     
-    def request_trip(passenger_id)
+    def find_avail_drivers
       avail_drivers = []
       
       @drivers.each do |driver|
         avail_drivers << driver if driver.status == :AVAILABLE
       end
-      
+      return avail_drivers
+    end
+    
+    def find_next_driver
       next_driver = nil
       
-      avail_drivers.each do |driver|
+      find_avail_drivers.each do |driver|
         if driver.trips.length == 0
           next_driver = driver
+          break
         end
       end
       
       if next_driver == nil
         last_trip_overall = Time.now
         
-        avail_drivers.each do |driver|
+        find_avail_drivers.each do |driver|
           driver_trip_end = [] 
           
           driver.trips.each do |trip|
@@ -66,10 +70,14 @@ module RideShare
           end
         end
       end
-      
+      return next_driver
+    end
+    
+    def request_trip(passenger_id)
       requested_trip_id = @trips.length + 1
+      driver = find_next_driver
       
-      if next_driver == nil 
+      if driver == nil 
         raise ArgumentError.new("There are no drivers available.")
       end
       
@@ -82,11 +90,11 @@ module RideShare
         end_time: nil,
         cost: nil,
         rating: nil,
-        driver: next_driver,
+        driver: driver,
       )
       
-      next_driver.add_trip(trip)
-      next_driver.set_status_unavailable
+      driver.add_trip(trip)
+      driver.set_status_unavailable
       passenger.add_trip(trip)
       
       return trip
