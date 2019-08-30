@@ -151,7 +151,7 @@ describe "TripDispatcher class" do
         end
       end
 
-      expect{dispatcher.request_trip(8)}.must_raise ArgumentError
+      expect{dispatcher.request_trip(8)}.must_equal nil
     end
     
     it "Will assign the current time as start time" do
@@ -205,7 +205,7 @@ describe "TripDispatcher class" do
       expect(after_count - before_count).must_equal 1
     end
   end
-  
+
 end
 
 
