@@ -126,7 +126,7 @@ describe "TripDispatcher class" do
         @dispatcher = build_test_dispatcher
         @driver = @dispatcher.drivers.find { |driver| driver.status == :AVAILABLE }
         @passenger = @dispatcher.find_passenger(8)
-        INITIAL_NUMBER_OF_TRIPS = @passenger.trips.length
+        @initial_number_of_trips = @passenger.trips.length
         @new_trip = @dispatcher.request_trip(8)
       end
       
@@ -139,7 +139,7 @@ describe "TripDispatcher class" do
       end
       
       it "adds the new trip to the passenger's list of trips" do
-        expect (@passenger.trips.length).must_equal INITIAL_NUMBER_OF_TRIPS + 1
+        expect (@passenger.trips.length).must_equal @initial_number_of_trips + 1
       end
       
       it "updates the selected driver's status to :UNAVAILABLE" do
@@ -147,9 +147,9 @@ describe "TripDispatcher class" do
       end
       
       it "returns nil if there are no available drivers" do
-        second_trip = @dispatcher.request_trip(6)
+        @dispatcher.request_trip(6)
         no_drivers_available = @dispatcher.request_trip(3)
-        expect(no_drivers_available).must_equal nil
+        assert_nil(no_drivers_available)
       end
     end
   end

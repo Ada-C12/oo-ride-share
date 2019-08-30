@@ -108,7 +108,7 @@ describe "Passenger class" do
       @passenger.add_trip(trip1)
       @passenger.add_trip(trip2)
       
-      NET_EXPENDITURE = @passenger.net_expenditures
+      @net_expenditure = @passenger.net_expenditures
     end
     
     it "returns net expenditures for only completed trips" do
@@ -123,7 +123,7 @@ describe "Passenger class" do
       )
       
       @passenger.add_trip(in_progress_trip)
-      expect(@passenger.net_expenditures).must_equal NET_EXPENDITURE
+      expect(@passenger.net_expenditures).must_equal @net_expenditure
     end
     
     it "returns total amount of money passenger spent on their trips" do
@@ -178,7 +178,7 @@ describe "Passenger class" do
       @passenger.add_trip(trip1)
       @passenger.add_trip(trip2)
       
-      TOTAL_DURATION = trip1.duration + trip2.duration
+      @total_duration = trip1.duration + trip2.duration
     end
     
     it "returns a number" do
@@ -186,7 +186,7 @@ describe "Passenger class" do
     end
     
     it "returns the total amount of time in seconds passenger has spent on their trips" do
-      expect (@passenger.total_time_spent).must_equal TOTAL_DURATION
+      expect (@passenger.total_time_spent).must_equal @total_duration
     end
     
     it "returns 0 if passenger doesn't have any trip" do
@@ -210,7 +210,7 @@ describe "Passenger class" do
       )
       
       @passenger.add_trip(in_progress_trip)
-      expect(@passenger.total_time_spent).must_equal TOTAL_DURATION
+      expect(@passenger.total_time_spent).must_equal @total_duration
     end
   end
 end

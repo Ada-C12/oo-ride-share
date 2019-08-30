@@ -105,7 +105,7 @@ describe "Driver class" do
       )
       @driver.add_trip(trip)
 
-      AVERAGE_RATING = @driver.average_rating
+      @average_rating = @driver.average_rating
     end
 
     it "returns average rating for only completed trips" do
@@ -119,7 +119,7 @@ describe "Driver class" do
         rating: nil
       )
       @driver.add_trip(in_progress_trip)
-      expect(@driver.average_rating).must_equal AVERAGE_RATING
+      expect(@driver.average_rating).must_equal @average_rating
     end
     
     it "returns a float" do
@@ -192,12 +192,10 @@ describe "Driver class" do
       @driver.add_trip(trip1)
       @driver.add_trip(trip2)
       
-      TRIP_FEE = 1.65
-      PERCENTAGE_PAY = 0.8
+      @trip_fee = 1.65
+      @percentage_pay = 0.8
       
-      TOTAL_REVENUE = ( (trip1.cost - TRIP_FEE) + (trip2.cost - TRIP_FEE) ) * PERCENTAGE_PAY
-      
-      
+      @total_revenue = ( (trip1.cost - @trip_fee) + (trip2.cost - @trip_fee) ) * @percentage_pay
     end
     
     it "returns total revenue for only completed trips" do
@@ -211,15 +209,15 @@ describe "Driver class" do
         rating: nil
       )
       @driver.add_trip(in_progress_trip)
-      expect(@driver.total_revenue).must_equal TOTAL_REVENUE.round(2)
+      expect(@driver.total_revenue).must_equal @total_revenue.round(2)
     end
     
     it "returns a float with two decimal places" do
-      expect (@driver.total_revenue.to_s).must_match /\d+\.\d\d?/
+      expect (@driver.total_revenue.to_s).must_match (/\d+\.\d\d?/)
     end
     
     it "returns correct total revenue" do
-      expect (@driver.total_revenue).must_equal TOTAL_REVENUE.round(2)
+      expect (@driver.total_revenue).must_equal @total_revenue.round(2)
     end
     
     it "returns 0.00 if there are no trips" do
@@ -242,8 +240,7 @@ describe "Driver class" do
         rating: 2
       )
       @driver.add_trip(trip3)
-      expect(@driver.total_revenue).must_equal (TOTAL_REVENUE + (trip3.cost * PERCENTAGE_PAY)).round(2)
+      expect(@driver.total_revenue).must_equal (@total_revenue + (trip3.cost * @percentage_pay)).round(2)
     end
-    
   end
 end
