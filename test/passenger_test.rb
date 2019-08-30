@@ -34,7 +34,6 @@ describe "Passenger class" do
     end
   end
   
-  
   describe "trips property" do
     before do
       # TODO: you'll need to add a driver at some point here.
@@ -73,8 +72,8 @@ describe "Passenger class" do
       end
     end
   end
-  
-  describe "net_expenditures" do
+
+  describe "passenger's total methods" do
     before do
       @passenger = RideShare::Passenger.new(
         id: 9,
@@ -109,108 +108,75 @@ describe "Passenger class" do
       @passenger.add_trip(trip2)
       
       @net_expenditure = @passenger.net_expenditures
-    end
-    
-    it "returns net expenditures for only completed trips" do
-      in_progress_trip = RideShare::Trip.new(
-        id: 15,
-        passenger: @passenger,
-        driver: @driver,
-        start_time: Time.now,
-        end_time: nil,
-        cost: nil,
-        rating: nil
-      )
-      
-      @passenger.add_trip(in_progress_trip)
-      expect(@passenger.net_expenditures).must_equal @net_expenditure
-    end
-    
-    it "returns total amount of money passenger spent on their trips" do
-      expect (@passenger.net_expenditures).must_equal 27
-    end
-    
-    it "returns an number" do
-      expect (@passenger.net_expenditures).must_be_kind_of Numeric
-    end
-    
-    it "returns 0 if passenger doesn't have any trip" do
-      no_trip_passenger = RideShare::Passenger.new(
-        id: 9,
-        name: "Merl Glover III",
-        phone_number: "1-602-620-2330 x3723",
-        trips: [])
-      expect (no_trip_passenger.net_expenditures).must_equal 0
-    end
-  end
-  
-  describe "total_time_spent" do
-    before do
-      @passenger = RideShare::Passenger.new(
-        id: 9,
-        name: "Merl Glover III",
-        phone_number: "1-602-620-2330 x3723",
-        trips: [])
-      
-      @driver = RideShare::Driver.new(
-        id: 54,
-        name: "Rogers Bartell IV",
-        vin: "1C9EVBRM0YBC564DZ")
-      
-      trip1 = RideShare::Trip.new(
-        id: 8,
-        passenger: @passenger,
-        driver: @driver,
-        start_time: Time.parse("2019-01-09 08:30:31 -0800"),
-        end_time: Time.parse("2019-01-09 08:48:50 -0800"),
-        cost: 7,
-        rating: 5)
-      
-      trip2 = RideShare::Trip.new(
-        id: 10,
-        passenger: @passenger,
-        driver: @driver,
-        start_time: Time.parse("2019-01-17 04:33:18 -0800"),
-        end_time: Time.parse("2019-01-17 05:15:59 -0800"),
-        cost: 20,
-        rating: 2)
-      
-      @passenger.add_trip(trip1)
-      @passenger.add_trip(trip2)
-      
       @total_duration = trip1.duration + trip2.duration
     end
-    
-    it "returns a number" do
-      expect (@passenger.total_time_spent).must_be_kind_of Numeric
-    end
-    
-    it "returns the total amount of time in seconds passenger has spent on their trips" do
-      expect (@passenger.total_time_spent).must_equal @total_duration
-    end
-    
-    it "returns 0 if passenger doesn't have any trip" do
-      no_trip_passenger = RideShare::Passenger.new(
-        id: 9,
-        name: "Merl Glover III",
-        phone_number: "1-602-620-2330 x3723",
-        trips: [])
-      expect (no_trip_passenger.total_time_spent).must_equal 0
-    end
 
-    it "returns total time spent for only completed trips" do
-      in_progress_trip = RideShare::Trip.new(
-        id: 15,
-        passenger: @passenger,
-        driver: @driver,
-        start_time: Time.now,
-        end_time: nil,
-        cost: nil,
-        rating: nil
-      )
+    describe "net_expenditures" do
+      it "returns net expenditures for only completed trips" do
+        in_progress_trip = RideShare::Trip.new(
+          id: 15,
+          passenger: @passenger,
+          driver: @driver,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil
+        )
+        
+        @passenger.add_trip(in_progress_trip)
+        expect(@passenger.net_expenditures).must_equal @net_expenditure
+      end
       
-      @passenger.add_trip(in_progress_trip)
-      expect(@passenger.total_time_spent).must_equal @total_duration
+      it "returns total amount of money passenger spent on their trips" do
+        expect (@passenger.net_expenditures).must_equal 27
+      end
+      
+      it "returns an number" do
+        expect (@passenger.net_expenditures).must_be_kind_of Numeric
+      end
+      
+      it "returns 0 if passenger doesn't have any trip" do
+        no_trip_passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: [])
+        expect (no_trip_passenger.net_expenditures).must_equal 0
+      end
+    end
+    
+    describe "total_time_spent" do
+      it "returns a number" do
+        expect (@passenger.total_time_spent).must_be_kind_of Numeric
+      end
+      
+      it "returns the total amount of time in seconds passenger has spent on their trips" do
+        expect (@passenger.total_time_spent).must_equal @total_duration
+      end
+      
+      it "returns 0 if passenger doesn't have any trip" do
+        no_trip_passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: [])
+        expect (no_trip_passenger.total_time_spent).must_equal 0
+      end
+
+      it "returns total time spent for only completed trips" do
+        in_progress_trip = RideShare::Trip.new(
+          id: 15,
+          passenger: @passenger,
+          driver: @driver,
+          start_time: Time.now,
+          end_time: nil,
+          cost: nil,
+          rating: nil
+        )
+        
+        @passenger.add_trip(in_progress_trip)
+        expect(@passenger.total_time_spent).must_equal @total_duration
+      end
     end
   end
 end

@@ -8,22 +8,24 @@ describe "TripDispatcher class" do
       directory: TEST_DATA_DIRECTORY
     )
   end
-  
+
+  before do
+    @dispatcher = build_test_dispatcher
+  end
+
   describe "Initializer" do
     it "is an instance of TripDispatcher" do
-      dispatcher = build_test_dispatcher
-      expect(dispatcher).must_be_kind_of RideShare::TripDispatcher
+      expect(@dispatcher).must_be_kind_of RideShare::TripDispatcher
     end
     
     it "establishes the base data structures when instantiated" do
-      dispatcher = build_test_dispatcher
       [:trips, :passengers].each do |prop|
-        expect(dispatcher).must_respond_to prop
+        expect(@dispatcher).must_respond_to prop
       end
       
-      expect(dispatcher.trips).must_be_kind_of Array
-      expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
+      expect(@dispatcher.trips).must_be_kind_of Array
+      expect(@dispatcher.passengers).must_be_kind_of Array
+      expect(@dispatcher.drivers).must_be_kind_of Array
     end
     
     it "loads the development data by default" do
@@ -37,11 +39,7 @@ describe "TripDispatcher class" do
   end
   
   describe "passengers" do
-    describe "find_passenger method" do
-      before do
-        @dispatcher = build_test_dispatcher
-      end
-      
+    describe "find_passenger method" do      
       it "throws an argument error for a bad ID" do
         expect{ @dispatcher.find_passenger(0) }.must_raise ArgumentError
       end
@@ -52,11 +50,7 @@ describe "TripDispatcher class" do
       end
     end
     
-    describe "Passenger & Trip loader methods" do
-      before do
-        @dispatcher = build_test_dispatcher
-      end
-      
+    describe "Passenger & Trip loader methods" do      
       it "accurately loads passenger information into passengers array" do
         first_passenger = @dispatcher.passengers.first
         last_passenger = @dispatcher.passengers.last
@@ -80,10 +74,6 @@ describe "TripDispatcher class" do
   
   describe "drivers" do
     describe "find_driver method" do
-      before do
-        @dispatcher = build_test_dispatcher
-      end
-      
       it "throws an argument error for a bad ID" do
         expect { @dispatcher.find_driver(0) }.must_raise ArgumentError
       end
@@ -95,10 +85,6 @@ describe "TripDispatcher class" do
     end
     
     describe "Driver & Trip loader methods" do
-      before do
-        @dispatcher = build_test_dispatcher
-      end
-      
       it "accurately loads driver information into drivers array" do
         first_driver = @dispatcher.drivers.first
         last_driver = @dispatcher.drivers.last
@@ -123,7 +109,6 @@ describe "TripDispatcher class" do
     
     describe "request_trip method" do
       before do
-        @dispatcher = build_test_dispatcher
         @driver = @dispatcher.drivers.find { |driver| driver.status == :AVAILABLE }
         @passenger = @dispatcher.find_passenger(8)
         @initial_number_of_trips = @passenger.trips.length
