@@ -157,16 +157,11 @@ describe "TripDispatcher class" do
         expect @trip.passenger.trips.include?(@trip)
       end 
       
-      #Were the trip lists for the driver and passenger updated?
-      # Was the driver who was selected AVAILABLE?
       it "confirms that the driver selected was available" do
         trip = @dispatcher.request_trip(1)
-        AVAILABLE_DRIVER_IDS = [1, 3, 6, 8, 9, 11, 12, 14, 15, 16, 17, 21, 23, 25, 26, 27, 28, 29, 30]
-        expect(AVAILABLE_DRIVER_IDS).must_include trip.driver_id
+        expect trip.driver.status == :AVAILABLE 
       end
       
-      #   What happens if you try to request a trip when there are no AVAILABLE drivers?
-      #change the array of drivers in @dispatcher so that all statuses are unavailable (check csv, change to unavailable)
       it "returns an error when no drivers are available" do
         @dispatcher.drivers.each do |driver|
           driver.status = :UNAVAILABLE

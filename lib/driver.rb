@@ -1,5 +1,3 @@
-# driver.rb
-
 require_relative 'csv_record'
 require_relative 'trip'
 
@@ -23,12 +21,10 @@ module RideShare
       @trips = trips || []
     end 
     
-    #Similar method exists in passenger 
     def add_trip(trip)
       @trips << trip
     end
     
-    #TODO
     def average_rating
       total_ratings = 0
       if trips.length == 0
@@ -61,16 +57,12 @@ module RideShare
         return total_revenue.round(2)
       end
     end
-    
-    # Modify this selected driver using a new helper method in Driver:
-    # Add the new trip to the collection of trips for that Driver
-    # Set the driver's status to :UNAVAILABLE
-    
+  
+    # helper method: called when request_trip runs in trip_dispatcher
     def requested_driver_helper(requested_trip)
       @trips << requested_trip
       @status = :UNAVAILABLE 
     end 
-    
     
     private
     

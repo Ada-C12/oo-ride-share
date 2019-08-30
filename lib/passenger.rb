@@ -15,8 +15,7 @@ module RideShare
     def add_trip(trip)
       @trips << trip
     end
-    
-    # bri
+  
     # create method net_expenditures
     def net_expenditures
       total_money_spent = 0

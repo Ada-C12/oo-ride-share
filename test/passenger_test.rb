@@ -69,10 +69,8 @@ describe "Passenger class" do
     end
   end
   
-  # bri 
   describe "net_expenditures" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -85,7 +83,7 @@ describe "Passenger class" do
         start_time: Time.parse("2016-08-08"),
         end_time: Time.parse("2016-08-09"),
         rating: 5,
-        cost: 7, #added cost
+        cost: 7, 
         driver_id: 9
       )
       
@@ -97,7 +95,7 @@ describe "Passenger class" do
         start_time: Time.parse("2016-08-08"),
         end_time: Time.parse("2016-08-09"),
         rating: 5,
-        cost: 9, # added cost
+        cost: 9, 
         driver_id: 9
       )
       @passenger.add_trip(trip)
@@ -111,8 +109,6 @@ describe "Passenger class" do
       )
     end
     
-    # bri 
-    # You add tests for the net_expenditures method
     it "totals all passenger trip expenditures" do 
       expect(@passenger.net_expenditures).must_equal 16
     end
@@ -181,6 +177,7 @@ describe "Passenger class" do
     end
     
     it "ignores trips with a nil end_time" do 
+      #adding an in-progress trip which should not affect the total_time_spent
       trip3 = RideShare::Trip.new(
         id: 12,
         passenger: @passenger,
