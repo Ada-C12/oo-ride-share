@@ -64,4 +64,3 @@ describe "Trip class" do
           end
         end
       end
-      

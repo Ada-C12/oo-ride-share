@@ -137,7 +137,7 @@ describe "TripDispatcher class" do
     end
     
     it "Assigned the correct driver ID number" do
-      expect(@requested_trip.driver.id).must_equal 2
+      expect(@requested_trip.driver.id).must_equal 3
     end
     
     it "Start time is an instance of Time" do
@@ -156,7 +156,7 @@ describe "TripDispatcher class" do
       end
       
       it "Can add trip to the driver's trip array" do
-        expect(@requested_trip.driver.trips.length).must_equal 4
+        expect(@requested_trip.driver.trips.length).must_equal 1
       end
       
       it "Can add trip to the passenger's trip array" do
