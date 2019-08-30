@@ -1,6 +1,5 @@
 require 'csv'
 require 'time'
-require "pry"
 
 require_relative 'driver'
 require_relative 'passenger'
@@ -45,7 +44,7 @@ module RideShare
       id = last_trip_id + 1
       
       current_driver = nil
-      # assign the first available driver to the trip
+      
       drivers.each do |driver|
         if driver.status == :AVAILABLE
           current_driver = driver
@@ -56,30 +55,23 @@ module RideShare
         raise ArgumentError.new("No available drivers.")
       end
       
-      # validate that the passenger exists before instantiating a new trip
       passenger = self.find_passenger(passenger_id)
       if passenger.nil?
         raise ArgumentError.new("Invalid passenger id #{passenger_id}")
       end
       
-      # create a new instance of trip
       new_trip = Trip.new(id: id, driver: current_driver, passenger: passenger, start_time: Time.now, end_time: nil, rating: nil)
       
-      # Add the new trip to driver's list of trips
       new_trip.driver.add_trip(new_trip)
-      # Change the driver status to unavailable
+      
       new_trip.driver.status = :UNAVAILABLE
       
-      # # Add the new trip to passenger's list of trips
       passenger.add_trip(new_trip)
       
-      # Add the new trip to the TripDispatcher's trips
       add_trip(new_trip)
       
       return new_trip 
-      
     end
-    
     
     private
     

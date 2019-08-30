@@ -1,10 +1,8 @@
 require_relative 'test_helper'
-require 'pry'
 
 describe "Trip class" do
   describe "initialize" do
     before do
-      
       start_time = Time.parse('2015-05-20T12:14:00+00:00')
       end_time = start_time + 25 * 60
       @trip_data = {
@@ -19,7 +17,6 @@ describe "Trip class" do
     @trip = RideShare::Trip.new(@trip_data)
   end
   
-  # add value for end_time <= start_time and raise error 
   it "raises and error for end_time being earlier than start_time" do 
     start_time = Time.parse('2015-05-20T12:14:00+00:00')
     end_time = Time.parse('2015-05-20T11:14:00+00:00')

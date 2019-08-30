@@ -78,7 +78,6 @@ describe "TripDispatcher class" do
     end
   end
   
-  # TODO: un-skip for Wave 2
   describe "drivers" do
     describe "find_driver method" do
       before do
@@ -129,10 +128,8 @@ describe "TripDispatcher class" do
     end
     
     it "Will create a new instance of Trip" do   
-      # Act
       trip = @dispatcher.request_trip(@passenger_id)
       
-      # Assert
       expect(trip).must_be_kind_of RideShare::Trip
     end
     
@@ -186,11 +183,6 @@ describe "TripDispatcher class" do
       trip = @dispatcher.request_trip(@passenger_id)
       expect(@dispatcher.trips).must_include trip
     end 
-    
   end
-  
-  
-  
-  
 end
 

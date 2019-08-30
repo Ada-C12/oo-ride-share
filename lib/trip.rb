@@ -1,14 +1,12 @@
 require 'csv'
 require 'time'
-require 'pry'
 
 require_relative 'csv_record'
 
 module RideShare
   class Trip < CsvRecord
     attr_reader :id, :driver, :driver_id, :passenger, :passenger_id, :start_time, :end_time, :cost, :rating
-    # use to check the workflow of how CSVrecord interacts with a child-class
-    # binding.pry 
+    
     def initialize(id:, driver: nil, driver_id: nil, passenger: nil, passenger_id: nil, start_time:, end_time:, cost: nil, rating:)
       super(id)
       if driver
@@ -62,7 +60,6 @@ module RideShare
       "PassengerID=#{passenger&.id.inspect}>"
     end
     
-    
     def connect(driver, passenger)
       @passenger = passenger
       passenger.add_trip(self)
@@ -70,7 +67,6 @@ module RideShare
       @driver = driver
       driver.add_trip(self)
     end
-    
     
     private
     

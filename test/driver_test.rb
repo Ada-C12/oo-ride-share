@@ -144,7 +144,6 @@ describe "Driver class" do
     end
     
     it "calculate the total revenue a driver made from all their trips." do
-      # Arrange
       driver = RideShare::Driver.new(id: 54, name: "Rogers Bartell IV", vin: "1C9EVBRM0YBC564DZ")
       trip1 = RideShare::Trip.new(id: 8, driver: driver, passenger_id: 3, start_time: Time.parse("2016-08-08"), end_time: Time.parse("2016-08-08"), cost: 7, rating: 5)
       trip2 = RideShare::Trip.new(id: 2, driver: driver, passenger_id: 3, start_time: Time.parse("2016-08-08"), end_time: Time.parse("2016-08-09"), cost: 10, rating: 1)
@@ -153,7 +152,6 @@ describe "Driver class" do
       driver.add_trip(trip2)
       driver.add_trip(trip3)
       
-      # Act/Assert
       expect(driver.calculate_total_revenue).must_equal 10.96
     end
     

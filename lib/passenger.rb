@@ -40,8 +40,6 @@ module RideShare
       total_duration_seconds / 60
     end
     
-    
-    
     private
     
     def self.from_csv(record)

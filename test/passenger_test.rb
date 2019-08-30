@@ -34,10 +34,8 @@ describe "Passenger class" do
     end
   end
   
-  
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(id: 9, name: "Merl Glover III", phone_number: "1-602-620-2330 x3723", trips: [])
       driver = RideShare::Driver.new(id: 54, name: "Bob Bartell IV", vin: "1C9EVBRM0YBC564DZ")
       trip = RideShare::Trip.new(id: 8, driver: driver, passenger: @passenger, start_time: Time.parse("2016-08-08"), end_time: Time.parse("2016-08-09"), rating: 5)
@@ -60,7 +58,6 @@ describe "Passenger class" do
   
   describe "net_expenditures" do
     it "Will return total amount a passenger spent on their trips taken" do
-      # Arrange
       @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
       driver = RideShare::Driver.new(id: 54, name: "Bob Bartell IV", vin: "1C9EVBRM0YBC564DZ")
       trip1 = RideShare::Trip.new(
@@ -94,18 +91,14 @@ describe "Passenger class" do
       @passenger.add_trip(trip2)
       @passenger.add_trip(trip3)
       
-      # Act
       total_cost = @passenger.net_expenditures
       
-      # Assert
       expect(total_cost).must_equal 12
-      
     end 
   end
   
   describe "total_time_spent" do
     it "will return total amount of time a passenger spent on their trips taken" do
-      # Arrange
       passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
       driver = RideShare::Driver.new(id: 54, name: "Bob Bartell IV", vin: "1C9EVBRM0YBC564DZ")
       trip1 = RideShare::Trip.new(id: 8, driver: driver, passenger: passenger, start_time: Time.parse("2015-05-20T12:14:00+00:00"), end_time: Time.parse("2015-05-20T12:44:00+00:00"), cost: 2, rating: 5)
@@ -118,7 +111,4 @@ describe "Passenger class" do
       expect(passenger.total_time_spent).must_equal 60.0
     end 
   end
-  
-  
-  
 end

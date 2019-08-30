@@ -57,7 +57,6 @@ module RideShare
       total_revenue = total_cost * 0.8
     end
     
-    
     private
     
     def self.from_csv(record)
