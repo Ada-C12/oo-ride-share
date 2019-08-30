@@ -23,15 +23,11 @@ describe "TripDispatcher class" do
       
       expect(dispatcher.trips).must_be_kind_of Array
       expect(dispatcher.passengers).must_be_kind_of Array
-      # expect(dispatcher.drivers).must_be_kind_of Array
     end
     
     it "loads the development data by default" do
-      # Count lines in the file, subtract 1 for headers
       trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
-      
       dispatcher = RideShare::TripDispatcher.new
-      
       expect(dispatcher.trips.length).must_equal trip_count
     end
   end
@@ -60,7 +56,6 @@ describe "TripDispatcher class" do
       it "accurately loads passenger information into passengers array" do
         first_passenger = @dispatcher.passengers.first
         last_passenger = @dispatcher.passengers.last
-        
         expect(first_passenger.name).must_equal "Passenger 1"
         expect(first_passenger.id).must_equal 1
         expect(last_passenger.name).must_equal "Passenger 8"
@@ -78,7 +73,6 @@ describe "TripDispatcher class" do
     end
   end
   
-  # TODO: un-skip for Wave 2
   describe "drivers" do
     describe "find_driver method" do
       before do
@@ -99,11 +93,10 @@ describe "TripDispatcher class" do
       before do
         @dispatcher = build_test_dispatcher
       end
-      
+
       it "accurately loads driver information into drivers array" do
         first_driver = @dispatcher.drivers.first
         last_driver = @dispatcher.drivers.last
-        
         expect(first_driver.name).must_equal "Driver 1 (unavailable)"
         expect(first_driver.id).must_equal 1
         expect(first_driver.status).must_equal :UNAVAILABLE
@@ -130,12 +123,11 @@ describe "TripDispatcher class" do
       expect(result).must_be_instance_of RideShare::Trip
       expect(result).wont_be_nil
       expect(result.passenger_id).must_equal 1
-      
     end
+
     it "Checks to see if trip created properly" do
       dispatcher = build_test_dispatcher
       result = dispatcher.request_trip(1)
-      
       expect(result.id).must_be_instance_of Integer
       expect(result.passenger).must_be_instance_of RideShare::Passenger
       expect(result.start_time).must_be_instance_of Time
@@ -145,30 +137,27 @@ describe "TripDispatcher class" do
       expect(result.driver_id).must_be_instance_of Integer
       expect(result.driver).must_be_instance_of RideShare::Driver
     end 
+
     it "Drivers status should be available until added to a trip " do
       dispatcher = build_test_dispatcher
       result = dispatcher.request_trip(1)
       expect(result.driver.status).must_equal :UNAVAILABLE
     end
+
     it "Error should be raised if no available drivers" do
       dispatcher= build_test_dispatcher
       dispatcher.drivers.each do |driver|
         driver.status = :UNAVAILABLE
       end
       expect{dispatcher.request_trip(1)}.must_raise ArgumentError
-
     end
     
     it " Were the trip added to the total list of trips" do
       dispatcher = build_test_dispatcher
       num_trips = dispatcher.trips.length
-      
       result = dispatcher.request_trip(1)
-      
       new_num_trips = num_trips + 1
-      
       result = dispatcher.trips.length
-      
       expect(result).must_equal new_num_trips
     end
 
@@ -177,25 +166,22 @@ describe "TripDispatcher class" do
       driver = dispatcher.find_first_available_driver
       num_trips = driver.trips.length
       result = dispatcher.request_trip(1)
-      
       new_num_trips = num_trips + 1
-      
       final_result = result.driver.trips.length
-      expect(final_result).must_equal new_num_trips
-      
+      expect(final_result).must_equal new_num_trips 
     end
+
     it " Were the trip lists for passenger updated" do
       dispatcher = build_test_dispatcher
       passenger = dispatcher.find_passenger(1)
       num_trips = passenger.trips.length
       result = dispatcher.request_trip(1)
-      
       new_num_trips = num_trips + 1
-      
       updated_trips = result.passenger.trips.length
       expect(updated_trips).must_equal new_num_trips
     end
   end 
+  
   describe "Find first available driver" do
     it "Checks to see if find_first_available_driver method actually returns available driver" do
       dispatcher = build_test_dispatcher

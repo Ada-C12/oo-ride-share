@@ -43,6 +43,8 @@ module RideShare
     end
     
     def request_trip(passenger_id)
+      raise ArgumentError.new "Passenger Id is invalid." if passenger_id == [] || passenger_id == nil || passenger_id.class == String 
+
       driver = find_first_available_driver
       start_time = Time.now
       end_time = nil
@@ -70,6 +72,8 @@ module RideShare
     private
     
     def connect_trips
+      raise ArgumentError.new "No trips yet." if @trips == [] || @trips == nil
+      
       @trips.each do |trip|
         passenger = find_passenger(trip.passenger_id)
         trip.connect(passenger)

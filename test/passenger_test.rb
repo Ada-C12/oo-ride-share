@@ -37,7 +37,6 @@ describe "Passenger class" do
   
   describe "trips property" do
     before do
-      # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(
         id: 9,
         name: "Merl Glover III",
@@ -54,7 +53,6 @@ describe "Passenger class" do
         driver: driver,
         driver_id: 1
       )
-      
       @passenger.add_trip(trip)
     end
     
@@ -72,9 +70,9 @@ describe "Passenger class" do
   end
   
   describe "net expenditures" do
-    it "returns the total amount of money passenger spend on trips" do
-      test_passenger = RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640")
-      driver = RideShare::Driver.new(id:1, name: "Emily", vin: "WBS76FYD47DJF7206", status: :AVAILABLE, trips: nil)
+    before do
+      @passenger = RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640")
+      @driver = RideShare::Driver.new(id:1, name: "Emily", vin: "WBS76FYD47DJF7206", status: :AVAILABLE, trips: nil)
       trip_one = {
         id: 8,
         passenger: RideShare::Passenger.new(id: 1,
@@ -86,7 +84,7 @@ describe "Passenger class" do
         cost: 20,
         rating: 3,
         driver_id: 1,
-        driver: driver
+        driver: @driver
       }
       
       trip_two = {
@@ -99,16 +97,18 @@ describe "Passenger class" do
         end_time: Time.parse("2018-12-17 5:09:21 -0800"),
         cost: 20,
         rating: 3,
-        driver: driver,
+        driver: @driver,
         driver_id: 1
       }
       trip1 = RideShare::Trip.new(trip_one)
       trip2 = RideShare::Trip.new(trip_two)
       
-      test_passenger.add_trip(trip1)
-      test_passenger.add_trip(trip2)
-      net_expenditures = test_passenger.net_expenditures
-      
+      @passenger.add_trip(trip1)
+      @passenger.add_trip(trip2)
+    end
+    
+    it "returns the total amount of money passenger spend on trips" do
+      net_expenditures = @passenger.net_expenditures
       expect(net_expenditures).must_equal 40
       
     end
@@ -119,9 +119,10 @@ describe "Passenger class" do
   end
   
   describe "Total time spent" do
-    it "returns the total amount of time passenger spent on trips" do
-      test_passenger = RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640")
-      driver = RideShare::Driver.new(id:1, name: "Emily", vin: "WBS76FYD47DJF7206", status: :AVAILABLE, trips: nil)
+    
+    before do
+      @passenger = RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640")
+      @driver = RideShare::Driver.new(id:1, name: "Emily", vin: "WBS76FYD47DJF7206", status: :AVAILABLE, trips: nil)
       trip_one = {
         id: 8,
         passenger: RideShare::Passenger.new(id: 1,
@@ -132,9 +133,10 @@ describe "Passenger class" do
         end_time: Time.parse("2018-12-17 5:09:21 -0800"),
         cost: 20,
         rating: 3,
-        driver_id: 2,
-        driver: driver
+        driver_id: 1,
+        driver: @driver
       }
+      
       trip_two = {
         id: 8,
         passenger: RideShare::Passenger.new(id: 1,
@@ -145,16 +147,18 @@ describe "Passenger class" do
         end_time: Time.parse("2018-12-17 5:09:21 -0800"),
         cost: 20,
         rating: 3,
-        driver_id: 2,
-        driver: driver
+        driver: @driver,
+        driver_id: 1
       }
       trip1 = RideShare::Trip.new(trip_one)
       trip2 = RideShare::Trip.new(trip_two)
       
-      test_passenger.add_trip(trip1)
-      test_passenger.add_trip(trip2)
-      time_spent = test_passenger.total_time_spent
-      
+      @passenger.add_trip(trip1)
+      @passenger.add_trip(trip2)
+    end
+    
+    it "returns the total amount of time passenger spent on trips" do
+      time_spent = @passenger.total_time_spent
       expect(time_spent).must_equal 18032.0
     end
     it "Raises an error if passenger has no trips" do

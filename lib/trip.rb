@@ -51,11 +51,13 @@ module RideShare
       end
       
       def connect(passenger)
+        raise ArgumentError.new "passenger is invalid." if passenger == nil || passenger.class != Passenger
         @passenger = passenger
         passenger.add_trip(self)
       end
       
       def connect_driver(driver)
+        raise ArgumentError.new "driver is invalid." if driver == nil || driver.class != Driver
         @driver = driver
         driver.add_trip(self)
       end
