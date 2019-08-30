@@ -51,11 +51,11 @@ describe "Passenger class" do
       end
     end
     
-    # it "all Trips must have the same passenger's passenger id" do
-    #   @passenger.trips.each do |trip|
-    #     expect(trip.passenger.id).must_equal 9
-    #   end
-    # end
+    it "all Trips must have the same passenger's passenger id" do
+      @passenger.trips.each do |trip|
+        expect(trip.passenger.id).must_equal 9
+      end
+    end
   end
   
   describe "net_expenditures" do
@@ -81,8 +81,18 @@ describe "Passenger class" do
       cost: 10,
       rating: 4
       )
+      trip3 = RideShare::Trip.new(
+      id: 9,
+      driver: driver,
+      passenger: @passenger,
+      start_time: Time.parse("2016-08-10"),
+      end_time: nil,
+      cost: nil,
+      rating: nil
+      )
       @passenger.add_trip(trip1)
       @passenger.add_trip(trip2)
+      @passenger.add_trip(trip3)
       
       # Act
       total_cost = @passenger.net_expenditures
@@ -105,9 +115,7 @@ describe "Passenger class" do
       passenger.add_trip(trip2)
       passenger.add_trip(trip3)
       
-      # Assert
       expect(passenger.total_time_spent).must_equal 60.0
-      # expect total to be 60.0 min
     end 
   end
   
