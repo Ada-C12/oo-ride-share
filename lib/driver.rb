@@ -8,8 +8,9 @@ module RideShare
     def initialize(id:, name:, vin:, status: :AVAILABLE, trips: [])
       super(id)
 
-      raise ArgumentError if vin.length != 17
-      raise ArgumentError unless status == :AVAILABLE || status == :UNAVAILABLE
+      raise ArgumentError, "Invalid vin length" if vin.length != 17
+      raise ArgumentError, "Invalid status" unless 
+        status == :AVAILABLE || status == :UNAVAILABLE
 
       @name = name
       @vin = vin
@@ -22,7 +23,11 @@ module RideShare
     end
 
     def average_rating
-      completed_trips.empty? ? 0 : completed_trips.map(&:rating).sum / completed_trips.length.to_f
+      if completed_trips.empty? 
+        return 0 
+      else 
+        return completed_trips.map(&:rating).sum / completed_trips.length.to_f
+      end
     end
 
     def total_revenue
@@ -32,12 +37,13 @@ module RideShare
         if trip_revenue > 0
           trip_revenue
         else
-          raise ArgumentError
+          raise ArgumentError, "#{trip} has negative revenue"
         end
       end.sum
     end
 
     def dispatch(trip)
+      raise ArgumentError, "Driver unavailable" if @status == :UNAVAILABLE
       add_trip(trip)
       @status = :UNAVAILABLE
     end

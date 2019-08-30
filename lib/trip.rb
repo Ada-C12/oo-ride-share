@@ -15,7 +15,6 @@ module RideShare
         raise ArgumentError if start_time > end_time
       end
       
-      #TODO: Refactor this!
       if passenger
         @passenger = passenger
         @passenger_id = passenger.id

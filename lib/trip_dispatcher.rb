@@ -40,7 +40,7 @@ module RideShare
 
     def find_available_driver
       driver = @drivers.find { |driver| driver.status == :AVAILABLE }
-      raise RuntimeError.new("No available drivers") unless driver
+      raise RuntimeError, "No available drivers" unless driver
       return driver
     end
 
