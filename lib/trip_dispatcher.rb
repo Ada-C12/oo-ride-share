@@ -39,22 +39,22 @@ module RideShare
     
     def request_trip(passenger_id)
       chosen_driver = ""
+      max_time = 0 
       @drivers.each do |driver|
-        if driver.status == :AVAILABLE && driver.trips.length != 0 && driver.trips[-1].end_time != nil
-          max_time = 0 
-          if driver.trips.length == 0
-            chosen_driver = driver
-          else
-            driver.trips.each do |trip|
-              time_apart = Time.now - trip.end_time
-              if time_apart > max_time
-                max_time = time_apart
-                chosen_driver = trip.driver
-              end
+        if driver.trips.length == 0 && driver.status == :AVAILABLE
+          chosen_driver = driver
+          
+        elsif driver.status == :AVAILABLE && driver.trips.length != 0 && driver.trips[-1].end_time != nil
+          driver.trips.each do |trip|
+            time_apart = Time.now - trip.end_time
+            if time_apart > max_time
+              max_time = time_apart
+              chosen_driver = trip.driver
             end
           end
+          
         else
-          return nil
+          chosen_driver = nil
         end
       end
       

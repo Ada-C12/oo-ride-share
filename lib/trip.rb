@@ -44,6 +44,8 @@ module RideShare
         @driver_id = driver.id
       elsif driver_id
         @driver_id = driver_id
+      elsif driver == nil
+        raise ArgumentError.new("Driver or driver id is required")
       else
         raise ArgumentError.new("Driver or driver id is required")
       end
