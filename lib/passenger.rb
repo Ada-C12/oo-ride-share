@@ -31,30 +31,29 @@ module RideShare
         return total_money_spent
       end
     end
-      
-      #emily
-      #following bri's template :O
-      def total_time_spent 
-        total_time_spent = 0 
-        if trips.length == 0
-          raise ArgumentError, "No trips loaded for this passenger."
-        else 
-          @trips.each do |trip|
+    
+    def total_time_spent 
+      total_time_spent = 0 
+      if trips.length == 0
+        raise ArgumentError, "No trips loaded for this passenger."
+      else 
+        @trips.each do |trip|
+          if trip.end_time != nil
             total_time_spent += trip.duration
           end 
         end 
-        return total_time_spent
       end 
-      
-      private
-      
-      def self.from_csv(record)
-        return new(
-          id: record[:id],
-          name: record[:name],
-          phone_number: record[:phone_num]
-        )
-      end
+      return total_time_spent
+    end 
+    
+    private
+    
+    def self.from_csv(record)
+      return new(
+        id: record[:id],
+        name: record[:name],
+        phone_number: record[:phone_num]
+      )
     end
   end
-  
+end

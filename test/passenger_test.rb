@@ -155,10 +155,9 @@ describe "Passenger class" do
         cost: 7,
         driver_id: 9 
       )
-      
       @passenger.add_trip(trip)
       
-      trip = RideShare::Trip.new(
+      trip2 = RideShare::Trip.new(
         id: 9,
         passenger: @passenger,
         start_time: Time.parse("2016-08-08"),
@@ -167,7 +166,7 @@ describe "Passenger class" do
         cost: 9,
         driver_id: 9
       )
-      @passenger.add_trip(trip)
+      @passenger.add_trip(trip2)
       
       @passenger_2 = RideShare::Passenger.new(
         id: 12,
@@ -180,6 +179,20 @@ describe "Passenger class" do
     it "calculates total time spent on all rides for a passenger" do 
       expect(@passenger.total_time_spent).must_equal 172800
     end
+    
+    it "ignores trips with a nil end_time" do 
+      trip3 = RideShare::Trip.new(
+        id: 12,
+        passenger: @passenger,
+        start_time: Time.parse("2016-08-08"),
+        end_time: nil,
+        rating: nil,
+        cost: nil,
+        driver_id: 9
+      ) 
+      @passenger.add_trip(trip3)
+      expect(@passenger.total_time_spent).must_equal 172800
+    end 
     
     it "returns an error message if the passenger has no trips" do 
       expect do
