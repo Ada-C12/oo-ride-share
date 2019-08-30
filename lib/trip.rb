@@ -49,8 +49,8 @@ module RideShare
     end
     
     def calculate_duration
-      duration = (@end_time - @start_time)
-      return duration
+      return if end_time.nil?
+      end_time - start_time
     end
     
     def inspect

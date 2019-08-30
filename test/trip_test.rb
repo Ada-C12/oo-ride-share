@@ -60,9 +60,10 @@ it "raises an error for an invalid rating" do
 end
 end
 
-describe "The trip duration can be calculated" do
+describe "#calculate_duration" do
+describe "when start_time and end_time are present" do
   it "Returns the trip duration in seconds" do 
-    @trip_data = {
+    trip_data = {
     id: 8, 
     driver: RideShare::Driver.new(id: 54, name: "Test Driver", vin: "12345678901234567", status: :AVAILABLE),
     passenger: RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640"), 
@@ -71,13 +72,28 @@ describe "The trip duration can be calculated" do
     cost: 23.45, 
     rating: 3
   }
-  trip = RideShare::Trip.new(@trip_data)
-  duration = (trip.end_time - trip.start_time)
+  trip = RideShare::Trip.new(trip_data)
   
   expect(trip.calculate_duration).must_equal 1800.0
-  
+end
+end
+
+describe "when end_time is nil" do
+  it "Returns nil" do
+    trip_data = {
+    id: 8, 
+    driver: RideShare::Driver.new(id: 54, name: "Test Driver", vin: "12345678901234567", status: :AVAILABLE),
+    passenger: RideShare::Passenger.new(id: 1, name: "Ada", phone_number: "412-432-7640"), 
+    start_time: Time.parse("2015-05-20T12:14:00+00:00"), 
+    end_time: nil, 
+    cost: 23.45, 
+    rating: 3
+  }
+  trip = RideShare::Trip.new(trip_data)
+  expect(trip.calculate_duration).must_equal nil
 end 
-end 
+end
+end
 end
 
 

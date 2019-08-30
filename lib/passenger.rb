@@ -19,22 +19,25 @@ module RideShare
     def net_expenditures
       trip_costs = []
       
-      self.trips.each do |trip|
-        trip_costs << trip.cost
+      trips.each do |trip|
+        if trip.end_time 
+          trip_costs << trip.cost
+        end
       end
-      
       total_cost = trip_costs.sum    
     end
     
     def total_time_spent
       each_trip_duration = []
       
-      self.trips.each do |trip|
-        each_trip_duration << trip.calculate_duration
+      trips.each do |trip|
+        if trip.end_time
+          each_trip_duration << trip.calculate_duration
+        end
       end
       
       total_duration_seconds = each_trip_duration.sum
-      total_duration_minutes = total_duration_seconds / 60
+      total_duration_seconds / 60
     end
     
     

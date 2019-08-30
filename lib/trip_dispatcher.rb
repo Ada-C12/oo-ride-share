@@ -65,17 +65,15 @@ module RideShare
           break
         end
       end
+      if current_driver.nil?
+        raise ArgumentError.new("No available drivers.")
+      end
       
       # validate that the passenger exists before instantiating a new trip
       passenger = self.find_passenger(passenger_id)
       if passenger.nil?
         raise ArgumentError.new("Invalid passenger id #{passenger_id}")
       end
-      
-      # if no drivers are available return nil
-      # if !drivers.include?(:AVAILABLE)
-      #   raise ArgumentError.new("No drivers available.")
-      # end 
       
       # create a new instance of trip
       new_trip = Trip.new(id: id, driver: current_driver, passenger: passenger, start_time: Time.now, end_time: nil, rating: nil)
@@ -89,7 +87,7 @@ module RideShare
       passenger.add_trip(new_trip)
       
       # Add the new trip to the TripDispatcher's trips
-      self.add_trip(new_trip)
+      add_trip(new_trip)
       
       return new_trip 
       

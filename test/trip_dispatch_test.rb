@@ -126,52 +126,49 @@ describe "TripDispatcher class" do
     before do
       # MIMICING A IN-PROGRESS TRIP
       @dispatcher = RideShare::TripDispatcher.new(directory: TEST_DATA_DIRECTORY)   
-      passenger_id = @dispatcher.passengers.first.id  
+      @passenger_id = @dispatcher.passengers.first.id
     end
     
     it "Will create a new instance of Trip" do   
       # Act
-      passenger_id = @dispatcher.passengers.first.id 
-      trip = @dispatcher.request_trip(passenger_id)
+      trip = @dispatcher.request_trip(@passenger_id)
       
       # Assert
       expect(trip).must_be_kind_of RideShare::Trip
     end
     
     it "Will assign a driver to the Trip" do
-      passenger_id = @dispatcher.passengers.first.id 
-      trip = @dispatcher.request_trip(passenger_id)
+      trip = @dispatcher.request_trip(@passenger_id)
       expect(trip.driver).must_be_kind_of RideShare::Driver
     end
     
     it "Will choose the first driver who's status is available" do
-      passenger_id = @dispatcher.passengers.first.id 
-      trip = @dispatcher.request_trip(passenger_id)
+      trip = @dispatcher.request_trip(@passenger_id)
       expect(trip.driver.id).must_equal 2
     end
     
-    # it "Will return nil if there's no available drivers" do
-    #   # trip = @dispatcher.request_trip(passenger_id)
-    #   # expect()
-    # end
+    it "Will return nil if there's no available drivers" do
+      dispatcher = RideShare::TripDispatcher.new(
+      directory: 'test/test_data2'
+      )
+      
+      expect { dispatcher.request_trip(@passenger_id) }.must_raise ArgumentError
+    end
     
     it "Will change the Driver's status to unavailable" do 
-      passenger_id = @dispatcher.passengers.first.id 
-      trip = @dispatcher.request_trip(passenger_id)
+      trip = @dispatcher.request_trip(@passenger_id)
       expect(trip.driver.status).must_equal :UNAVAILABLE
     end 
     
     it "Will add the new trip to the Driver's list of trips" do
-      passenger_id = @dispatcher.passengers.first.id 
-      trip = @dispatcher.request_trip(passenger_id)
+      trip = @dispatcher.request_trip(@passenger_id)
       expect(trip.driver.trips).must_include trip
     end
     
     it "Won't create a trip if the passenger_id doesn't match to any existing passenger" do 
-      trip = @dispatcher.request_trip(980999999999999)
       expect do
-        trip
-      end.must_raise ArgumentError
+        @dispatcher.request_trip(980999999999999)
+      end.must_raise ArgumentError 
       
       
       
@@ -180,15 +177,13 @@ describe "TripDispatcher class" do
     end
     
     it "Will add the new trip to the Passenger's list of trips" do
-      passenger_id = @dispatcher.passengers.first.id 
-      trip = @dispatcher.request_trip(passenger_id)
+      trip = @dispatcher.request_trip(@passenger_id)
       updated_trip_list = trip.passenger.add_trip(trip)
       expect(updated_trip_list).must_include trip
     end 
     
     it "Will add the newly created trip to the collection of all Trips in TripDispatcher" do
-      passenger_id = @dispatcher.passengers.first.id 
-      trip = @dispatcher.request_trip(passenger_id)
+      trip = @dispatcher.request_trip(@passenger_id)
       expect(@dispatcher.trips).must_include trip
     end 
     

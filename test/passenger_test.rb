@@ -39,7 +39,8 @@ describe "Passenger class" do
     before do
       # TODO: you'll need to add a driver at some point here.
       @passenger = RideShare::Passenger.new(id: 9, name: "Merl Glover III", phone_number: "1-602-620-2330 x3723", trips: [])
-      trip = RideShare::Trip.new(id: 8, passenger: @passenger, start_time: Time.parse("2016-08-08"), end_time: Time.parse("2016-08-09"), rating: 5)
+      driver = RideShare::Driver.new(id: 54, name: "Bob Bartell IV", vin: "1C9EVBRM0YBC564DZ")
+      trip = RideShare::Trip.new(id: 8, driver: driver, passenger: @passenger, start_time: Time.parse("2016-08-08"), end_time: Time.parse("2016-08-09"), rating: 5)
       
       @passenger.add_trip(trip)
     end
@@ -61,13 +62,28 @@ describe "Passenger class" do
     it "Will return total amount a passenger spent on their trips taken" do
       # Arrange
       @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
-      trip1 = RideShare::Trip.new(id: 8, passenger: @passenger, start_time: Time.parse("2016-08-08"), end_time: Time.parse("2016-08-09"), cost: 2, rating: 5)
-      trip2 = RideShare::Trip.new(id: 9, passenger: @passenger, start_time: Time.parse("2016-08-10"), end_time: Time.parse("2016-08-11"), cost: 10, rating: 4)
+      driver = RideShare::Driver.new(id: 54, name: "Bob Bartell IV", vin: "1C9EVBRM0YBC564DZ")
+      trip1 = RideShare::Trip.new(
+      id: 8,
+      driver: driver,
+      passenger: @passenger,
+      start_time: Time.parse("2016-08-08"),
+      end_time: Time.parse("2016-08-09"),
+      cost: 2,
+      rating: 5
+      )
+      trip2 = RideShare::Trip.new(
+      id: 9,
+      driver: driver,
+      passenger: @passenger,
+      start_time: Time.parse("2016-08-10"),
+      end_time: Time.parse("2016-08-11"),
+      cost: 10,
+      rating: 4
+      )
       @passenger.add_trip(trip1)
       @passenger.add_trip(trip2)
-      trip_costs = []	
-      trip_costs << @passenger.trips[0].cost	
-      trip_costs << @passenger.trips[1].cost
+      
       # Act
       total_cost = @passenger.net_expenditures
       
@@ -80,19 +96,17 @@ describe "Passenger class" do
   describe "total_time_spent" do
     it "will return total amount of time a passenger spent on their trips taken" do
       # Arrange
-      @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
-      trip1 = RideShare::Trip.new(id: 8, passenger: @passenger, start_time: Time.parse("2015-05-20T12:14:00+00:00"), end_time: Time.parse("2015-05-20T12:44:00+00:00"), cost: 2, rating: 5)
-      trip2 = RideShare::Trip.new(id: 9, passenger: @passenger, start_time: Time.parse("2015-05-21T12:14:00+00:00"), end_time: Time.parse("2015-05-21T12:44:00+00:00"), cost: 10, rating: 4)
-      @passenger.add_trip(trip1)
-      @passenger.add_trip(trip2)
+      passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
+      driver = RideShare::Driver.new(id: 54, name: "Bob Bartell IV", vin: "1C9EVBRM0YBC564DZ")
+      trip1 = RideShare::Trip.new(id: 8, driver: driver, passenger: passenger, start_time: Time.parse("2015-05-20T12:14:00+00:00"), end_time: Time.parse("2015-05-20T12:44:00+00:00"), cost: 2, rating: 5)
+      trip2 = RideShare::Trip.new(id: 9, driver: driver, passenger: passenger, start_time: Time.parse("2015-05-21T12:14:00+00:00"), end_time: Time.parse("2015-05-21T12:44:00+00:00"), cost: 10, rating: 4)
+      trip3 = RideShare::Trip.new(id: 9, driver: driver, passenger: passenger, start_time: Time.parse("2015-05-21T12:14:00+00:00"), end_time: nil, cost: 10, rating: 4)
+      passenger.add_trip(trip1)
+      passenger.add_trip(trip2)
+      passenger.add_trip(trip3)
       
-      time1 = @passenger.trips[0].calculate_duration
-      time2 = @passenger.trips[1].calculate_duration
-      
-      # Act
-      total_time = @passenger.total_time_spent
       # Assert
-      expect(total_time).must_equal 60.0
+      expect(passenger.total_time_spent).must_equal 60.0
       # expect total to be 60.0 min
     end 
   end
