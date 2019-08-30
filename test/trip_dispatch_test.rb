@@ -1,12 +1,12 @@
-require_relative 'test_helper'
+require_relative "test_helper"
 
-TEST_DATA_DIRECTORY = 'test/test_data'
+TEST_DATA_DIRECTORY = "test/test_data"
 
 describe "TripDispatcher class" do
   def build_test_dispatcher
     return RideShare::TripDispatcher.new(
-      directory: TEST_DATA_DIRECTORY
-    )
+             directory: TEST_DATA_DIRECTORY,
+           )
   end
 
   describe "Initializer" do
@@ -28,7 +28,7 @@ describe "TripDispatcher class" do
 
     it "loads the development data by default" do
       # Count lines in the file, subtract 1 for headers
-      trip_count = %x{wc -l 'support/trips.csv'}.split(' ').first.to_i - 1
+      trip_count = %x{wc -l 'support/trips.csv'}.split(" ").first.to_i - 1
 
       dispatcher = RideShare::TripDispatcher.new
 
@@ -43,7 +43,7 @@ describe "TripDispatcher class" do
       end
 
       it "throws an argument error for a bad ID" do
-        expect{ @dispatcher.find_passenger(0) }.must_raise ArgumentError
+        expect { @dispatcher.find_passenger(0) }.must_raise ArgumentError
       end
 
       it "finds a passenger instance" do
@@ -78,8 +78,7 @@ describe "TripDispatcher class" do
     end
   end
 
-  # TODO: un-skip for Wave 2
-  xdescribe "drivers" do
+  describe "drivers" do
     describe "find_driver method" do
       before do
         @dispatcher = build_test_dispatcher
@@ -104,11 +103,11 @@ describe "TripDispatcher class" do
         first_driver = @dispatcher.drivers.first
         last_driver = @dispatcher.drivers.last
 
-        expect(first_driver.name).must_equal "Driver2"
-        expect(first_driver.id).must_equal 2
+        expect(first_driver.name).must_equal "Driver 1"
+        expect(first_driver.id).must_equal 1
         expect(first_driver.status).must_equal :UNAVAILABLE
-        expect(last_driver.name).must_equal "Driver8"
-        expect(last_driver.id).must_equal 8
+        expect(last_driver.name).must_equal "Driver 3"
+        expect(last_driver.id).must_equal 3
         expect(last_driver.status).must_equal :AVAILABLE
       end
 
@@ -119,6 +118,68 @@ describe "TripDispatcher class" do
           expect(trip.driver.id).must_equal trip.driver_id
           expect(trip.driver.trips).must_include trip
         end
+      end
+    end
+  end
+
+  describe "request_trip" do
+    describe "request new trip" do
+      before do
+        @dispatcher = build_test_dispatcher
+        @new_trip = @dispatcher.request_trip(8)
+      end
+
+      it "creates a new instance of Trip" do
+        expect(@new_trip).must_be_kind_of RideShare::Trip
+      end
+    end
+    describe "driver assignment" do
+      before do
+        @dispatcher = build_test_dispatcher
+        @available_driver = ()
+        @passenger = @dispatcher.find_passenger(8)
+        @dispatcher.drivers.each do |driver|
+          if driver.status == :AVAILABLE
+            @available_driver = driver
+            break
+          end
+        end
+        @new_trip = @dispatcher.request_trip(8)
+      end
+      it "assigns a driver to the drive" do
+        expect(@available_driver).must_be_kind_of RideShare::Driver
+      end
+
+      it "changes selected driver's status to :UNAVAILABLE" do
+        expect(@available_driver.status).must_equal :UNAVAILABLE
+      end
+
+      it "sets start time as the current time" do
+        now = Time.now
+        now_in_seconds = now.hour * 3600 + now.min * 60
+        start_time_in_seconds = @new_trip.start_time.hour * 3600 + @new_trip.start_time.min * 60
+        expect(start_time_in_seconds).must_equal now_in_seconds
+      end
+
+      it "sets end cost, date, and rating as nil as default" do
+        expect(@new_trip.cost).must_equal nil
+        expect(@new_trip.end_time).must_equal nil
+        expect(@new_trip.rating).must_equal nil
+      end
+
+      it "adds the new trip to the driver's trip collection" do
+        collection_contains_trip = @available_driver.trips.include?(@new_trip)
+        expect(collection_contains_trip).must_equal true
+      end
+
+      it "new trip is added to passenger's list of all trips" do
+        collection_contains_trip = @passenger.trips.include?(@new_trip)
+        expect(collection_contains_trip).must_equal true
+      end
+
+      it "adds trip to TripDispatcher's list of all the Trips" do
+        collection_contains_trip = @dispatcher.trips.include?(@new_trip)
+        expect(collection_contains_trip).must_equal true
       end
     end
   end
