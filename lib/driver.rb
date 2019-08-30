@@ -42,7 +42,6 @@ module RideShare
       return 0
     end
     
-    # This method calculates that driver's total revenue across all their trips. Each driver gets 80% of the trip cost after a fee of $1.65 per trip is subtracted
     def total_revenue
       total_amount_made = []
       if trips.length != 0
@@ -54,9 +53,6 @@ module RideShare
       end
       
       return 0
-      
-      
-      
     end
     
     
@@ -64,14 +60,12 @@ module RideShare
     
     def self.from_csv(record)
       return new(
-      id: record[:id],
-      name: record[:name],
-      vin: record[:vin],
-      status: record[:status]
+        id: record[:id],
+        name: record[:name],
+        vin: record[:vin],
+        status: record[:status]
       )
     end
-    
-    
   end
   
   
