@@ -41,18 +41,19 @@ describe "Trip class" do
     it "raises an error for an invalid rating" do
       [-3, 0, 6].each do |rating|
         @trip_data[:rating] = rating
-        expect do
-          RideShare::Trip.new(@trip_data)
-        end.must_raise ArgumentError
+        expect{RideShare::Trip.new(@trip_data)}.must_raise ArgumentError
       end
     end
     
-    it "raises an ArgumentError if end time is before start time" do
+    it "raises an ArgumentError if end time is before start time; ignores trips in-progress" do
       @trip_data[:end_time] = @trip_data[:start_time] - 25 * 60
-      expect do
-        RideShare::Trip.new(@trip_data)
-      end.must_raise ArgumentError
+      expect{RideShare::Trip.new(@trip_data)}.must_raise ArgumentError
+
+      @trip_data[:end_time] = nil
+      new_trip = RideShare::Trip.new(@trip_data)
+      expect(new_trip.end_time).must_be_nil
     end
+
   end
   
   describe "duration" do
@@ -69,21 +70,31 @@ describe "Trip class" do
       end_time: end_time,
       cost: 23.45,
       rating: 3,
-      driver_id: 3
-    }
-  end
+      driver_id: 3 }
+    end
   
-  it "calculates the total trip time" do
-    trip = RideShare::Trip.new(@trip_data)
-    result = trip.duration
-    expect(result).must_equal 1500
-  end
+    it "calculates the total trip time" do
+      trip = RideShare::Trip.new(@trip_data)
+      result = trip.duration
+      expect(result).must_equal 1500
+    end
   
-  it "returns 0 if start and end time were the same" do
-    @trip_data[:end_time] = @trip_data[:start_time]
-    trip = RideShare::Trip.new(@trip_data)
-    result = trip.duration
-    expect(result).must_equal 0
+    it "returns 0 if start and end time were the same" do
+      @trip_data[:end_time] = @trip_data[:start_time]
+      trip = RideShare::Trip.new(@trip_data)
+      result = trip.duration
+      expect(result).must_equal 0
+    end
+
+    it "returns 0 as the duration of trips in-progress" do
+      @trip_data[:end_time] = nil
+      @trip_data[:cost] = nil
+      @trip_data[:rating] = nil
+
+      trip = RideShare::Trip.new(@trip_data)
+      result = trip.duration
+
+      expect(result).must_equal 0
+    end
   end
-end
 end
