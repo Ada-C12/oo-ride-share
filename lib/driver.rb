@@ -57,9 +57,11 @@ module RideShare
       end 
     end 
     
-    def helper_method
-      #In this method, add the new trip created in trip_dispatcher.rb called request_trip to the passenger and drivers list of trips
-      #Change the driver's status to UNAVAILABLE
+    def trip_updater(trip)
+      add_trip(trip)
+      
+      @status = :UNAVAILABLE 
+    end
 
 
     # Since `Driver` inherits from `CsvRecord`, you'll need to implement the `from_csv` template method. Once you do, `Driver.load_all` should work (test this in pry).

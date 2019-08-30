@@ -37,8 +37,6 @@ module RideShare
     end
 
     def request_trip(passenger_id)
-      #find driver by available 
-      # automatically assign driver to this new instance of trip
 
       all_available = @drivers.find_all { |driver| driver.status == :AVAILABLE }
       driver = all_available.first 
@@ -56,6 +54,15 @@ module RideShare
         cost: nil,
         rating: nil
       )
+
+      driver.trip_updater(trip)
+
+      trip.passenger.add_trip(trip)
+      
+      @trips << trip 
+      
+      return trip 
+
     end
 
     private
