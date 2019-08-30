@@ -70,141 +70,121 @@ describe "Passenger class" do
   
   ###JULIA### ADDED BLOCK for wave 1.2.1  
   describe "testing net_expenditures" do
-    # Passenger objects MUST be instantiated separately b/c IT blocks are assessed in RANDOM order w/in each DESCRIBE block
-    
-    it "if no trips, net_expenditures should return 0" do
-      bart = RideShare::Passenger.new(
-        id: 1,
-        name: "Bart Simpson",
-        phone_number: "1-800-123-1234",
-        trips: []
-      )
-      bart_total_money_spent = bart.net_expenditures
-      expect(bart_total_money_spent).must_equal 0.0
-    end
-
-    ###JULIA### added this IT block for Wave 3
-    it "for a single ongoing trip, net_expenditures should return 0" do
-      ongoing_trip = RideShare::Trip.new(id: 99, passenger: nil, passenger_id: 1,
-        start_time: Time.now, end_time: nil, cost: nil, rating: nil, driver_id: 88, driver: nil)
-      bart = RideShare::Passenger.new(
-        id: 1,
-        name: "Bart Simpson",
-        phone_number: "1-800-123-1234",
-        trips: [ongoing_trip]
-      )
-      bart_total_money_spent = bart.net_expenditures
-      expect(bart_total_money_spent).must_equal 0.0
-    end
-    
-    it "check if net_expenditures return correct Float value" do
-      bart = RideShare::Passenger.new(
-        id: 1,
-        name: "Bart Simpson",
-        phone_number: "1-800-123-1234",
-        trips: []
-      )
-      trip1 = RideShare::Trip.new(
+    before do
+      @bart = RideShare::Passenger.new(
+          id: 1,
+          name: "Bart Simpson",
+          phone_number: "1-800-123-1234",
+          trips: []
+        )
+      @ongoing_trip = RideShare::Trip.new(
+        id: 99, 
+        passenger_id: 1,
+        start_time: Time.now, 
+        end_time: nil, 
+        cost: nil, 
+        rating: nil, 
+        driver: @bart
+        )
+      @trip1 = RideShare::Trip.new(
         id: 11,
-        passenger: bart,
+        passenger: @bart,
         start_time: Time.now,
         end_time: Time.now + 3000,
         cost: 5.00,
         rating: 5,
         driver_id: 100
       )
-      trip2 = RideShare::Trip.new(
+      @trip2 = RideShare::Trip.new(
         id: 12,
-        passenger: bart,
+        passenger: @bart,
         start_time: Time.now,
         end_time: Time.now + 6000,
         cost: 15.00,
         rating: 5,
         driver_id: 100
       )
-      bart.add_trip(trip1)
-      bart.add_trip(trip2)
-      bart_total_money_spent = bart.net_expenditures
-      assert(bart_total_money_spent == 20)
-      assert(bart_total_money_spent.class == Float)
+    end    
+
+    it "if no trips, net_expenditures should return 0" do
+      expect(@bart.net_expenditures).must_equal 0.0
+    end
+
+    ###JULIA### added this IT block for Wave 3
+    it "for a single ongoing trip, net_expenditures should return 0" do
+      @bart.add_trip(@ongoing_trip)
+      expect(@bart.net_expenditures).must_equal 0.0
+    end
+    
+    it "check if net_expenditures return correct Float value" do
+      @bart.add_trip(@trip1)
+      @bart.add_trip(@trip2)
+      assert(@bart.net_expenditures == 20)
+      assert(@bart.net_expenditures.class == Float)
     end
   end
   
   ###JULIA### ADDED BLOCK for wave 1.2.2
   describe "testing total_time_spent" do
-    # Passenger objects MUST be instantiated separately b/c IT blocks are assessed in RANDOM order w/in each DESCRIBE block
-    
-    it "if no trips, check total_time_spent returns 0" do
-      bart = RideShare::Passenger.new(
+    before do
+      @bart = RideShare::Passenger.new(
         id: 1,
         name: "Bart Simpson",
         phone_number: "1-800-123-1234",
         trips: []
       )
-      expect(bart.total_time_spent).must_equal 0
+      @ongoing_trip = RideShare::Trip.new(
+        id: 99, 
+        passenger: @bart, 
+        start_time: Time.now, 
+        end_time: nil, 
+        cost: nil, 
+        rating: nil, 
+        driver_id: 88
+      )
+      @trip1 = RideShare::Trip.new(
+        id: 98, 
+        passenger: @bart, 
+        start_time: Time.now, 
+        end_time: Time.now + 1000, 
+        cost: nil, 
+        rating: nil, 
+        driver_id: 88
+      )
+      @trip2 = RideShare::Trip.new(
+        id: 97, 
+        passenger: @bart,
+        start_time: Time.now, 
+        end_time: Time.now + 2000, 
+        cost: nil, 
+        rating: nil, 
+        driver_id: 88
+      )
+    end
+    
+    it "if no trips, check total_time_spent returns 0" do
+      expect(@bart.total_time_spent).must_equal 0
     end
 
     ###JULIA### added this IT block for Wave 3
-    it "for a single ongoing trip, check total_time_spent returns 0" do
-      # I decided to count time spent as 0 (instead of nil... why? see next IT block) until trip officially finishes
-      ongoing_trip = RideShare::Trip.new(id: 99, passenger: nil, passenger_id: 1,
-        start_time: Time.now, end_time: nil, cost: nil, rating: nil, driver_id: 88, driver: nil)
-      bart = RideShare::Passenger.new(
-        id: 1,
-        name: "Bart Simpson",
-        phone_number: "1-800-123-1234",
-        trips: [ongoing_trip]
-      )
-      expect(bart.total_time_spent).must_equal 0
+    it "for a single ongoing trip, check total_time_spent returns 0" do      
+      @bart.add_trip(@ongoing_trip)
+      expect(@bart.total_time_spent).must_equal 0
     end
 
     ###JULIA### added this IT block for Wave 3
     it "for a single ongoing trip among finished trips, check total_time_spent returns correct number and ignores the ongoing trip" do
       # I decided to count time spent as 0 (instead of nil) until trip officially finishes
-      ongoing_trip = RideShare::Trip.new(id: 99, passenger: nil, passenger_id: 1,
-        start_time: Time.now, end_time: nil, cost: nil, rating: nil, driver_id: 88, driver: nil)
-      old_trip1 = RideShare::Trip.new(id: 98, passenger: nil, passenger_id: 1,
-        start_time: Time.now, end_time: Time.now + 1000, cost: nil, rating: nil, driver_id: 88, driver: nil)
-      old_trip2 = RideShare::Trip.new(id: 97, passenger: nil, passenger_id: 1,
-        start_time: Time.now, end_time: Time.now + 2000, cost: nil, rating: nil, driver_id: 88, driver: nil)
-      bart = RideShare::Passenger.new(
-        id: 1,
-        name: "Bart Simpson",
-        phone_number: "1-800-123-1234",
-        trips: [ongoing_trip, old_trip1, old_trip2]
-      )
-      expect(bart.total_time_spent).must_equal 3000
+      [@ongoing_trip, @trip1, @trip2].each do |trip|
+        @bart.add_trip(trip)
+      end
+      expect(@bart.total_time_spent).must_equal 3000
     end
-    
+
     it "check if total_time_spent returns correct number of seconds" do
-      bart = RideShare::Passenger.new(
-        id: 1,
-        name: "Bart Simpson",
-        phone_number: "1-800-123-1234",
-        trips: []
-      )
-      trip1 = RideShare::Trip.new(
-        id: 11,
-        passenger: bart,
-        start_time: Time.now,
-        end_time: Time.now + 3000,
-        cost: 5.00,
-        rating: 5,
-        driver_id: 100
-      )
-      trip2 = RideShare::Trip.new(
-        id: 12,
-        passenger: bart,
-        start_time: Time.now,
-        end_time: Time.now + 6000,
-        cost: 15.00,
-        rating: 5,
-        driver_id: 100
-      )
-      bart.add_trip(trip1)
-      bart.add_trip(trip2)
-      expect(bart.total_time_spent).must_equal 9000
+      @bart.add_trip(@trip1)
+      @bart.add_trip(@trip2)
+      expect(@bart.total_time_spent).must_equal 3000
     end
-    
   end
 end
