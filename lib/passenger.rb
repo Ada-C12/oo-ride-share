@@ -1,4 +1,6 @@
 require_relative 'csv_record'
+require_relative 'trip'
+require_relative 'trip_dispatcher'
 
 module RideShare
   class Passenger < CsvRecord
@@ -14,6 +16,26 @@ module RideShare
 
     def add_trip(trip)
       @trips << trip
+    end
+
+    def net_expenditures(passenger_id)
+      n = 0
+      Trip.load_all(full_path: "support/trips.csv").each do |trip|
+        if trip.instance_variable_get(:@passenger_id) == passenger_id
+          n += trip.instance_variable_get(:@cost).to_i
+        end
+      end
+      return n
+    end
+
+    def total_time_spent(passenger_id)
+      n = 0
+      Trip.load_all(full_path: "support/trips.csv").each do |trip|
+        if trip.instance_variable_get(:@passenger_id) == passenger_id
+          n += trip.duration
+        end
+      end
+      return n
     end
 
     private
