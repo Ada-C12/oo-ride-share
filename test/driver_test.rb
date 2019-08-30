@@ -130,6 +130,21 @@ describe "Driver class" do
       
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
+    
+    it "ignores in-progress trips" do
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: "2016-08-08",
+        end_time: nil,
+        rating: nil
+      )
+      @driver.add_trip(trip3)
+      
+      expect(@driver.average_rating).must_equal 5.0
+    end
+    
   end
   
   describe "total_revenue" do
@@ -170,32 +185,52 @@ describe "Driver class" do
         driver_id: 3,
         cost: 1.60
       )
+      @trip_4 = RideShare::Trip.new(
+        id: 10,
+        driver: @driver,
+        passenger_id: 5,
+        start_time: "2016-08-07",
+        end_time: nil,
+        rating: nil,
+        driver_id: 3,
+        cost: nil
+      )
       
     end
-
+    
     it "accurately calculates total revenue" do
       @driver.add_trip(@trip_1)
       @driver.add_trip(@trip_2)
-
+      
       revenue = @driver.total_revenue
-
+      
       expect(revenue).must_equal 21.36
     end
-
+    
     it "returns 0 if no trips were made" do
       revenue = @driver.total_revenue
-
+      
       expect(revenue).must_equal 0
     end
-
+    
     it "calculates a trip's revenue as 0 if its cost is less than $1.65" do
       @driver.add_trip(@trip_1)
       @driver.add_trip(@trip_3)
-
+      
       revenue = @driver.total_revenue
-
+      
       expect(revenue).must_equal 6.68
     end
-
+    
+    it "ignores in-progress trips" do
+      @driver.add_trip(@trip_1)
+      @driver.add_trip(@trip_2)
+      @driver.add_trip(@trip_3)
+      @driver.add_trip(@trip_4)
+      
+      revenue = @driver.total_revenue
+      
+      expect(revenue).must_equal 21.36
+    end
   end
 end
