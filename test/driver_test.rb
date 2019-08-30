@@ -24,6 +24,10 @@ describe "Driver class" do
       expect { RideShare::Driver.new(id: 100, name: "George", vin: "33133313331333133extranums") }.must_raise ArgumentError
     end
 
+    it "throws an argument error with incorrect status entry" do
+      expect { RideShare::Driver.new(id: 100, name: "George", vin: "33133313331333133", status: :ASDFASDCCCD) }.must_raise ArgumentError
+    end
+
     it "has a default status of :AVAILABLE" do
       expect(RideShare::Driver.new(id: 100, name: "George", vin: "12345678901234567").status).must_equal :AVAILABLE
     end

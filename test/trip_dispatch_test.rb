@@ -1,4 +1,5 @@
 require_relative 'test_helper'
+require 'pry'
 
 TEST_DATA_DIRECTORY = 'test/test_data/'
 
@@ -126,33 +127,44 @@ describe "TripDispatcher class" do
   describe "request trip" do
     before do
       @dispatcher = build_test_dispatcher
+      @new_trip = @dispatcher.request_trip(1)
     end
 
     it "is an instance of Trip" do
-      trip = @dispatcher.trips[1]
-      expect(trip).must_be_kind_of RideShare::Trip
+      expect(@new_trip).must_be_kind_of RideShare::Trip
     end
 
     it "updates trip lists for passenger and driver" do
       driver = @dispatcher.drivers[1]
       previous = driver.trips.length
-      driver.add_trip(@trip)
+      driver.add_trip(@new_trip)
       expect(driver.trips.length).must_equal previous + 1
 
       passenger = @dispatcher.passengers[1]
       previous = passenger.trips.length
-      passenger.add_trip(@trip)
+      passenger.add_trip(@new_trip)
       expect(passenger.trips.length).must_equal previous + 1
     end
 
     it "the driver selected was AVAILABLE" do
-      driver = @dispatcher.drivers[1]
-      expect(driver.status).must_equal :AVAILABLE
+      status_before_trip = @dispatcher.drivers[2].status
+
+      @dispatcher.request_trip(1)
+
+      status_after_dispatch = @dispatcher.drivers[2].status
+
+      expect(status_before_trip).must_equal :AVAILABLE
+      expect(status_after_dispatch).must_equal :UNAVAILABLE
     end
 
     it "raises an ArgumentError if there are no available drivers" do
-      driver = @dispatcher.drivers[0]
-      expect(driver.status).must_equal :UNAVAILABLE
+      1.times do
+        @dispatcher.request_trip(2)
+      end
+
+      expect{
+        @dispatcher.request_trip(2)
+      }.must_raise ArgumentError
     end
   end
 end
