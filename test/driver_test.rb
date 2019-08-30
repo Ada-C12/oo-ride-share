@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
@@ -22,6 +22,10 @@ xdescribe "Driver class" do
     it "throws an argument error with a bad VIN value" do
       expect { RideShare::Driver.new(id: 100, name: "George", vin: "") }.must_raise ArgumentError
       expect { RideShare::Driver.new(id: 100, name: "George", vin: "33133313331333133extranums") }.must_raise ArgumentError
+    end
+
+    it "throws an argument error with incorrect status entry" do
+      expect { RideShare::Driver.new(id: 100, name: "George", vin: "33133313331333133", status: :ASDFASDCCCD) }.must_raise ArgumentError
     end
 
     it "has a default status of :AVAILABLE" do
@@ -128,9 +132,71 @@ xdescribe "Driver class" do
 
       expect(@driver.average_rating).must_be_close_to (5.0 + 1.0) / 2.0, 0.01
     end
+
+    it "should return average of trips with in-progress trips" do
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new.to_s,
+        end_time: nil,
+        rating: nil
+      )
+      @driver.add_trip(trip3)
+
+      expect(@driver.average_rating).must_be_close_to (5.0) / 1.0, 5.0
+    end 
+
   end
 
   describe "total_revenue" do
     # You add tests for the total_revenue method
+    before do
+      # TODO: you'll need to add a driver at some point here.
+      @driver = RideShare::Driver.new(
+        id: 9,
+        name: "Merl Glover III",
+        vin: "16026202330x37232",
+        )
+      trip1 = RideShare::Trip.new(
+        id: 8,
+        passenger_id: 4,
+        driver: @driver,
+        start_time: Time.parse('2015-05-20T6:45:00+00:00'),
+        end_time: Time.parse('2015-05-20T7:03:00+00:00'),
+        cost: 9,
+        rating: 5
+        )
+      @driver.add_trip(trip1)
+
+      trip2 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 7,
+        start_time: Time.parse('2015-05-20T11:14:00+00:00'),
+        end_time: Time.parse('2015-05-20T11:20:00+00:00'),
+        cost: 6,
+        rating: 5
+        )
+      @driver.add_trip(trip2)
+    end
+
+    it "returns total revenue of driver" do 
+      expect(@driver.total_revenue).must_equal 9.36
+    end 
+
+    it "should return average of trips with in-progress trips" do
+      trip3 = RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: Time.new.to_s,
+        end_time: nil,
+        rating: nil
+      )
+      @driver.add_trip(trip3)
+
+      expect(@driver.total_revenue).must_equal 9.36
+    end 
   end
 end

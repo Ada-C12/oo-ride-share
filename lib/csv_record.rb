@@ -43,7 +43,6 @@ module RideShare
         class_name = self.to_s.split('::').last
         file_name = "#{class_name.downcase}s.csv"
       end
-
       return "#{directory}/#{file_name}"
     end
   end
