@@ -157,5 +157,55 @@ describe "TripDispatcher class" do
         expect(@trip).must_be_kind_of RideShare::Trip
       end
     end
+
+    describe "intelligent dispatching" do
+      before do
+        @dispatcher = build_test_dispatcher
+
+        start_time = Time.parse('2015-05-20T12:14:00+00:00')
+        end_time = start_time + 25 * 60 # 25 minutes
+        trip_data = {
+          id: 8,
+          passenger: RideShare::Passenger.new(id: 1,
+            name: "Ada",
+            phone_number: "412-432-7640"),
+            start_time: start_time,
+            end_time: end_time,
+            cost: 23.45,
+            rating: 3
+          }
+
+        trip = RideShare::Trip.new(trip_data)
+
+        @dispatcher.drivers[1].trips << trip
+      end
+
+      it "chooses a driver with no ride history over drivers who have given rides" do
+        new_trip = @dispatcher.request_trip(2)
+        expect(new_trip.driver.name).must_equal "Driver 3 (no trips)"
+      end
+
+      it "chooses a driver whose most recent trip ended the longest ago only if there are no drivers available who haven't given rides" do
+        start_time = Time.now
+        end_time = start_time + 25 * 60 # 25 minutes
+        trip_data = {
+          id: 8,
+          passenger: RideShare::Passenger.new(id: 1,
+            name: "Ada",
+            phone_number: "412-432-7640"),
+            start_time: start_time,
+            end_time: end_time,
+            cost: 23.45,
+            rating: 3
+          }
+
+        trip = RideShare::Trip.new(trip_data)
+        @dispatcher.drivers[2].trips << trip
+
+        new_trip = @dispatcher.request_trip(2)
+
+        expect(new_trip.driver.name).must_equal "Driver 2"
+      end
+    end
   end
 end
