@@ -75,6 +75,7 @@ module RideShare
       if requested_driver == nil
         requested_driver = available_drivers.min_by do |driver| 
           # Find the individual driver's most recent trip 
+          # trips.csv does not have trips ordered chronologically
           driver.trips.max_by { |ride| ride.end_time }.end_time
         end
       end
