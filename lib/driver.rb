@@ -35,8 +35,10 @@ module RideShare
         return 0
       else
         self.trips.each do |trip|
-          trip_ratings << trip.rating
-        end 
+          if trip.end_time != nil
+            trip_ratings << trip.rating
+          end 
+        end
         
         total_rating = trip_ratings.sum
         return average_rating = total_rating.to_f / trip_ratings.length 
