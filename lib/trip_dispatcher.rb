@@ -35,14 +35,29 @@ module RideShare
     end
 
     def request_trip(passenger_id)
-      available_driver = @drivers.select{|driver| driver.status == :AVAILABLE}
-      if available_driver.length == 0
+      available_drivers = @drivers.select{|driver| driver.status == :AVAILABLE}
+      zero_trips = available_drivers.select {|driver| driver.trips.length == 0}
+
+      if available_drivers.length == 0
         raise ArgumentError, 'No available drivers'
       end
-      id = @trips.length + 1
 
-      chosen_driver_id = available_driver[0].id
-      chosen_driver = find_driver(chosen_driver_id)
+      if zero_trips.length == 0
+        # sort the driver trips and return max end time value
+        available_drivers.each do |driver|
+          driver.trips.sort_by! {|trip| trip.end_time}
+        end
+
+        available_drivers.sort_by! {|driver| driver.trips.last.end_time}
+        chosen_driver_id = available_drivers[0].id
+        chosen_driver = find_driver(chosen_driver_id)
+      else
+        # assign the first zero trip driver
+        chosen_driver_id = zero_trips[0].id
+        chosen_driver = find_driver(chosen_driver_id)
+      end
+
+      id = @trips.length + 1
       passenger = find_passenger(passenger_id)
 
       trip_data = {

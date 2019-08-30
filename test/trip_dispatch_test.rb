@@ -68,8 +68,7 @@ describe "TripDispatcher class" do
       end
 
       it "connects trips and passengers" do
-        dispatcher = build_test_dispatcher
-        dispatcher.trips.each do |trip|
+        @dispatcher.trips.each do |trip|
           expect(trip.passenger).wont_be_nil
           expect(trip.passenger.id).must_equal trip.passenger_id
           expect(trip.passenger.trips).must_include trip
@@ -111,8 +110,7 @@ describe "TripDispatcher class" do
       end
 
       it "connects trips and drivers" do
-        dispatcher = build_test_dispatcher
-        dispatcher.trips.each do |trip|
+        @dispatcher.trips.each do |trip|
           expect(trip.driver).wont_be_nil
           expect(trip.driver.id).must_equal trip.driver_id
           expect(trip.driver.trips).must_include trip
@@ -121,51 +119,42 @@ describe "TripDispatcher class" do
     end
 
     describe "request_trip" do
+      before do
+        @dispatcher = build_test_dispatcher
+        @trip = @dispatcher.request_trip(2)
+      end
+
       it "selects an available driver for the trip" do
-        dispatcher = build_test_dispatcher
-        dispatcher.request_trip(2)
-        available_drivers = dispatcher.drivers.select{|driver| driver.status == :AVAILABLE}
+        available_drivers = @dispatcher.drivers.select{|driver| driver.status == :AVAILABLE}
         num_drivers = available_drivers.length
         expect(num_drivers).must_equal 1
       end
 
       it "raises an ArgumentError if no drivers are available" do
-        dispatcher = build_test_dispatcher
-        dispatcher.request_trip(2)
-        dispatcher.request_trip(2)
-        expect{dispatcher.request_trip(2)}.must_raise ArgumentError
+        @dispatcher.request_trip(2)
+        expect{@dispatcher.request_trip(2)}.must_raise ArgumentError
       end
 
       it "changes driver's status from 'available' to 'unavailable'" do
-        dispatcher = build_test_dispatcher
-        trip = dispatcher.request_trip(2)
-        expect(trip.driver.status).must_equal :UNAVAILABLE
+        expect(@trip.driver.status).must_equal :UNAVAILABLE
       end
 
       it "adds the requested trip to the trip dispatcher's list of trips" do
-        dispatcher = build_test_dispatcher
-        trip = dispatcher.request_trip(2)
-        expect(dispatcher.trips).must_include trip
+        expect(@dispatcher.trips).must_include @trip
       end
 
       it "adds the requested trip to the passenger's list of trips" do
-        dispatcher = build_test_dispatcher
-        trip = dispatcher.request_trip(2)
-        cur_passenger = dispatcher.find_passenger(2)
-        expect(cur_passenger.trips).must_include trip
+        cur_passenger = @dispatcher.find_passenger(2)
+        expect(cur_passenger.trips).must_include @trip
       end
 
       it "adds the requested trip to the driver's list of trips" do
-        dispatcher = build_test_dispatcher
-        trip = dispatcher.request_trip(2)
-        cur_driver = trip.driver
-        expect(cur_driver.trips).must_include trip
+        cur_driver = @trip.driver
+        expect(cur_driver.trips).must_include @trip
       end
 
       it "returns the newly created trip" do
-        dispatcher = build_test_dispatcher
-        trip = dispatcher.request_trip(2)
-        expect(trip).must_be_kind_of RideShare::Trip
+        expect(@trip).must_be_kind_of RideShare::Trip
       end
     end
   end
