@@ -20,7 +20,6 @@ module RideShare
         raise ArgumentError, 'Passenger instance or passenger_id is required'
       end
       
-      ###JULIA### WHOLE BLOCK CHANGED, Wave 1.1.3, amended in Wave 3
       # Evaluate Time obj args from .from_csv  
       if end_time == nil
         # trip has not ended yet, still valid as nil
@@ -36,13 +35,12 @@ module RideShare
       
       # @rating may be nil for ongoing trips
       @rating = rating
-      if @rating    ###JULIA### amended block for Wave 3
+      if @rating    
         if @rating > 5 || @rating < 1
           raise ArgumentError.new("Invalid rating #{@rating}")
         end
       end
       
-      ###JULIA### ADDED BLOCK, Wave 2: "Either driver_id or Driver instance is needed"
       if driver
         @driver = driver
         @driver_id = driver.id
@@ -63,7 +61,6 @@ module RideShare
       "PassengerID=#{passenger&.id.inspect}>"
     end
     
-    ###JULIA### Changed this whole block for Wave 2: Loading Drivers
     def connect(driver, passenger)
       # given known Passenger and Driver instances, add this Trip instance to each person's @trips array
       
@@ -76,10 +73,12 @@ module RideShare
       driver.add_trip(self)
     end
     
-    ###JULIA### ADDED BLOCK for Wave 1.1.4
     def duration
-      duration_secs = end_time - start_time
-      return duration_secs
+      if @end_time
+        return (@end_time - @start_time)
+      else
+        raise ArgumentError, "trip has not ended yet"
+      end
     end
     
     private
@@ -88,12 +87,11 @@ module RideShare
       # looks at the arg hash record = {id:xxx, passenger:xxx, passenger_id:xxx, start_time:xxx, end_time:xxx, cost:xxx, rating:xxx}
       # returns Trip.new() object with args above
       
-      ###JULIA### ADDED BLOCK for Wave 1.1.2
       # change the time Strings into Time objects             
       start_time_parsed = Time::parse(record[:start_time])  
       if record[:end_time]
         end_time_parsed = Time::parse(record[:end_time])        
-      else  ###JULIA### added this else block for Wave 3
+      else  
         # currently active trips will have end_time = nil 
         end_time_parsed = nil
       end
@@ -101,11 +99,11 @@ module RideShare
       return self.new(
         id: record[:id],
         passenger_id: record[:passenger_id],
-        start_time: start_time_parsed,      ###JULIA### CHANGED HERE, Wave 1.1.2
-        end_time: end_time_parsed,          ###JULIA### CHANGED HERE, Wave 1.1.2
+        start_time: start_time_parsed,     
+        end_time: end_time_parsed,          
         cost: record[:cost],
         rating: record[:rating],
-        driver_id: record[:driver_id]        ###JULIA### ADDED for Wave 2
+        driver_id: record[:driver_id]      
       )
     end
   end

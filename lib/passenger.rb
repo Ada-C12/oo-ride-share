@@ -17,34 +17,14 @@ module RideShare
       @trips << trip
     end
     
-    ###JULIA### ADDED THIS BLOCK for Wave 1.2.1, then amended for Wave 3
     def net_expenditures
-      # returns the total amount of $ that the passenger spent
-      total_money_spent = 0.0
-      
-      @trips.each do |trip|
-        # What if there's an ongoing trip (end-time = nil)? => don't add nil cost!
-        if trip.cost
-          total_money_spent += trip.cost
-        end
-      end
-      
-      return total_money_spent
+      costs = @trips.reject { |trip| trip.cost == nil }
+      return costs.reduce(0) { |sum, trip| sum + trip.cost }
     end
-    
-    ###JULIA### ADDED THIS BLOCK for Wave 1.2.2, then amended for Wave 3
+
     def total_time_spent
-      # returns the total amount of time (in seconds) that the passenger spent
-      total_time_spent = 0
-      
-      trips.each do |trip|
-        # What if there's an ongoing trip (end-time = nil)? => don't compute duration, consider it zero!
-        if trip.end_time
-          duration_secs = trip.duration
-          total_time_spent += duration_secs
-        end
-      end
-      return total_time_spent.round
+      all_durations = @trips.reject { |trip| trip.end_time == nil }
+      return all_durations.reduce(0) { |sum, trip| sum + trip.duration }.round
     end
     
     private
@@ -60,3 +40,39 @@ module RideShare
     end
   end
 end
+
+
+
+
+
+
+
+
+# this was my old version, works but not as elegant
+    # def net_expenditures
+    #   # returns the total amount of $ that the passenger spent
+    #   total_money_spent = 0.0
+      
+    #   @trips.each do |trip|
+    #     # What if there's an ongoing trip (end-time = nil)? => don't add nil cost!
+    #     if trip.cost
+    #       total_money_spent += trip.cost
+    #     end
+    #   end
+      
+    #   return total_money_spent
+    # end
+    
+    # def total_time_spent
+    #   # returns the total amount of time (in seconds) that the passenger spent
+    #   total_time_spent = 0
+      
+    #   trips.each do |trip|
+    #     # What if there's an ongoing trip (end-time = nil)? => don't compute duration, consider it zero!
+    #     if trip.end_time
+    #       duration_secs = trip.duration
+    #       total_time_spent += duration_secs
+    #     end
+    #   end
+    #   return total_time_spent.round
+    # end

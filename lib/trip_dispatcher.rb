@@ -3,7 +3,7 @@ require 'time'
 
 require_relative 'passenger'
 require_relative 'trip'
-require_relative 'driver'     ###JULIA### added this for Wave2
+require_relative 'driver'    
 
 module RideShare
   class TripDispatcher
@@ -13,7 +13,7 @@ module RideShare
       # @passengers = [PassengerInstance1, PassengerInstance2, etc]
       @passengers = Passenger.load_all(directory: directory)
       # @drivers = [DriverInstance1, DriverInstance2, etc]    
-      @drivers = Driver.load_all(directory: directory)      ###JULIA### added this for Wave2
+      @drivers = Driver.load_all(directory: directory)      
       # @trips = [TripInstance1, TripInstance2, etc]
       @trips = Trip.load_all(directory: directory)
       
@@ -26,20 +26,18 @@ module RideShare
       return @passengers.find { |passenger| passenger.id == id }
     end
     
-    def find_driver(id)       ###JULIA### added for Wave2: Loading Drivers
+    def find_driver(id)      
       Driver.validate_id(id)
       return @drivers.find { |driver| driver.id == id }
     end
     
     def inspect
-      # Make puts output more useful
       return "#<#{self.class.name}:0x#{object_id.to_s(16)} \
       #{trips.count} trips, \
       #{drivers.count} drivers, \
       #{passengers.count} passengers>"
     end
     
-    ###JULIA### added for wave 3
     def request_trip(passenger_id)
       # Returns a new Trip instance
       
@@ -54,7 +52,6 @@ module RideShare
       
       # Driver selection priority: driver_with_zero_trips > driver_driest_spell 
       # Req'ts: 1. must be :AVAILABLE, = 2. Must not have any ongoing trips (end_time = nil) 
-      # WRITE TEST CODES!!!
       
       driver_with_zero_trips = nil
       driver_driest_spell = nil
@@ -95,30 +92,8 @@ module RideShare
       # update driver status
       chosen_driver.switch_status
       
-      #######################
-      # PREVIOUS VERSION of Driver seletion: choose 1st driver whose statu is :AVAILABLE, then flip their status
-      # chosen_driver = nil
-      # stop_driver_search = false
-      # while stop_driver_search == false
-      #   @drivers.each do |driver|
-      #     if driver.status == :AVAILABLE
-      #       chosen_driver = driver
-      #       chosen_driver.switch_status
-      #       stop_driver_search = true
-      #       break
-      #     end
-      #   end
-      #   stop_driver_search = true
-      # end
-      
-      # If no drivers available, can't make new Trip, return nil
-      # if chosen_driver == nil
-      #   return nil
-      # end
-      #########################
-
       # Make new Trip instance, all arguments are acceptable
-      new_trip = RideShare::Trip.new(id:new_trip_id, passenger: passenger, passenger_id: passenger_id, start_time: start_time, end_time: end_time, cost: nil, rating: nil, driver_id: chosen_driver.id, driver: chosen_driver)
+      new_trip = RideShare::Trip.new(id:new_trip_id, passenger: passenger, passenger_id: passenger_id, start_time: Time.now, end_time: nil, cost: nil, rating: nil, driver_id: chosen_driver.id, driver: chosen_driver)
       
       # Add this Trip to 1. driver's @trips, 2. passenger's @trips, 3. TripDispatcher instance's @Trips
       chosen_driver.add_trip(new_trip)
@@ -132,14 +107,6 @@ module RideShare
     
     private
     
-    # def connect_trips     ###CAROLINE### ORIGINAL VERSION, leave here just in case
-    #   @trips.each do |trip|
-    #     passenger = find_passenger(trip.passenger_id)
-    #     trip.connect(passenger)
-    #   end
-    # end
-    
-    ###JULIA### CHANGED BLOCK for Wave 2:Loading Drivers
     def connect_trips
       # each TripInstance knows who the driver and passengers are, but we need to log this ride in each person's @trips too
       # add each TripInstance from @trips to corresponding DriverInstance's or PassengerInstance's @trips array

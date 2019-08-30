@@ -36,8 +36,7 @@ module RideShare
     
     def self.from_csv(record)
       # Not meant for CsvRecord use
-      # only meant for Trip.from_csv() to make new Trip instances
-      # only meant for Passenger.from_csv() to make new Passenger instances
+      # only meant for <childClass>.csv to make more childClass instances
       raise NotImplementedError, 'Implement me in a child class!'
     end
     
