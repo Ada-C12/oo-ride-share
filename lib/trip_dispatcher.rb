@@ -48,7 +48,7 @@ module RideShare
       passenger = find_passenger(passenger_id)
       
       requested_trip = RideShare::Trip.new(
-        id: trips.length + 1,  #revisit later
+        id: trips.length + 1, 
         passenger: passenger, 
         start_time: Time.now, 
         cost: nil, 

@@ -162,7 +162,7 @@ describe "Driver class" do
       expect(driver.total_revenue).must_equal 0
     end
     
-    it "correctly calculates the average rating" do
+    it "correctly calculates the total revenue" do
       trip2 = RideShare::Trip.new(
         id: 8,
         driver: @driver,

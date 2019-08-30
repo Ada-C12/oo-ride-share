@@ -122,6 +122,8 @@ describe "TripDispatcher class" do
       end
     end
   end
+
+
   describe "request trip" do
     it "is an instance of Trip" do
       dispatcher = build_test_dispatcher
@@ -154,7 +156,6 @@ describe "TripDispatcher class" do
       2.times do
         dispatcher.request_trip(2)
       end
-      
       expect(dispatcher.request_trip(2)).must_equal "No available drivers at this time. Please try again later."
       
     end
