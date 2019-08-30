@@ -181,9 +181,6 @@ describe "TripDispatcher class" do
         collection_contains_trip = @dispatcher.trips.include?(@new_trip)
         expect(collection_contains_trip).must_equal true
       end
-
-      #  it "returns the new instance of @new_trip" do
-      #  end
     end
   end
 end
