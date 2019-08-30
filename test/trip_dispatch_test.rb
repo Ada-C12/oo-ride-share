@@ -124,7 +124,6 @@ describe "TripDispatcher class" do
   
   describe "Create a new trip with request_trip" do 
     before do
-      # MIMICING A IN-PROGRESS TRIP
       @dispatcher = RideShare::TripDispatcher.new(directory: TEST_DATA_DIRECTORY)   
       @passenger_id = @dispatcher.passengers.first.id
     end
@@ -135,6 +134,12 @@ describe "TripDispatcher class" do
       
       # Assert
       expect(trip).must_be_kind_of RideShare::Trip
+    end
+    
+    it "Will generate a new id for each new trip" do 
+      passenger_id = @dispatcher.passengers.first.id
+      trip = @dispatcher.request_trip(passenger_id)
+      expect(trip.id).must_equal 6
     end
     
     it "Will assign a driver to the Trip" do
@@ -169,11 +174,6 @@ describe "TripDispatcher class" do
       expect do
         @dispatcher.request_trip(980999999999999)
       end.must_raise ArgumentError 
-      
-      
-      
-      
-      
     end
     
     it "Will add the new trip to the Passenger's list of trips" do

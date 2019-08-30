@@ -40,19 +40,6 @@ module RideShare
     end
     
     def request_trip(passenger_id)
-      
-      # WORK
-      # CHECK create a new instance of trip
-      # CHECK add the new trip to the collection of @trips for that driver
-      # CHECK set the driver status to :UNAVAILABLE
-      # Generate new trip id for each new trip
-      # Prevent new trip from being generate if no available drivers
-      # CHECK add the new trip to the passenger's list of trips 
-      # CHECK add the new trip to the collection of all trips in TripDispatcher
-      # CHECK return the newly created trip
-      
-      # Generate new id for each new trip
-      # Write a est for this!!!
       id = 0
       last_trip_id = self.trips.last.id
       id = last_trip_id + 1
