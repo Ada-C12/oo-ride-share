@@ -16,6 +16,14 @@ module RideShare
       @trips << trip
     end
 
+    def net_expenditures
+      completed_trips.map(&:cost).sum 
+    end
+
+    def total_time_spent
+      completed_trips.map(&:duration).sum
+    end
+
     private
 
     def self.from_csv(record)
@@ -24,6 +32,10 @@ module RideShare
         name: record[:name],
         phone_number: record[:phone_num]
       )
+    end
+
+    def completed_trips
+      @trips.select(&:end_time)
     end
   end
 end
