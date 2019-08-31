@@ -1,6 +1,6 @@
 require_relative 'test_helper'
 
-describe "Passenger class" do
+xdescribe "Passenger class" do
 
   describe "Passenger instantiation" do
     before do
@@ -35,40 +35,49 @@ describe "Passenger class" do
   end
 
 
-  describe "trips property" do
-    before do
-      # TODO: you'll need to add a driver at some point here.
-      @passenger = RideShare::Passenger.new(
-        id: 9,
-        name: "Merl Glover III",
-        phone_number: "1-602-620-2330 x3723",
-        trips: []
-        )
-      trip = RideShare::Trip.new(
-        id: 8,
-        passenger: @passenger,
-        start_time: "2016-08-08",
-        end_time: "2016-08-09",
-        rating: 5
-        )
-
-      @passenger.add_trip(trip)
-    end
-
-    it "each item in array is a Trip instance" do
-      @passenger.trips.each do |trip|
-        expect(trip).must_be_kind_of RideShare::Trip
-      end
-    end
-
-    it "all Trips must have the same passenger's passenger id" do
-      @passenger.trips.each do |trip|
-        expect(trip.passenger.id).must_equal 9
-      end
-    end
-  end
-
-  describe "net_expenditures" do
-    # You add tests for the net_expenditures method
-  end
+      describe "trips property" do
+   before do
+     # TODO: you'll need to add a driver at some point here.
+     @passenger = RideShare::Passenger.new(
+       id: 9,
+       name: "Merl Glover III",
+       phone_number: "1-602-620-2330 x3723",
+       trips: []
+     )
+     trip = RideShare::Trip.new(
+       id: 8,
+       passenger: @passenger,
+       start_time: Time.parse("2016-08-08"),
+       end_time: Time.parse("2016-08-09"),
+       rating: 5,
+       cost: 21
+     )
+     trip2 = RideShare::Trip.new(
+       id: 9,
+       passenger: @passenger,
+       start_time: Time.parse("2016-08-09"),
+       end_time: Time.parse("2016-08-09"),
+       rating: 4,
+       cost: 20# added
+     )
+     @passenger.add_trip(trip)
+     @passenger.add_trip(trip2)
+   end
+   it "each item in array is a Trip instance" do
+     @passenger.trips.each do |trip|
+       expect(trip).must_be_kind_of RideShare::Trip
+     end
+   end
+   it "all Trips must have the same passenger's passenger id" do
+     @passenger.trips.each do |trip|
+       expect(trip.passenger.id).must_equal 9
+     end
+   end
+   it "net_expenditures" do
+     # You add tests for the net_expenditures method
+     expect(@passenger.net_expenditures).must_equal 41
+   end
+ end
 end
+
+

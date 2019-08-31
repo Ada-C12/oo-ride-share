@@ -24,7 +24,7 @@ describe RideShare::CsvRecord do
     end
 
     it "raises an error if invoked directly (without subclassing)" do
-      full_path = 'specs/test_data/testrecords.csv'
+      full_path = 'test/test_data/testrecords.csv'
       expect {
         RideShare::CsvRecord.load_all(full_path: full_path)
       }.must_raise NotImplementedError
@@ -82,17 +82,17 @@ describe RideShare::CsvRecord do
 
     describe 'load_all' do
       let(:record_count) {
-        %x{wc -l 'specs/test_data/testrecords.csv'}.split(' ').first.to_i - 1
+        %x{wc -l 'test/test_data/testrecords.csv'}.split(' ').first.to_i - 1
       }
       it 'finds data given just a directory' do
-        directory = 'specs/test_data'
+        directory = 'test/test_data'
         records = TestRecord.load_all(directory: directory)
 
         expect(records.length).must_equal record_count
       end
 
       it 'finds data given a directory and filename' do
-        directory = 'specs/test_data'
+        directory = 'test/test_data'
         file_name = 'custom_filename_test.csv'
         records = TestRecord.load_all(directory: directory, file_name: file_name)
 
@@ -100,14 +100,14 @@ describe RideShare::CsvRecord do
       end
 
       it 'finds data given a full path' do
-        path = 'specs/test_data/custom_filename_test.csv'
+        path = 'test/test_data/testrecords.csv'
         records = TestRecord.load_all(full_path: path)
 
         expect(records.length).must_equal record_count
       end
 
       it 'calls `from_csv` for each record in the file' do
-        TestRecord.load_all(directory: 'specs/test_data')
+        TestRecord.load_all(directory: 'test/test_data')
 
         expect(TestRecord.call_count).must_equal record_count
       end
