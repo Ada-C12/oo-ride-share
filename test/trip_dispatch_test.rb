@@ -5,7 +5,7 @@ TEST_DATA_DIRECTORY = 'test/test_data'
 describe "TripDispatcher class" do
   def build_test_dispatcher
     return RideShare::TripDispatcher.new(
-      directory: TEST_DATA_DIRECTORY
+    directory: TEST_DATA_DIRECTORY
     )
   end
   
@@ -40,7 +40,7 @@ describe "TripDispatcher class" do
         @dispatcher = build_test_dispatcher
       end
       
-      it "throws an argument error for a bad ID" do
+      it "throws an ArgumentError for a bad ID" do
         expect{ @dispatcher.find_passenger(0) }.must_raise ArgumentError
       end
       
@@ -82,7 +82,7 @@ describe "TripDispatcher class" do
         @dispatcher = build_test_dispatcher
       end
       
-      it "throws an argument error for a bad ID" do
+      it "throws an ArgumentError for a bad ID" do
         expect { @dispatcher.find_driver(0) }.must_raise ArgumentError
       end
       
@@ -240,11 +240,11 @@ describe "TripDispatcher class" do
     it "raises an ArgumentError if there are no available drivers" do
       ridiculus_number_of_trips = 500 # to use up all available drivers 
       expect{
-        ridiculus_number_of_trips.times do |i|
-          @dispatcher.request_trip( i + 1 )
-        end
-      }.must_raise ArgumentError
+      ridiculus_number_of_trips.times do |i|
+        @dispatcher.request_trip( i + 1 )
+      end
+    }.must_raise ArgumentError
     
-    end
   end
+end
 end

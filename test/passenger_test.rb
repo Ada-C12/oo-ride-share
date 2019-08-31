@@ -12,7 +12,7 @@ describe "Passenger class" do
       expect(@passenger).must_be_kind_of RideShare::Passenger
     end
     
-    it "throws an argument error with a bad ID value" do
+    it "throws an ArgumentError with a bad ID value" do
       expect do
         RideShare::Passenger.new(id: 0, name: "Smithy")
       end.must_raise ArgumentError
