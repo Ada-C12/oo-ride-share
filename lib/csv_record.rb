@@ -15,10 +15,10 @@ module RideShare
       full_path ||= build_path(directory, file_name)
       
       return CSV.read(
-        full_path,
-        headers: true,
-        header_converters: :symbol,
-        converters: :numeric
+      full_path,
+      headers: true,
+      header_converters: :symbol,
+      converters: :numeric
       ).map { |record| from_csv(record) }
       
     end
