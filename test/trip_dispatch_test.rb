@@ -155,14 +155,14 @@ describe "TripDispatcher class" do
       expect(@trip.start_time.to_i).must_be_close_to time_now
     end 
     
-    it "raises an ArgumentError if there are no available drivers" do
-      ridiculus_number_of_trips = 100 # to use up all available drivers 
-      expect{
-        ridiculus_number_of_trips.times do |i|
-          @dispatcher.request_trip( i + 1 )
-        end
-      }.must_raise ArgumentError
-    end
+    # it "raises an ArgumentError if there are no available drivers" do
+    #   ridiculus_number_of_trips = 500 # to use up all available drivers 
+    #   expect{
+    #     ridiculus_number_of_trips.times do |i|
+    #       @dispatcher.request_trip( i + 1 )
+    #     end
+    #   }.must_raise ArgumentError
+    # end
     
   end
   
@@ -181,6 +181,23 @@ describe "TripDispatcher class" do
       
       expect(@driver.id).must_equal new_driver_id
     end 
+    
+    it "verifies that driver assignments are first prioritized for new drivers then by the driver that last had a ride a long time ago" do
+      dummy = @dispatcher.drivers.dup
+      dummy.reject! { |driver| driver.status == :UNAVAILABLE}
+      verification = nil
+      dummy.each do |driver| 
+        verification = true if driver.trips == []
+      end
+      if verification == true
+        expect(@driver.trips).must_equal []
+      else
+        dummy.sort_by! {|driver| driver.end_time}
+        calculated_driver = dummy[0].id
+        chosen_driver = dispatcher.request_trip(passenger_master_id).driver_id
+        expect(chosen_driver).must_equal calculated_driver
+      end
+    end
     
     it "verifies that the driver assigned WAS available and IS NOW unavailable" do
       # uses conditions to measure change once request_trip has run
@@ -220,5 +237,14 @@ describe "TripDispatcher class" do
       expect(trips_after_new_trip.length).must_equal new_trip_count
     end
     
+    it "raises an ArgumentError if there are no available drivers" do
+      ridiculus_number_of_trips = 500 # to use up all available drivers 
+      expect{
+        ridiculus_number_of_trips.times do |i|
+          @dispatcher.request_trip( i + 1 )
+        end
+      }.must_raise ArgumentError
+    
+    end
   end
 end
