@@ -1,7 +1,6 @@
-require_relative 'test_helper'
+require_relative "test_helper"
 
 describe "Passenger class" do
-
   describe "Passenger instantiation" do
     before do
       @passenger = RideShare::Passenger.new(id: 1, name: "Smithy", phone_number: "353-533-5334")
@@ -34,7 +33,6 @@ describe "Passenger class" do
     end
   end
 
-
   describe "trips property" do
     before do
       # TODO: you'll need to add a driver at some point here.
@@ -42,15 +40,23 @@ describe "Passenger class" do
         id: 9,
         name: "Merl Glover III",
         phone_number: "1-602-620-2330 x3723",
-        trips: []
-        )
+        trips: [],
+      )
+      @driver = RideShare::Driver.new(
+        id: 2,
+        name: "Billy Bob",
+        vin: "WBS76FYD47DJF7206",
+        status: :AVAILABLE,
+      )
+
       trip = RideShare::Trip.new(
         id: 8,
         passenger: @passenger,
+        driver: @driver,
         start_time: "2016-08-08",
         end_time: "2016-08-09",
-        rating: 5
-        )
+        rating: 5,
+      )
 
       @passenger.add_trip(trip)
     end
@@ -69,6 +75,91 @@ describe "Passenger class" do
   end
 
   describe "net_expenditures" do
-    # You add tests for the net_expenditures method
+    before do
+      # You add tests for the net_expenditures method
+      it "will return the net expenditures a passenger spent on their trips" do
+        @passenger = RideShare::Passenger.new(
+          id: 9,
+          name: "Merl Glover III",
+          phone_number: "1-602-620-2330 x3723",
+          trips: [],
+        )
+      end
+
+      @driver = RideShare::Driver.new(
+        id: 2,
+        name: "Billy Bob",
+        vin: "WBS76FYD47DJF7206",
+        status: :AVAILABLE,
+      )
+
+      trip = RideShare::Trip.new(
+        id: 5,
+        passenger: @passenger,
+        driver: @driver,
+        start_time: Time.parse("2018-12-27 02:39:05 -0800"),
+        end_time: Time.parse("2018-12-27 03:38:08 -0800"),
+        rating: 5,
+        cost: 15,
+      )
+
+      trip_two = RideShare::Trip.new(
+        id: 6,
+        passenger: @passenger,
+        driver: @driver,
+        start_time: Time.parse("2018-11-17 11:18:35 -0800"),
+        end_time: Time.parse("2018-11-17 11:52:29 -0800"),
+        rating: 4,
+        cost: 28,
+      )
+
+      @passenger.add_trip(trip)
+      @passenger.add_trip(trip_two)
+
+      expect(@passenger.net_expenditures).must_equal 43
+    end
+  end
+
+  describe "total_time_spent method" do
+    it "will return the total time a passenger spent on their trips" do
+      @passenger = RideShare::Passenger.new(
+        id: 9,
+        name: "Merl Glover III",
+        phone_number: "1-602-620-2330 x3723",
+        trips: [],
+      )
+
+      @driver = RideShare::Driver.new(
+        id: 2,
+        name: "Billy Bob",
+        vin: "WBS76FYD47DJF7206",
+        status: :AVAILABLE,
+      )
+
+      trip = RideShare::Trip.new(
+        id: 5,
+        passenger: @passenger,
+        driver: @driver,
+        start_time: Time.parse("2018-12-27 02:39:05 -0800"),
+        end_time: Time.parse("2018-12-27 03:38:08 -0800"),
+        rating: 5,
+        cost: 15,
+      )
+
+      trip_two = RideShare::Trip.new(
+        id: 6,
+        passenger: @passenger,
+        driver: @driver,
+        start_time: Time.parse("2018-11-17 11:18:35 -0800"),
+        end_time: Time.parse("2018-11-17 11:52:29 -0800"),
+        rating: 4,
+        cost: 28,
+      )
+
+      @passenger.add_trip(trip)
+      @passenger.add_trip(trip_two)
+
+      expect(@passenger.total_time_spent).must_equal 5577
+    end
   end
 end

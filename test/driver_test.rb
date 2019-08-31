@@ -1,13 +1,13 @@
-require_relative 'test_helper'
+require_relative "test_helper"
 
-xdescribe "Driver class" do
+describe "Driver class" do
   describe "Driver instantiation" do
     before do
       @driver = RideShare::Driver.new(
         id: 54,
         name: "Test Driver",
         vin: "12345678901234567",
-        status: :AVAILABLE
+        status: :AVAILABLE,
       )
     end
 
@@ -50,12 +50,12 @@ xdescribe "Driver class" do
       pass = RideShare::Passenger.new(
         id: 1,
         name: "Test Passenger",
-        phone_number: "412-432-7640"
+        phone_number: "412-432-7640",
       )
       @driver = RideShare::Driver.new(
         id: 3,
         name: "Test Driver",
-        vin: "12345678912345678"
+        vin: "12345678912345678",
       )
       @trip = RideShare::Trip.new(
         id: 8,
@@ -63,7 +63,7 @@ xdescribe "Driver class" do
         passenger: pass,
         start_time: "2016-08-08",
         end_time: "2018-08-09",
-        rating: 5
+        rating: 5,
       )
     end
 
@@ -83,7 +83,7 @@ xdescribe "Driver class" do
       @driver = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
-        vin: "1C9EVBRM0YBC564DZ"
+        vin: "1C9EVBRM0YBC564DZ",
       )
       trip = RideShare::Trip.new(
         id: 8,
@@ -91,7 +91,7 @@ xdescribe "Driver class" do
         passenger_id: 3,
         start_time: "2016-08-08",
         end_time: "2016-08-08",
-        rating: 5
+        rating: 5,
       )
       @driver.add_trip(trip)
     end
@@ -110,7 +110,7 @@ xdescribe "Driver class" do
       driver = RideShare::Driver.new(
         id: 54,
         name: "Rogers Bartell IV",
-        vin: "1C9EVBRM0YBC564DZ"
+        vin: "1C9EVBRM0YBC564DZ",
       )
       expect(driver.average_rating).must_equal 0
     end
@@ -122,7 +122,7 @@ xdescribe "Driver class" do
         passenger_id: 3,
         start_time: "2016-08-08",
         end_time: "2016-08-09",
-        rating: 1
+        rating: 1,
       )
       @driver.add_trip(trip2)
 
@@ -131,6 +131,36 @@ xdescribe "Driver class" do
   end
 
   describe "total_revenue" do
-    # You add tests for the total_revenue method
+    before do
+      # You add tests for the total_revenue method
+      @driver = RideShare::Driver.new(
+        id: 9,
+        name: "Merl Glover III",
+        vin: "1B6CF40K1J3Y74UY0",
+        status: :AVAILABLE,
+      )
+    end
+    it "should return the driver's total revenue" do
+      @driver.add_trip(RideShare::Trip.new(
+        id: 8,
+        driver: @driver,
+        passenger_id: 6,
+        start_time: "2016-08-08",
+        end_time: "2016-08-09",
+        rating: 5,
+        cost: 12,
+      ))
+
+      @driver.add_trip(RideShare::Trip.new(
+        id: 5,
+        driver: @driver,
+        passenger_id: 3,
+        start_time: "2016-08-08",
+        end_time: "2016-08-09",
+        rating: 5,
+        cost: 25,
+      ))
+      expect(@driver.total_revenue).must_equal 28.28
+    end
   end
 end
